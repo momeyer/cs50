@@ -1,0 +1,106 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#b
+{
+    background-color: #ffc857;
+}
+
+header
+{
+    color: #ffc857;
+    font-family: sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    background-color: #19647e;
+    padding: 5px;
+}
+
+.mistakes
+{
+    margin: 30px auto;
+    border: 3px solid white;
+    border-radius: 4px;
+    width: 200px;
+    color: white;
+    font-size: 46px;
+    text-align: center;
+    padding: 15px 20px;
+    font-family: sans-serif;
+    position: relative;
+}
+
+.flag
+{
+    position: absolute;
+    top: -15px;
+    margin-left: 15px;
+    background-color: #19647e;
+    color: #ffc857;
+    border-radius: 5%;
+    font-size: 14px;
+    padding: 2px 10px;
+    font-weight: bolder;
+}
+
+.row
+{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 50px;
+}
+
+#reset-button
+{
+    margin-top: 15px;
+    padding: 3px;
+    font-family: sans-serif;
+    color: white;
+    font-weight: bolder;
+    border-color: #19647e;
+    background-color: #19647e;
+}
+
+.menu-button
+{
+    text-align: center;
+    background-color: #19647e;
+    border-color: #19647e;
+    border-style: outset ;
+    color: white;
+    padding-right: 50px;
+    padding: 5px;
+    font-weight: bolder;
+    font-size: medium;
+}
+
+.keyboard > button
+{
+    margin: 3px;
+    padding: 3px;
+    text-align: justify;
+    font-family: sans-serif;
+    color: white;
+    font-weight: bolder;
+    border-color: #19647e;
+    background-color: #19647e;
+}
+
+.keyboard > button:hover
+{
+    transform: scale(1.1);
+    background-color: #98c1d9;
+    border-color: #98c1d9;
+    color: #19647e;
+}
+
+#image
+{
+    margin-left: 15px;
+}
+
+

@@ -1,0 +1,135 @@
+*
+{
+    font-family: sans-serif;
+}
+
+@media (min-width: 600px)
+{
+    h1::after
+    {
+        content: " to Gameland!";
+    }
+}
+
+
+@media (max-width: 599px)
+{
+    h1::after
+    {
+        content: "!";
+    }
+}
+
+header
+{
+    color: white;
+    background-color: #19647e;
+    padding: 10px;
+    text-align: center;
+}
+
+
+body
+{
+    color: #104051;
+}
+
+#main-screen
+{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #ffc857;
+}
+
+#main-screen > div
+{
+    padding: 50px;
+    margin: auto;
+}
+
+#main-screen .card-text::before
+{
+    content: "Click here ";
+    color: #19647e;
+    font-weight: bolder;
+}
+
+#main-screen .card-title
+{
+    color: #19647e;
+    font-size: x-large;
+    font-weight: bolder;
+}
+
+#main-screen .card-text
+{
+    color:#428095;
+    font-size: large;
+}
+
+.button:hover
+{
+    color: white;
+    background-color: #104051;
+    border-color: #104051;
+    text-decoration: none;
+}
+
+.button
+{
+    margin: 3px;
+    text-align: center;
+    background-color: #19647e;
+    border-color: #19647e;
+    border-style: outset ;
+    color: white;
+    padding-right: 50px;
+    padding: 10px;
+    font-weight: bolder;
+    font-size: medium;
+}
+
+.card-img-top
+{
+    margin-bottom: 5px;
+}
+
+.card
+{
+    padding: 5px;
+    transition: all 0.3s ease;
+}
+
+#main-screen .card:hover
+{
+    transform: scale(1.05);
+}
+
+#game-one
+{
+    padding: 50px;
+    height: 700px;
+    background-color: #98c1d9;
+}
+
+
+#game-two
+{
+    padding: 50px;
+    height: 700px;
+    background-color:  #ffc857;
+}
+
+#game-three
+{
+    padding: 50px;
+    height: 700px;
+    color: #98c1d9;
+    background-color: #104051;
+}
+
+li::selection, p::selection
+{
+    color: #19647e;
+    background-color: rgba(255, 250, 97, .70);
+}
