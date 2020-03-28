@@ -1,0 +1,19 @@
+*
+{
+    font-family: sans-serif;
+    
+    &::selection
+    {
+        color: $textColor;
+        background-color: rgba(255, 250, 97, .70);
+    }
+}
+
+
+header
+{
+    color: white;
+    background-color: $textColor;
+    padding: 10px;
+    text-align: center;
+}

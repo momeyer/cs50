@@ -1,0 +1,95 @@
+* {
+  font-family: sans-serif; }
+  *::selection {
+    color: #19647e;
+    background-color: rgba(255, 250, 97, 0.7); }
+
+header {
+  color: white;
+  background-color: #19647e;
+  padding: 10px;
+  text-align: center; }
+
+@media screen and (min-width: 600px) {
+  h1::after {
+    content: " to Gameland!"; }
+
+  .card-text::after {
+    content: "information about the procjec"; }
+
+  .card span {
+    display: none; } }
+@media screen and (max-width: 599px) {
+  h1::after {
+    content: "!"; }
+
+  p {
+    display: none; }
+
+  .card span {
+    padding-top: 15px; }
+
+  .list {
+    display: none; } }
+#main-screen {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #ffc857; }
+  #main-screen .card-text::before {
+    content: "Click ";
+    color: #19647e;
+    font-weight: bolder; }
+  #main-screen .card-title {
+    color: #19647e;
+    font-size: 22px;
+    font-weight: bolder; }
+  #main-screen .card-text {
+    color: #428095;
+    font-size: medium; }
+
+#main-screen > div {
+  padding: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px; }
+
+.button {
+  margin: 1px;
+  text-align: center;
+  background-color: #19647e;
+  border-color: #19647e;
+  border-style: outset;
+  color: white;
+  padding-right: 50px;
+  padding: 9px;
+  font-weight: bolder;
+  font-size: medium; }
+  .button:hover {
+    color: white;
+    background-color: #104051;
+    border-color: #104051;
+    text-decoration: none; }
+
+.card {
+  padding: 5px;
+  transition: all 0.3s ease; }
+  .card:hover {
+    transform: scale(1.05); }
+
+#game-one, #game-two, #game-three {
+  padding: 50px;
+  height: 700px; }
+
+#game-one {
+  background-color: #98c1d9; }
+
+#game-two {
+  background-color: #ffc857; }
+
+#game-three {
+  background-color: #104051; }
+
+#game-three .list {
+  color: #98c1d9; }
+
+/*# sourceMappingURL=style.css.map */

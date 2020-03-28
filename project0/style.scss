@@ -1,0 +1,141 @@
+@import "./variables";
+@import "./header";
+
+@media screen and (min-width: 600px)
+{
+    h1::after
+    {
+        content: " to Gameland!";
+    }
+    .card-text::after
+    {
+        content: "information about the procjec";
+    }
+
+    .card span
+    {
+        display: none;
+    }    
+}
+
+
+@media screen and (max-width: 599px)
+{
+    h1::after
+    {
+        content: "!";
+    }
+
+    p
+    {
+        display: none;
+    }
+
+    .card span
+    {
+        padding-top: 15px;
+    }
+
+    .list
+    {
+        display: none;
+    }
+
+}
+
+
+#main-screen
+{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: $mainScreenColor;
+    
+    .card-text::before
+    {
+        content: "Click ";
+        color: $textColor;
+        font-weight: bolder;
+    }
+    
+    .card-title
+    {
+        color: $textColor;
+        font-size: 22px;
+        font-weight: bolder;
+    }
+
+    .card-text
+    {
+        color:#428095;
+        font-size: medium;
+    }
+
+}
+
+#main-screen > div
+{
+    padding: 50px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+}
+
+.button
+{
+    margin: 1px;
+    text-align: center;
+    background-color: $textColor;
+    border-color: $textColor;
+    border-style: outset ;
+    color: white;
+    padding-right: 50px;
+    padding: 9px;
+    font-weight: bolder;
+    font-size: medium;
+
+    &:hover
+    {
+        color: white;
+        background-color: $gameThreeColor;
+        border-color: $gameThreeColor;
+        text-decoration: none;
+    }
+}
+
+.card
+{
+    padding: 5px;
+    transition: all 0.3s ease;
+
+    &:hover
+    {
+        transform: scale(1.05);
+    }
+
+}
+
+#game-one, #game-two, #game-three
+{
+    padding: 50px;
+    height: 700px;
+}
+
+#game-one
+{
+    background-color: $gameOneColor;
+}
+
+#game-two
+{
+    background-color: $mainScreenColor;
+}
+
+#game-three
+{
+    background-color: $gameThreeColor;
+}
+
+#game-three .list
+{
+    color: $gameOneColor;
+}
