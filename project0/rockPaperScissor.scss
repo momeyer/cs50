@@ -1,23 +1,7 @@
 @import "./variables";
 @import "./header";
+@import "./functions";
 
-@mixin marginPadding($margin, $padding, $marginLeft, $marginTop, $marginBotton)
-{
-    margin: $margin;
-    margin-left: $marginLeft;
-    margin-top: $marginTop;
-    margin-bottom: $marginBotton;
-    padding: $padding;
-
-}
-
-@mixin position($position, $top, $right, $left)
-{
-    position: $position;
-    top: $top;
-    right: $right;
-    left: $left;
-}
 
 *
 {

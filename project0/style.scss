@@ -1,6 +1,7 @@
 @import "./variables";
 @import "./header";
 
+
 @media screen and (min-width: 600px)
 {
     h1::after
@@ -114,7 +115,9 @@
 
 }
 
-#game-one, #game-two, #game-three
+
+
+%gameSection
 {
     padding: 50px;
     height: 700px;
@@ -122,20 +125,24 @@
 
 #game-one
 {
+    @extend %gameSection;
     background-color: $gameOneColor;
 }
 
 #game-two
 {
+
+    @extend %gameSection;
     background-color: $mainScreenColor;
 }
 
 #game-three
 {
+    @extend %gameSection;
     background-color: $gameThreeColor;
-}
-
-#game-three .list
-{
-    color: $gameOneColor;
+ 
+    .list
+    {
+        color: $gameOneColor;
+    }
 }

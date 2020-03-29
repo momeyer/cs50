@@ -1,0 +1,58 @@
+@import "./variables";
+@import "./header";
+@import "./functions";
+
+
+body
+{
+    background-color: $mainScreenColor;
+}
+
+header
+{
+    font-family: sans-serif;
+    font-weight: bolder;
+    background-color: $textColor; 
+}
+
+img
+{
+    display: block;
+    margin: 30px auto;
+    margin-bottom: 40px;
+    width: 40%;
+}
+
+table
+{
+    margin: auto;
+    text-align: center;
+    font-weight: bolder;
+    color: #19647e;
+    border-color: white;
+}
+
+td, th
+{
+    padding-left: 90px;
+    padding-right: 90px;
+    border-style: solid;
+    border-color: white;
+    border-width: 3px;
+}
+
+.button:hover
+{
+    color: #19647e;
+    text-decoration: underline ;
+}
+
+.button
+{
+    text-align: center;
+    color: #19647e;
+    padding-right: 50px;
+    padding: 5px;
+    font-weight: bolder;
+    font-size: medium;
+}
