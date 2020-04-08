@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %} Animal Books {% endblock %}
+
+{% block body %}
+
+<div class="container">
+<img src="/static/imageLogin.png" alt="" width="70%">
+<div id="username-password">
+    <div class="input-group flex-nowrap">
+        <div>
+                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
+                <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
+                <button type="button" class="btn btn-secondary btn-md">login now!</button>
+                <a href="#registration"> <button type="button" class="btn btn-secondary btn-md"> Register now </button></a>
+        </div>
+    </div>
+</div>
+</div>
+<div class="second-container">
+    <div class="row">
+        <div class="col-lg-4">
+            <img id="image_bottom_left" src="/static/boy_left_corner.png" alt="" width="100%">
+        </div>
+        <div class="col-lg-4">
+            <div id="registration">
+                Registration Form:
+                    <input type="text" class="form-control" placeholder="First name" name="first-name" aria-describedby="addon-wrapping">
+                    <input type="text" class="form-control" placeholder="Last name" aria-label="last-name" aria-describedby="addon-wrapping">
+                    <input type="text" class="form-control" placeholder="Choose a username" aria-label="Username" aria-describedby="addon-wrapping">
+                    <input type="password" class="form-control" placeholder="Choose password" aria-label="Password" aria-describedby="addon-wrapping">
+                    <input type="password" class="form-control" placeholder="Confirm password" aria-label="confirmation" aria-describedby="addon-wrapping">
+                    Choose a avatar:
+                    <img id="avatars" src="/static/avatars.png" alt="" width="100%">
+                    <a><button type="button" class="btn btn-secondary btn-md">Register</button></a>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <img id="image_bottom_right" src="/static/girl_right_corner.png" alt="" width="100%">
+        </div>
+        </div>
+        </div>
+      </div>
+</div>
+
+{% endblock %}
