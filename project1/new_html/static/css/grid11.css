@@ -1,3 +1,45 @@
+h1
+{
+  text-align: center;
+  color: white;
+  font-family: sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+
+}
+
+svg:hover
+{
+  transform: scale(1.8);
+}
+svg
+{
+  color: white;
+  margin-left: 15px;
+  transition: ease-in-out;
+}
+
+.menu
+{
+  background-color: #349074;
+  padding: 25px;
+  color: white;
+}
+
+.menu>div
+{
+  position: absolute;
+  top: 8px;
+  right: 16px;
+  font-size: 18px;
+}
+
+header
+{
+  background-color: #349074;
+  padding: 5px;
+}
+
 body {
   align-content: center;
   background-color: #67D2BB; }

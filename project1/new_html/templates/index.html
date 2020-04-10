@@ -9,14 +9,17 @@
 <div id="username-password">
     <div class="input-group flex-nowrap">
         <div>
-                <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping">
-                <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="addon-wrapping">
-                <button type="button" class="btn btn-secondary btn-md">login now!</button>
-                <a href="#registration"> <button type="button" class="btn btn-secondary btn-md"> Register now </button></a>
+            <form action="{{ url_for('login') }}" method="post">
+                    <input class="form-control" name="username" placeholder="Username">
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+                    <button class="btn btn-primary">login</button>
+                    <a href="#registration"> <button type="button" class="btn btn-secondary btn-md"> Register now </button></a>
+            </form>
         </div>
     </div>
 </div>
 </div>
+
 <div class="second-container">
     <div class="row">
         <div class="col-lg-4">
@@ -24,23 +27,69 @@
         </div>
         <div class="col-lg-4">
             <div id="registration">
+                <form action="{{ url_for('register') }}" method="post" class="needs-validation" novalidate>
+                    <div class="form-row">
+                        <label> Registration Form </label>
+                        <input type="text" class="form-control" id="validationCustom01" placeholder="First Name"  name="name" required>
+                        <div class="valid-feedback"> Looks good!</div>
+                      </div>
+                    <div class="form-row">
+                        <input type="text" class="form-control" id="validationCustom01" placeholder="Last Name" name="lname" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="form-row">
+                        <input type="text" class="form-control" id="validationCustom01" placeholder="Username" name="username" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="form-row">
+                        <input type="password" class="form-control" id="validationCustom01" placeholder="Password" name="password" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <div class="form-row">
+                        <input type="password" class="form-control" id="validationCustom01" placeholder="Confirm Password" name="password_confirmation" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+                    <button class="btn btn-primary" type="submit">Submit form</button>
+                  </form>
+                  
+                  <script>
+                  // Example starter JavaScript for disabling form submissions if there are invalid fields
+                  (function() {
+                    'use strict';
+                    window.addEventListener('load', function() {
+                      // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                      var forms = document.getElementsByClassName('needs-validation');
+                      // Loop over them and prevent submission
+                      var validation = Array.prototype.filter.call(forms, function(form) {
+                        form.addEventListener('submit', function(event) {
+                          if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                          }
+                          form.classList.add('was-validated');
+                        }, false);
+                      });
+                    }, false);
+                  })();
+                  </script>
+<!--                
+            <form action="{{ url_for('register') }}" method="post">
                 Registration Form:
-                    <input type="text" class="form-control" placeholder="First name" name="first-name" aria-describedby="addon-wrapping">
-                    <input type="text" class="form-control" placeholder="Last name" aria-label="last-name" aria-describedby="addon-wrapping">
-                    <input type="text" class="form-control" placeholder="Choose a username" aria-label="Username" aria-describedby="addon-wrapping">
-                    <input type="password" class="form-control" placeholder="Choose password" aria-label="Password" aria-describedby="addon-wrapping">
-                    <input type="password" class="form-control" placeholder="Confirm password" aria-label="confirmation" aria-describedby="addon-wrapping">
+                    <input class="form-control" name="name" placeholder="First Name">
+                    <input type="text" class="form-control"  name="lname" placeholder="Last name">
+                    <input type="text" class="form-control" name="username" placeholder="Choose a username">
+                    <input type="password" class="form-control" name="password" placeholder="Choose password">
+                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm password">
                     Choose a avatar:
                     <img id="avatars" src="/static/avatars.png" alt="" width="100%">
-                    <a><button type="button" class="btn btn-secondary btn-md">Register</button></a>
+                    <button class="btn btn-primary">register</button>
+            </form> -->
             </div>
         </div>
         <div class="col-lg-4">
             <img id="image_bottom_right" src="/static/girl_right_corner.png" alt="" width="100%">
         </div>
-        </div>
-        </div>
-      </div>
+    </div>
 </div>
 
 {% endblock %}

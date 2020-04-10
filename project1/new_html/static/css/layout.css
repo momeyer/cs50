@@ -1,6 +1,10 @@
+#error
+{
+  margin: 50%;
+}
+
 body
 {
-
   align-content: center;
   background-color: #67D2BB; }
 
@@ -29,7 +33,7 @@ body
   margin-bottom: 5px; }
 
 .row {
-  color: orange;
+  color: white;
   margin: 50px;
   margin-bottom: 0px; }
 
