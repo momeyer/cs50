@@ -11,186 +11,169 @@ DATABASE_URL="postgresql://monique:monique@localhost:5432/monique"
 engine = create_engine(DATABASE_URL)
 db = scoped_session(sessionmaker(bind=engine))
 
-
-
-class User():
-
-    def register(self, first_name, last_name, username, password):
-        registration_form = {'first_name' : first_name, "last_name" : last_name, "username": username, "password":password}
-
-        self.first_name = first_name
-        self.last_name = last_name
-        self.username = username
-        self.password = password
-
-        return registration_form
         
-    def login(self):
-        pass
+def registration_form_info_is_correct(name, lastname, username, password, password_confirmation, avatar):
+    if name.isspace() or lastname.isspace() or username.isspace() or password.isspace():
+        render_template("error.html", message="Please make sure to provide all the information and try again")
+        return False
+   
+    if not Database.check_if_username_is_available(username):
+        render_template("error.html", message="username not available")
+        return False
+
+    if password != password_confirmation:
+        render_template("error.html", message="Password confirmation doesn't match")
+        return False
+
+    if avatar == '':
+        render_template("error.html", message="Please choose an avatar")
+        return False
     
-    def logout(self):
-        pass
+    return True
 
 
-class AnimalBooks():
+class Database():
 
-    def __init__(self):
+    @staticmethod
+    def select_all_users():
+        return db.execute("select * from users")
 
-        self.users = db.execute("select * from users")
-        self.usernames_list = []
+    @staticmethod
+    def select_username_password(username, password):
+       return db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).fetchone()
 
-        for user in self.users:
-            self.usernames_list.append(user.username)
-            print(self.usernames_list)
+    @staticmethod
+    def insert_into_users(name, lastname, password, username, avatar):
+            db.execute("INSERT INTO users (first_name, last_name, pw, username, avatar) VALUES (:fname, :lname, :pw, :username, :avatar)",
+                {"fname":name, "lname": lastname, "pw": password, "username":username, "avatar":avatar})
+            db.commit()
+    
+    @staticmethod
+    def check_if_username_is_available(username):
+        return db.execute("SELECT * FROM users WHERE username=:username", {"username": username}).rowcount == 0
 
-    def _check_if_available(self, username):
-        print(">>>>>>")
-        if username in self.usernames_list:
-            print("false")
-            return False
-        else:
-            print('true')
-            return True
+    @staticmethod
+    def insert_into_reviews(user_id, review, rate, book_id):
+        db.execute("INSERT INTO reviews (user_id, review, rate, book_id) VALUES (:user_id, :review, :rate, :book_id)",
+                    {"user_id":user_id, "review": review, "rate": rate, "book_id":book_id})
+        db.commit()
 
-    def register_new_user(self, registration_form):
+    @staticmethod
+    def select_reviews(book_id):
+        reviews = db.execute(f"SELECT * FROM reviews WHERE book_id='{book_id}'").fetchall()
+        user_name_avatar = Database.get_users_name_avatar(reviews)
+        return reviews, user_name_avatar
+
+    @staticmethod
+    def get_users_name_avatar(reviews):
+        user_name_avatar = {}
+        for review in reviews:    
+            user = db.execute(f"SELECT username, avatar FROM users WHERE id='{review.user_id}'").fetchone()
+            user_name_avatar[review.user_id] = [user.username, user.avatar]      
         
-        username = registration_form["username"]
+        return user_name_avatar
+
+    @staticmethod
+    def select_best_books(avg_review=4.5):
+        return db.execute(f"select * from books where goodreads_avg_review>{avg_review} order by goodreads_avg_review desc;").fetchall()
+
+    @staticmethod
+    def select_all_books():
+        return db.execute("select * from books order by title").fetchall()
     
-        if self._check_if_available(username):
-            # new_user = db.execute("INSERT INTO users (first_name, last_name, pw, username) VALUES (:first_name, :last_name, :password, :username)", {"first_name": registration_form["first_name"], "last_name": registration_form["last_name"], "password":registration_form["password"], "username":registration_form["username"]})
-            print(f"first_name: {registration_form['first_name']} , last_name: {registration_form['last_name']}, password: {registration_form['password']}, username: {registration_form['username']}")
-            # db.commit()
-            return True
-        else:
-            print("username NOT available")
-            return None
-
     @staticmethod
-    def select_best_books(number_of_books=16, number_of_col=5):
-        books = db.execute("select * from books where goodreads_avg_review>4.5 order by goodreads_avg_review desc;").fetchmany(number_of_books)
-        books_list = []
-        prev = 0
-        for i in range(number_of_col,number_of_books,number_of_col):
-            books_list.append(books[prev:i])
-            prev = i
-
-        return books_list
-
-    @staticmethod
-    def select_all_books(number_of_books=5001, number_of_col=5):
-        all_books = db.execute("select * from books order by title").fetchmany(number_of_books)
-        all_books_list = []
-        prev = 0
-        for i in range(number_of_col,number_of_books,number_of_col):
-            all_books_list.append(all_books[prev:i])
-            prev = i
-
-        return all_books_list
-
-    @staticmethod
-    def search_books(search_content, number_of_col=5):
+    def search_all_books_with(search_content):
         where = ['author', 'title', 'isbn']
         result = []
-        result_list = []
         for query_name in where:
             sql = f"SELECT * FROM books WHERE {query_name} Like '%{search_content}%'"
             books = db.execute(sql).fetchall()
             for book in books:
                 result.append(book)
-        prev = 0
-        number_of_books = len(result)
-        for i in range(number_of_col,number_of_books,number_of_col):
-            result_list.append(result[prev:i])
-            prev = i
-        return result_list
+        return result
+
+    @staticmethod
+    def select_book_by_id(book_id):
+        return db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
+
 
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
+
 @app.route("/success", methods=["POST"])
 def register():
-    # Get form information.
     name = request.form.get("name")
     lastname = request.form.get("lname")
     username = request.form.get("username")
     password = request.form.get("password")
     password_confirmation = request.form.get("password_confirmation")
-    if name == '' or lastname == '' or username == '' or password == '':
-        return render_template("index.html")
-    
-    else:
-        if db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).rowcount > 0:
-            return render_template("error.html")
-        else:
-            if password != password_confirmation:
-                return render_template("index.html")
-            else:
-                db.execute("INSERT INTO users (first_name, last_name, pw, username) VALUES (:fname, :lname, :pw, :username)",
-                    {"fname":name, "lname": lastname, "pw": password, "username":username})
-            db.commit()
+    avatar = request.form.get("avatar")
 
-    return render_template("index.html")
+    if registration_form_info_is_correct(name, lastname, username, password, password_confirmation, avatar):
+        Database.insert_into_users(name, lastname, password, username, avatar)
+        return render_template("index.html")
+    else:
+        return render_template("error.html", message="provide correct info")
 
 
 @app.route("/welcome", methods=["POST"])
 def login():
-    # Get form information.
     username = request.form.get("username")
     password = request.form.get("password")
-   
-    if username == '' or password == '':
-        return render_template("index.html")
     
-    else:
-        if db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).rowcount == 0:
-            return render_template("index.html", message="you are not a member")
+    user_info = Database.select_username_password(username, password)
+
+    if user_info != None:
+        if password == user_info.pw:
+            books_list = Database.select_best_books()
+            return render_template("home.html", books_list=books_list, pagetitle="Best Books")
         else:
-            user_info = db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).fetchone()
-            correct = user_info.pw
-            if password != correct:
-                return render_template("error.html")
-            else:
-                books_list = AnimalBooks.select_best_books()
-                return render_template("home.html", num=3, books_list=books_list, pagetitle="Best Books")
+            return render_template("error.html", message="Wrong password.")    
+    else:    
+        return render_template("error.html", message="You are not a member")
 
 
 @app.route("/search-result",methods=["POST"])
 def search():
     search_content = request.form.get("search")
 
-    result = AnimalBooks.search_books(search_content)
+    result = Database.search_all_books_with(search_content)
 
-    num = len(result)//5
- 
     pagetitle = f" Result for '{search_content}'"
-    return render_template("search_result.html", num=num, books_list=result, pagetitle=pagetitle)
+
+    return render_template("search_result.html", books_list=result, pagetitle=pagetitle)
 
 
 @app.route("/all-books")
 def all_books():
-    all_books_list = AnimalBooks.select_all_books()
-    return render_template("all_books.html", num=1001, books_list=all_books_list, pagetitle="All Books A-Z")
+    all_books_list = Database.select_all_books()
+    return render_template("all_books.html", books_list=all_books_list, pagetitle="All Books A-Z")
 
 @app.route("/all-books/<int:book_id>")
 def more(book_id):
-
     # Make sure flight exists.
-    book = db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
+    book = Database.select_book_by_id(book_id)
+    
     if book is None:
         return render_template("error.html")
+    else:
+        reviews_list, username_avatar = Database.select_reviews(book_id)
+        return render_template("book.html", book=book,reviews_list=reviews_list, user_info=username_avatar, pagetitle="Reviews from others")
 
-    return render_template("book.html", book=book)
 
-
-
-
-# # # print("hello")
-# # new_user = User()
-# # # print(new_user)
-# # form1 = new_user.register("a", "b", "c", "d")
-# # bookStore = AnimalBooks()
-# # print(bookStore)
-# # # bookStore.register_new_user(form1)
-# # print(bookStore.users)
+@app.route("/submited/<int:book_id>", methods=["POST"])
+def submit_review(book_id):
+    user_id = 1
+    review = request.form.get("review")
+    rate = request.form.get("rate")
+    
+    if review == '':
+        return render_template("error.html")
+    
+    else:
+        Database.insert_into_reviews(user_id, review, rate, book_id)
+        
+        return render_template("all_books.html")

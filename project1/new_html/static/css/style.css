@@ -1,3 +1,26 @@
+.message
+{
+  position: relative;
+  color: rgba(255, 255, 255, 0.651);
+  font-weight: bold;
+  text-align: center;
+  font-size: 45px;
+}
+
+button>img:hover
+{
+  transform: scale(2.0);
+}
+.btn:focus {
+  border: none;
+}
+
+#error
+{
+  margin-left: 25%;
+  margin-top: 30px;
+}
+
 body
 {
   align-content: center;
@@ -41,6 +64,14 @@ body
     margin-top: 10px;
     margin-bottom: 0px; }
 
+.btn
+{
+  background-color: #349074;
+  color: white;
+  border-color: #349074;
+  font-weight: bolder;
+}
+
 @media screen and (max-width: 600px) {
   .second-container {
     margin-top: 300px; }
@@ -60,6 +91,16 @@ body
     left: 50%; }
 
   .btn {
-    margin: 5px; } }
+    margin: 5px;
+   } }
 
 
+input[type="radio"]
+{
+    display: none;
+}
+
+input[type="radio"]:checked + label
+{
+    border: 2px solid white;
+}

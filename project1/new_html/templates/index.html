@@ -5,19 +5,19 @@
 {% block body %}
 
 <div class="container">
-<img src="/static/imageLogin.png" alt="" width="70%">
-<div id="username-password">
-    <div class="input-group flex-nowrap">
-        <div>
-            <form action="{{ url_for('login') }}" method="post">
+    <img src="/static/imageLogin.png" alt="" width="70%">
+    <div id="username-password">
+        <div class="input-group flex-nowrap">
+            <div>
+                <form action="{{ url_for('login') }}" method="post">
                     <input class="form-control" name="username" placeholder="Username">
                     <input type="password" class="form-control" name="password" placeholder="Password">
-                    <button class="btn btn-primary">login</button>
-                    <a href="#registration"> <button type="button" class="btn btn-secondary btn-md"> Register now </button></a>
-            </form>
+                    <button class="btn btn-secondary">login</button>
+                    <a href="#registration"><button type="button" class="btn btn-secondary btn-md">Register now</button></a>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 </div>
 
 <div class="second-container">
@@ -30,9 +30,9 @@
                 <form action="{{ url_for('register') }}" method="post" class="needs-validation" novalidate>
                     <div class="form-row">
                         <label> Registration Form </label>
-                        <input type="text" class="form-control" id="validationCustom01" placeholder="First Name"  name="name" required>
+                        <input type="text" class="form-control" id="validationCustom01" placeholder="First Name" name="name" required>
                         <div class="valid-feedback"> Looks good!</div>
-                      </div>
+                    </div>
                     <div class="form-row">
                         <input type="text" class="form-control" id="validationCustom01" placeholder="Last Name" name="lname" required>
                         <div class="valid-feedback">Looks good!</div>
@@ -49,47 +49,126 @@
                         <input type="password" class="form-control" id="validationCustom01" placeholder="Confirm Password" name="password_confirmation" required>
                         <div class="valid-feedback">Looks good!</div>
                     </div>
-                    <button class="btn btn-primary" type="submit">Submit form</button>
-                  </form>
-                  
-                  <script>
-                  // Example starter JavaScript for disabling form submissions if there are invalid fields
-                  (function() {
-                    'use strict';
-                    window.addEventListener('load', function() {
-                      // Fetch all the forms we want to apply custom Bootstrap validation styles to
-                      var forms = document.getElementsByClassName('needs-validation');
-                      // Loop over them and prevent submission
-                      var validation = Array.prototype.filter.call(forms, function(form) {
-                        form.addEventListener('submit', function(event) {
-                          if (form.checkValidity() === false) {
-                            event.preventDefault();
-                            event.stopPropagation();
-                          }
-                          form.classList.add('was-validated');
-                        }, false);
-                      });
-                    }, false);
-                  })();
-                  </script>
-<!--                
-            <form action="{{ url_for('register') }}" method="post">
-                Registration Form:
-                    <input class="form-control" name="name" placeholder="First Name">
-                    <input type="text" class="form-control"  name="lname" placeholder="Last name">
-                    <input type="text" class="form-control" name="username" placeholder="Choose a username">
-                    <input type="password" class="form-control" name="password" placeholder="Choose password">
-                    <input type="password" class="form-control" name="password_confirmation" placeholder="Confirm password">
-                    Choose a avatar:
-                    <img id="avatars" src="/static/avatars.png" alt="" width="100%">
-                    <button class="btn btn-primary">register</button>
-            </form> -->
+                    Avatar:
+                    <div class="form-row">
+                        <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+                            <div class="btn-group btn-group-lg" role="group" aria-label="First group">
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="1" id="1" />
+                                    <label class='avatar-image' for="1"><img src="/static/1.png" width="42px" alt=""></label>
+                                </div>
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="2" id="2" />
+                                    <label class='avatar-image' for="2"><img src="/static/2.png" width="42px" alt=""></label>
+                                </div>
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="3" id="3" />
+                                    <label class='avatar-image' for="3"><img src="/static/3.png" width="42px" alt=""></label>
+                                </div>
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="4" id="4" />
+                                    <label class='avatar-image' for="4"><img src="/static/4.png" width="42px" alt=""></label>
+                                </div>
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="5" id="5" />
+                                    <label class='avatar-image' for="5"><img src="/static/5.png" width="42px" alt=""></label>
+                                </div>
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="6" id="6" />
+                                    <label class='avatar-image' for="6"><img src="/static/6.png" width="42px" alt=""></label>
+                                </div>
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="7" id="7" />
+                                    <label class='avatar-image' for="7"><img src="/static/7.png" width="42px" alt=""></label>
+                                </div>
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="8" id="8" />
+                                    <label class='avatar-image' for="8"><img src="/static/8.png" width="42px" alt=""></label>
+                                </div>
+                            </div>
+                            <div class="btn-group btn-group-lg" role="group" aria-label="Second group">
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="9" id="9" />
+                                    <label class='avatar-image' for="9"><img src="/static/9.png" width="42px" alt=""></label>
+                                </div>
+                                <div class="button">
+                                    <input type="radio" name="avatar" value="10" id="10" />
+                                    <label class='avatar-image' for="10"><img src="/static/10.png" width="42px" alt=""></label>
+                                </div>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="11" id="11" />
+                                <label class='avatar-image' for="11"><img src="/static/11.png" width="42px" alt=""></label>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="12" id="12" />
+                                <label class='avatar-image' for="12"><img src="/static/12.png" width="42px" alt=""></label>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="13" id="13" />
+                                <label class='avatar-image' for="13"><img src="/static/13.png" width="42px" alt=""></label>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="14" id="14" />
+                                <label class='avatar-image' for="14"><img src="/static/14.png" width="42px" alt=""></label>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="15" id="15" />
+                                <label class='avatar-image' for="15"><img src="/static/15.png" width="42px" alt=""></label>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="16" id="16" />
+                                <label class='avatar-image' for="16"><img src="/static/16.png" width="42px" alt=""></label>
+                            </div>
+                        </div>
+                        <div class="btn-group btn-group-lg" role="group" aria-label="Third group">
+                            <div class="button">
+                                <input type="radio" name="avatar" value="17" id="17" />
+                                <label class='avatar-image' for="17"><img src="/static/17.png" width="42px" alt=""></label>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="18" id="18" />
+                                <label class='avatar-image' for="18"><img src="/static/18.png" width="42px" alt=""></label>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="19" id="19" />
+                                <label class='avatar-image' for="19"><img src="/static/19.png" width="42px" alt=""></label>
+                            </div>
+                            <div class="button">
+                                <input type="radio" name="avatar" value="20" id="20" />
+                                <label class='avatar-image' for="20"><img src="/static/20.png" width="42px" alt=""></label>
+                            </div>
+                            <button class="btn" type="submit">Submit form</button>
+                        </div>
+                    </div>
+                </form>
             </div>
+            <script>
+                // Example starter JavaScript for disabling form submissions if there are invalid fields
+                (function () {
+                    'use strict';
+                    window.addEventListener('load', function () {
+                        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                        var forms = document.getElementsByClassName('needs-validation');
+                        // Loop over them and prevent submission
+                        var validation = Array.prototype.filter.call(forms, function (form) {
+                            form.addEventListener('submit', function (event) {
+                                if (form.checkValidity() === false) {
+                                    event.preventDefault();
+                                    event.stopPropagation();
+                                }
+                                form.classList.add('was-validated');
+                            }, false);
+                        });
+                    }, false);
+                })();
+            </script>
         </div>
-        <div class="col-lg-4">
-            <img id="image_bottom_right" src="/static/girl_right_corner.png" alt="" width="100%">
-        </div>
+    <div class="col-lg-4">
+        <img id="image_bottom_right" src="/static/girl_right_corner.png" alt="" width="100%">
     </div>
+    </div>
+</div>
 </div>
 
 {% endblock %}

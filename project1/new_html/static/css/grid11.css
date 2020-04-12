@@ -1,11 +1,31 @@
+
+#book_info
+{
+  color: rgb(76, 182, 159);
+  margin-top: 100px;
+  border-radius: 2%;
+  padding: 15px;
+  margin-right: 15%;
+  background-color: rgba(255, 255, 255, .50);
+}
+
+#submit-review
+{
+  margin-top: 10px;
+}
+
+
+textarea
+{
+  border-width: 1px;
+}
+
 h1
 {
   text-align: center;
-  color: white;
   font-family: sans-serif;
   font-weight: bold;
-  font-size: 30px;
-
+  font-size: 45px;
 }
 
 svg:hover
@@ -19,9 +39,15 @@ svg
   transition: ease-in-out;
 }
 
+.rating
+{
+  color: rgb(167, 167, 4);
+  }
+
+
 .menu
 {
-  background-color: #349074;
+  background-color: rgb(76, 182, 159);
   padding: 25px;
   color: white;
 }
@@ -36,39 +62,53 @@ svg
 
 header
 {
-  background-color: #349074;
+  background-color: rgb(76, 182, 159);
   padding: 5px;
 }
 
-body {
+body
+{
   align-content: center;
-  background-color: #67D2BB; }
+  background-color: rgb(186,231,228);
+  color: rgb(12, 119, 96) ;
+}
 
 .container {
   margin-top: 50px;
   position: relative;
   text-align: center;
-  color: white; }
+  color: rgb(12, 119, 96); }
 
 .form-control {
-  margin-left: 100px; }
+  margin-left: 10%; }
+
+.btn-outline-secondary
+{ 
+  margin-right: 130px;
+}
+
+.btn-outline-secondary:hover
+{
+  background-color: rgb(76, 182, 159);
+}
 
 .btn {
-  margin-right: 100px;
-  background-color: #349074;
+  background-color: rgb(76, 182, 159);
   color: white;
-  border-color: #349074;
+  border-color: rgb(76, 182, 159);
   font-weight: bolder; }
 
 .form-control {
   border-width: 5px;
-  border-color: #349074; }
+  border-color: rgb(76, 182, 159); }
 
 .card-img-top {
   padding: 25px; }
 
 .part {
-  margin-top: 50px; }
+  margin-top: 50px;
+  margin-left: 10%;
+  margin-right: 10%;}
 
 .card-deck {
   margin-left: 85px;
@@ -77,5 +117,16 @@ body {
 
 .card-text {
   margin: 1px; }
+
+.card
+{
+  background-color: rgba(255,255,255,.45);
+  border-color: (186,231,228);
+}
+
+input[type="radio"] {
+  display: none; }
+input[type="radio"]:checked + label {
+    border: 0px solid white; }
 
 /*# sourceMappingURL=search.css.map */
