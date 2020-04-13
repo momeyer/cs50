@@ -11,7 +11,7 @@
 
 #submit-review
 {
-  margin-top: 10px;
+  margin-top: 1px;
 }
 
 
@@ -38,12 +38,6 @@ svg
   margin-left: 15px;
   transition: ease-in-out;
 }
-
-.rating
-{
-  color: rgb(167, 167, 4);
-  }
-
 
 .menu
 {
@@ -122,6 +116,58 @@ body
 {
   background-color: rgba(255,255,255,.45);
   border-color: (186,231,228);
+}
+
+.rating
+{
+  position: relative;
+  left: 15px;
+  top: 45px;
+  margin-bottom: 15px;
+  transform: translate(-50%,-50%) rotateY(180deg);
+  display: flex;
+}
+
+.rating input
+{
+  display: none;
+}
+
+.rating label
+{
+  display: block;
+  cursor: pointer;
+  width: 50px;
+}
+
+.rating label:before
+{
+  content: '\f005';
+  font-family: fontAwesome;
+  position: relative;
+  display: block;
+  font-size: 50px;
+  color: rgb(186,231,228);
+}
+.rating label:after
+{
+  content: '\f005';
+  font-family: fontAwesome;
+  position: absolute;
+  display: block;
+  position: absolute;
+  font-size: 50px;
+  top: 0;
+  color:rgb(255, 251, 4);
+  opacity: 0;
+  transition: .5s;
+  text-shadow: 0 2px 5px rgba(0,0,0,.5);
+}
+.rating label:hover:after,
+.rating label:hover ~ label:after,
+.rating input:checked ~ label:after
+{
+  opacity: 1;
 }
 
 input[type="radio"] {

@@ -1,10 +1,12 @@
 import os
 
-from flask import Flask, render_template, request, flash
+from flask import Flask, render_template, request, flash, session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
 app = Flask(__name__)
+
+app.secret_key = os.urandom(12)
 
 
 DATABASE_URL="postgresql://monique:monique@localhost:5432/monique"
@@ -61,17 +63,16 @@ class Database():
     @staticmethod
     def select_reviews(book_id):
         reviews = db.execute(f"SELECT * FROM reviews WHERE book_id='{book_id}'").fetchall()
-        user_name_avatar = Database.get_users_name_avatar(reviews)
-        return reviews, user_name_avatar
+        return reviews
 
     @staticmethod
-    def get_users_name_avatar(reviews):
-        user_name_avatar = {}
+    def get_users_info(reviews):
+        user_info = {}
         for review in reviews:    
-            user = db.execute(f"SELECT username, avatar FROM users WHERE id='{review.user_id}'").fetchone()
-            user_name_avatar[review.user_id] = [user.username, user.avatar]      
-        
-        return user_name_avatar
+            user = db.execute(f"SELECT * FROM users WHERE id='{review.user_id}'").fetchone()
+            user_info[review.user_id] = user
+            
+        return user_info
 
     @staticmethod
     def select_best_books(avg_review=4.5):
@@ -86,7 +87,7 @@ class Database():
         where = ['author', 'title', 'isbn']
         result = []
         for query_name in where:
-            sql = f"SELECT * FROM books WHERE {query_name} Like '%{search_content}%'"
+            sql = f"SELECT * FROM books WHERE lower({query_name}) Like lower('%{search_content}%')"
             books = db.execute(sql).fetchall()
             for book in books:
                 result.append(book)
@@ -95,6 +96,10 @@ class Database():
     @staticmethod
     def select_book_by_id(book_id):
         return db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
+
+    @staticmethod
+    def select_review_by_user_id_and_book_id(user_id, book_id):
+        return db.execute(f"select * from reviews where book_id={book_id} and user_id={user_id}").rowcount > 0
 
 
 
@@ -128,6 +133,11 @@ def login():
 
     if user_info != None:
         if password == user_info.pw:
+
+            session['user_id'] = user_info.id
+            # print(session['user_id'])
+            # if not session.get('user_id'):
+
             books_list = Database.select_best_books()
             return render_template("home.html", books_list=books_list, pagetitle="Best Books")
         else:
@@ -135,6 +145,11 @@ def login():
     else:    
         return render_template("error.html", message="You are not a member")
 
+@app.route("/logout")
+def logout():
+    if session.get('user_id'):
+        del session['user_id']
+        return render_template('index.html')
 
 @app.route("/search-result",methods=["POST"])
 def search():
@@ -158,22 +173,30 @@ def more(book_id):
     book = Database.select_book_by_id(book_id)
     
     if book is None:
-        return render_template("error.html")
+        return render_template("error.html", message="book not found, sorry")
     else:
-        reviews_list, username_avatar = Database.select_reviews(book_id)
-        return render_template("book.html", book=book,reviews_list=reviews_list, user_info=username_avatar, pagetitle="Reviews from others")
+        reviews_list = Database.select_reviews(book_id)
+        user_info = Database.get_users_info(reviews_list)
+        
+
+        return render_template("book.html", book=book, reviews_list=reviews_list, user_info=user_info, pagetitle="Reviews from others")
 
 
 @app.route("/submited/<int:book_id>", methods=["POST"])
 def submit_review(book_id):
-    user_id = 1
     review = request.form.get("review")
     rate = request.form.get("rate")
+    print(review)
+    print("user info: ", session['user_id'])
+
+    rowcount = Database.select_review_by_user_id_and_book_id(session['user_id'], book_id)
     
-    if review == '':
-        return render_template("error.html")
-    
+    if review.isspace():
+        return render_template("error.html", message="Please, write a review")
+    if rowcount:
+        return render_template("error.html", message="You already posted a review about that book.")
+
     else:
-        Database.insert_into_reviews(user_id, review, rate, book_id)
-        
-        return render_template("all_books.html")
+        Database.insert_into_reviews(session['user_id'], review, rate, book_id)
+        all_books_list = Database.select_all_books()
+        return render_template("all_books.html", books_list=all_books_list, pagetitle="All Books A-Z" )
