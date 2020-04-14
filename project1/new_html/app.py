@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, render_template, request, flash, session
+from flask import Flask, render_template, jsonify, request, flash, session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
@@ -20,11 +20,12 @@ def registration_form_info_is_correct(name, lastname, username, password, passwo
         return False
    
     if not Database.check_if_username_is_available(username):
-        render_template("error.html", message="username not available")
+        render_template("error.html", message="username not available, try again")
         return False
 
     if password != password_confirmation:
-        render_template("error.html", message="Password confirmation doesn't match")
+        button = 1
+        render_template("error.html", message="Password confirmation doesn't match", button_1=button)
         return False
 
     if avatar == '':
@@ -33,6 +34,21 @@ def registration_form_info_is_correct(name, lastname, username, password, passwo
     
     return True
 
+def generate_rate_dict(books_list):
+    rate_dict = {}
+
+    for book in books_list:
+        rate = Database.calculate_avg_rating(book.id)
+        if rate != None:
+            half_star = float(rate)%1
+            if half_star > 0:
+                rate_dict[book.id] = (int(rate), 1)
+            else:
+                rate_dict[book.id] = (int(rate), 0)
+        else:
+            rate_dict[book.id] = (0,0)
+            
+    return rate_dict
 
 class Database():
 
@@ -73,6 +89,9 @@ class Database():
             user_info[review.user_id] = user
             
         return user_info
+    @staticmethod
+    def get_profile_info(user_id):
+        return db.execute(f"SELECT * FROM users WHERE id='{user_id}'").fetchone()
 
     @staticmethod
     def select_best_books(avg_review=4.5):
@@ -98,10 +117,24 @@ class Database():
         return db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
 
     @staticmethod
+    def select_book_by_isbn(book_isbn):
+        return db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": book_isbn}).fetchone()
+
+
+    @staticmethod
     def select_review_by_user_id_and_book_id(user_id, book_id):
         return db.execute(f"select * from reviews where book_id={book_id} and user_id={user_id}").rowcount > 0
 
 
+    @staticmethod
+    def calculate_avg_rating(book_id):
+        rate = db.execute(f"SELECT AVG(rate) FROM reviews WHERE book_id={book_id};").fetchone()[0]
+        return rate
+    
+    @staticmethod
+    def get_review_count(book_id):
+        return db.execute(f"SELECT COUNT(*) FROM reviews WHERE book_id={book_id}").fetchone()[0]
+   
 
 @app.route("/")
 def index():
@@ -135,41 +168,60 @@ def login():
         if password == user_info.pw:
 
             session['user_id'] = user_info.id
-            # print(session['user_id'])
-            # if not session.get('user_id'):
-
             books_list = Database.select_best_books()
-            return render_template("home.html", books_list=books_list, pagetitle="Best Books")
+            rate_dict = generate_rate_dict(books_list)
+            
+            return render_template("home.html", books_list=books_list, rate_dict=rate_dict, pagetitle="Best Books")
         else:
             return render_template("error.html", message="Wrong password.")    
     else:    
         return render_template("error.html", message="You are not a member")
+
+@app.route("/profile")
+def profile():
+    if session.get('user_id'):
+        profile_info = Database.get_profile_info(session['user_id'])
+        print(profile_info)
+        return render_template('profile_page.html', user_info=profile_info)
+    else:
+        pass
+
 
 @app.route("/logout")
 def logout():
     if session.get('user_id'):
         del session['user_id']
         return render_template('index.html')
+    else:
+        pass
 
 @app.route("/search-result",methods=["POST"])
 def search():
     search_content = request.form.get("search")
 
     result = Database.search_all_books_with(search_content)
+    
+    if len(result) == 0:
+        pagetitle = "Sorry, book not found"
+    else:
+        pagetitle = f" Result for '{search_content}'"
+    
+    rate_dict = generate_rate_dict(result)
 
-    pagetitle = f" Result for '{search_content}'"
-
-    return render_template("search_result.html", books_list=result, pagetitle=pagetitle)
+    return render_template("home.html", books_list=result, rate_dict=rate_dict, pagetitle=pagetitle)
 
 
 @app.route("/all-books")
 def all_books():
     all_books_list = Database.select_all_books()
-    return render_template("all_books.html", books_list=all_books_list, pagetitle="All Books A-Z")
+   
+    rate_dict = generate_rate_dict(all_books_list)
+
+    return render_template("home.html", books_list=all_books_list, rate_dict=rate_dict, pagetitle="All Books A-Z")
 
 @app.route("/all-books/<int:book_id>")
 def more(book_id):
-    # Make sure flight exists.
+
     book = Database.select_book_by_id(book_id)
     
     if book is None:
@@ -200,3 +252,22 @@ def submit_review(book_id):
         Database.insert_into_reviews(session['user_id'], review, rate, book_id)
         all_books_list = Database.select_all_books()
         return render_template("all_books.html", books_list=all_books_list, pagetitle="All Books A-Z" )
+
+@app.route("/api/<book_isbn>")
+def book_api(book_isbn):
+
+    book = Database.select_book_by_isbn(book_isbn)
+    if book is None:
+        return jsonify({"error":"invalid isbn"}), 422
+
+    review_count = Database.get_review_count(book.id)
+    average_score = int(Database.calculate_avg_rating(book.id))
+
+    return jsonify({
+            "title": book.title,
+            "author": book.author,
+            "year": book.year,
+            "isbn": book.isbn,
+            "review_count": review_count,
+            "average_score": average_score
+            })

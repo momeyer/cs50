@@ -6,8 +6,11 @@
 
 {% block body %}
     <div class="message"> {{ message }} </div>
-    <img id="error-image" src="/static/error1.png" alt="" width="50%">
+    <img id="error-image" src="/static/error_image.png" alt="" width="50%">
+
     <div class="message"><a href="{{ url_for('index') }}"><button type="button" class="btn btn-secondary btn-md">Register</button></a></div>
+
+    
     
 
 {% endblock %}

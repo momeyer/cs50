@@ -1,3 +1,14 @@
+.profile
+{
+  background-color: rgb(76, 182, 159);
+  width: 50%;
+  margin-left: 25%;
+  padding-left: 5%;
+  padding-top: 150px;
+  padding-bottom: 600px;
+  
+}
+
 
 #book_info
 {
@@ -7,6 +18,12 @@
   padding: 15px;
   margin-right: 15%;
   background-color: rgba(255, 255, 255, .50);
+}
+
+#book_image
+{
+  margin-top: 5%;
+  margin-left: 20%;
 }
 
 #submit-review
@@ -116,6 +133,11 @@ body
 {
   background-color: rgba(255,255,255,.45);
   border-color: (186,231,228);
+}
+
+.card svg
+{
+  color: yellow;
 }
 
 .rating

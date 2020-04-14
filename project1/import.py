@@ -46,7 +46,7 @@ def add_reviews():
             goodreads_avg_review = book_dict["average_rating"]
             goodreads_num_of_reviews = book_dict["work_ratings_count"]
             db.execute("UPDATE books SET goodreads_avg_review = :goodreads_avg_review, goodreads_num_of_reviews = :goodreads_num_of_reviews WHERE isbn=:isbn;", {"goodreads_avg_review":goodreads_avg_review, "goodreads_num_of_reviews":goodreads_num_of_reviews, "isbn":isbn})
-            # print(f"ISBN: {isbn}, avg: {goodreads_avg_review}, num reviews: {goodreads_num_of_reviews}.")
+            
         print("batch finished----")
     db.commit()
 
