@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("chats");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+
+    function hide() {
+        var x = document.getElementById("registration");
+        var m = document.getElementById("m");
+        var i = document.getElementById("message");
+        var s = document.getElementById("send_message");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            m.style.display = "block";
+            i.style.display = "block";
+            s.style.display = "block";
+        } else {
+            m.style.display = "block";
+            x.style.display = "none";
+            i.style.display = "block";
+            s.style.display = "block";
+        }
+    }
+
+</script>
+<style>
+    * {
+        font-family: monospace;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+    input[type="radio"]:checked+label {
+        color: #78dce8ff;
+        outline: none;
+    }
+
+    header {
+        height: 5vh;
+        width: 100vw;
+        text-align: center;
+        padding-bottom: 10px;
+        background-color: #222222;
+    }
+
+    #color>div {
+        margin-left: 55px;
+    }
+
+    #green {
+
+        color: #a9dc76ff;
+    }
+
+    #yellow {
+        color: #ffd766ff;
+    }
+
+    #blue {
+        color: #78dce8ff;
+    }
+
+    #purple {
+        color: #ab9df2ff;
+    }
+
+    #pink {
+        color: #ff6087ff;
+    }
+
+    #orange {
+        color: #fb9767ff;
+    }
+
+    #chats {
+        color: white;
+        display: none;
+    }
+
+    input {
+        outline: none;
+        padding-left: 5px;
+        color: white;
+        background-color: rgba(20, 20, 20, .40);
+        border: none;
+        border-radius: 2px;
+    }
+
+    #registration {
+        padding: 10px;
+        background-color: #222222;
+        box-shadow: 5px 10px 18px #191919;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        padding-left: 5%;
+        color: white;
+        margin-top: 10%;
+        margin-left: 25%;
+        border-radius: 4%;
+        width: 350px;
+        height: 350px;
+    }
+
+    #side-menu {
+        background-color: #191919;
+        height: 95vh;
+        width: 30vh;
+        margin-left: 0%;
+        resize: horizontal;
+        overflow: auto;
+    }
+
+    #app {
+        height: 95vh;
+        background-color: #191919;
+    }
+
+    .chats {
+        color: white;
+        border-style: none;
+        background-color: #191919;
+        padding-left: 25px;
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    #submit,
+    #send_username {
+        background-color: rgba(36, 35, 37, .40);
+        font-size: medium;
+        color: white;
+        margin-top: 10px;
+        border: none;
+    }
+
+
+    #m {
+        color: #a9dc76ff;
+        display: none;
+        background-color: rgba(20, 20, 20, .40);
+        height: 75vh;
+        width: 100%;
+    }
+
+    span {
+        color: white;
+    }
+
+    ul {
+        padding-top: 15px;
+        list-style-type: none;
+    }
+
+    #message {
+        padding: 15px;
+        resize: none;
+        height: 100px;
+        width: 1050px;
+        border: none;
+        background-color: rgba(36, 35, 37, .40);
+        display: none;
+    }
+    textarea
+    {
+        outline: none;
+    }
+
+    #send_message {
+        padding-right: 40px;
+        display: none;
+        color: white;
+        border: none;
+        background-color: rgba(20, 20, 20, .40);
+    }
+</style>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<header>
+    <img src="{{ url_for('static', filename='id.png')}}" alt="" height="15px">
+</header>
+
+<body>
+    <div class="row">
+        <div id="side-menu">
+            <button class="chats" onclick="myFunction()"> group chats </button>
+            <div id="chats">
+                <ul>
+                    <li> chat one </li>
+                    <li> chat two </li>
+                    <li> chat three </li>
+                    <li> chat four </li>
+                </ul>
+            </div>
+        </div>
+        <div class="col" id="app">
+            <div id="registration">
+                <section>
+                    <div id="change_username">
+                        <p> name {<input id="username" type="text" autocomplete="off" />}</p>
+                    </div>
+                </section>
+                <!-- <p> name { <input type="text" name="name" id="name" autocomplete="off">}</p> -->
+                <div id="color">
+                    color {
+                    <div class="button">
+                        <input type="radio" name="color" value="green" id="green" />
+                        <label class='color' for="green"><svg id="green" class="bi bi-square-fill" width="1em"
+                                height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="14" height="14" rx="2" /></svg> #a9dc76ff</label></div>
+                    <div class="button">
+                        <input type="radio" name="color" value="yellow" id="yellow" />
+                        <label class='color' for="yellow"><svg id="yellow" class="bi bi-square-fill" width="1em"
+                                height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="14" height="14" rx="2" /></svg> #ffd766ff</label></div>
+                    <div class="button">
+                        <input type="radio" name="color" value="blue" id="blue" />
+                        <label class='color' for="blue"><svg id="blue" class="bi bi-square-fill" width="1em"
+                                height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="14" height="14" rx="2" /></svg> #78dce8ff</label></div>
+                    <div class="button">
+                        <input type="radio" name="color" value="purple" id="purple" />
+                        <label class='color' for="purple"><svg id="purple" class="bi bi-square-fill" width="1em"
+                                height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="14" height="14" rx="2" /></svg> #ab9df2ff</label></div>
+                    <div class="button">
+                        <input type="radio" name="color" value="pink" id="pink" />
+                        <label class='color' for="pink"><svg id="pink" class="bi bi-square-fill" width="1em"
+                                height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="14" height="14" rx="2" /></svg> #ff6087ff</label></div>
+                    <div class="button">
+                        <input type="radio" name="color" value="orange" id="orange" />
+                        <label class='color' for="orange"><svg id="orange" class="bi bi-square-fill" width="1em"
+                                height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="14" height="14" rx="2" /></svg> #fb9767ff</label></div>
+                    <p>}</p>
+                    <div class="btn-group" role="group">
+                        <button id="send_username" type="button" class="btn btn-secondary">submit</button>
+                        <button type="submit" id="submit" type="button" class="btn btn-secondary" onclick="hide()">save
+                            changes</button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div id="m" class="row">
+                    <section id="chatroom">
+                        <section id="feedback"></section>
+                    </section>
+                </div>
+                <div class="row">
+                    <section id="input_zone">
+                        <div class="input-group mb-3">
+                            <textarea id="message" class="form-control" type="text" /></textarea>
+                            <div class="input-group-append">
+                                <button id="send_message" class="input-group-text" type="button">send</button>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="{{ url_for('static', filename='chat.js')}}"></script>
+</body>
+
+</html>
