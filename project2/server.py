@@ -11,7 +11,7 @@ print(dir(socketio))
 
 @app.route("/")
 def index():
-    return render_template("new.html") 
+    return render_template("index.html") 
 
 @socketio.on('connect')
 def on_connect():

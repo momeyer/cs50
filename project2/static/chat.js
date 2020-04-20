@@ -61,10 +61,9 @@ socket.on('connect', () => {
             username.val('');
 
             hideLogonWindow();
-                   
+
         }
         
-
     })
 
     sendMessage.click(function () {
