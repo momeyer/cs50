@@ -1,328 +1,232 @@
-var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-var curUsername = "Anonymous"
-var curGroupName = "lastChatAccessed"
-var curColor = ""
-var curIcon = ""
+$(document).ready(initAll);
 
-var message = $("#message")
-var sendMessage = $("#send_message")
-var username = $("#username")
-var sendUsername = $("#send_username")
-var changeUsername = $("#username")
-var chatRoom = $("#chatroom")
-var feedback = $('#feedback')
-var listOfMessagesPerGroup = {}
-var groupName = $("#chatname")
-var newGroup = $("#new_group")
-var sendGroupChatName = $("#send_group_chat_name")
-var newGroupName = ''
-
-
-
-$(document).ready(initAll
-);
 
 function initAll() {
-    handleRadioButtons();
-    handleGroupCreationWindow();
-    // disableTextarea();
+    console.log("InitAll")
+    var socket = new SocketConnector();
+    socket.io.on(SocketEvents.Connect, () => {
+        var user = new User(socket);
+        var chat = new Chat(socket, user);
+    })
 }
 
+var curChatroom = ''
 
-function disableTextarea() {
-    console.log('disable')
-    document.getElementById("message").disabled = true;
+class SocketEvents {
+    static Connect = 'connect'
+    static SendUserName = 'send_username'
+    static Message = 'message'
+    static SendGroupName = 'send_group_name'
+    static RequestUpdates = 'request_updates'
+
 }
 
-function accessChatroom(selected, icon) {
-    console.log(">>>>>> this is my id: " + selected)
-    document.getElementById("chat_name").innerHTML = selected
-    curGroupName = selected
-    if (selected in listOfMessagesPerGroup) {
-        console.log("messages on group: " + selected + listOfMessagesPerGroup[selected])
-        // feedback.html(listOfMessagesPerGroup[selected]);
+class SocketConnector {
+    constructor() {
+        this.io = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     }
-    else {
-        console.log("no message")
-        
+}
+
+class User {
+    constructor(socket) {
+        this.socket = socket;
+
+        this.createNewGroupButton = $("#new_group_button");
+        this.sendUsernameButton = $("#save_username_button");
+        this.usernameInputField = $("#username_input_field");
+        this.registrationModal = $('#registration_modal');
+        this.alertDiv = $('#alert_div');
+        this.username = '';
+        this.color = '';
+
+        this.checkAndRegister();
     }
-}
 
-
-function handleRadioButtons() {
-    $("input[type='radio']").click(function () {
-        console.log("Here");
-        var radioValue = $("input[name='color']:checked").val();
-        var icon = $("input[name='icon']:checked").val();
-        if (radioValue) {
-            curColor = radioValue;
-            console.log("Color is now " + curColor)
-        }
-        if (icon) {
-            curIcon = icon;
-            console.log("icon is : " + curIcon)
-        }
-    });
-}
-
-function hideLogonWindow() {
-    var registration = document.getElementById("registration");
-    var m = document.getElementById("m");
-    var i = document.getElementById("message");
-    var s = document.getElementById("send_message");
-    var info = document.getElementById("info");
-    m.style.display = "block";
-    info.style.display = "block";
-    i.style.display = "block";
-    s.style.display = "block";
-    registration.style.display = "none";
-}
-
-function hideGroupCreationWindow() {
-    var createGroup = document.getElementById("chat_creation");
-    var chatroom = document.getElementById("m");
-    createGroup.style.display = "none"
-    chatroom.style.display = "block"
-}
-
-function handleGroupCreationWindow() {
-    newGroup.click(function () {
-        var createGroup = document.getElementById("chat_creation");
-        var divMessage = document.getElementById("m");
-        console.log('clicked ' + createGroup.style.display)
-        if (!createGroup.style.display || createGroup.style.display == "none") {
-            createGroup.style.display = "block";
-            divMessage.style.display = "none";
-        }
-        else {
-            createGroup.style.display = "none";
-        }
+    requestExistentGroups() {
+        this.socket.io.emit(SocketEvents.RequestUpdates);
     }
-    )
+    
+    registerUser() {
+        this.username = this.usernameInputField.val();
+        console.log(this.username, this.color)
 
-    sendGroupChatName.click(function () {
-
-        console.log("sending group name");
-        newGroupName = groupName.val();
-
-        if (newGroupName.trim() !== '') {
-            socket.emit('create_new_group', { group_name: newGroupName, icon: curIcon, group_color: curColor });
-            groupName.val('');
-
-            console.log("group name:" + newGroupName)
-
-            hideGroupCreationWindow();
-
-            return false;
+        if (this.username.trim() !== '' && this.username.length > 0) {
+            this.socket.io.emit(SocketEvents.SendUserName, { username: this.username, color: this.color});
+        } else {
+            let alert = '<div class="alert alert-warning alert-dismissible fade show" role="alert" style="font-weight:bolder;"><strong style="color:#fb9767;">Oooops</strong> you need a username :) <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"  style="color: #fb9767;">&times;</span></button></div>'
+            this.alertDiv.append(alert)
         }
-    })
-}
 
-function sendMessageFun() {
-
-
-    sendMessage.click(function () {
-        const timeZone = "UTC"
-        const curTime = new Date().toLocaleTimeString("en-GB", { timeZone: timeZone, hour: "numeric", minute: "numeric", second: "numeric" })
-        console.log("sendMessage")
-        console.log(curTime)
-        socket.emit('message', { username: curUsername, message: message.val(), time: curTime, timeZone: timeZone, group: curGroupName })
-        message.val('')
-    })
-}
-
-socket.on('connect', () => {
-    console.log("Connected");
-
-    socket.on('message', (data) => {
-
-        console.log("data" + data.username, data.message)
-        console.log("on message now")
-        const curMessage = "<p class='message'><span style='color: rgb(68, 67, 67)';>" + data.time + "  " + "</span><span style='color:" + data.color + ";'>" + data.username + " <span style='color: white';> $ </span> " + data.message + " </span></p>"
-        if (data.group in listOfMessagesPerGroup) {
-            console.log("group already accessed: " + listOfMessagesPerGroup[data.group])
-            listOfMessagesPerGroup[data.group] += curMessage;
-        }
-        else {
-            console.log("new to group")
-            listOfMessagesPerGroup[data.group] = curMessage;
-        }
-        console.log(listOfMessagesPerGroup[data.group]);
-        feedback.html(listOfMessagesPerGroup[data.group]);
-    })
-
-
-    sendUsername.click(function () {
-
-        console.log("sendUsername");
-        curUsername = username.val();
-
-        if (curUsername.trim() !== '') {
-            socket.emit('change_username', { username: curUsername, color: curColor });
-            username.val('');
-
-            hideLogonWindow();
-        }
-        var span = "<span id='terminal_username' style='color:" + curColor + ";'> ~/" + curUsername + "/</span><span id='chat_name'>" + curGroupName + "</span><span style='color: white;' > $</span>"
-        document.querySelector("#info").innerHTML = span
-    })
-
-    sendMessageFun();
-
-    socket.on('announce', data => {
-        const li = document.createElement('li');
-        li.innerHTML = "<button class='chat_link chats' style='color:" + data.group_color + ";' id='" + data.group_name + "' value='" + data.icon + "' ><img src='../static/project_images/" + data.icon + ".png' height='20px' alt=''>" + " " + data.group_name + "</button>";
-        document.querySelector('#chats').append(li);
-
-        var a = $(`#${data.group_name}`)
-        a.click(function () {
-            accessChatroom(this.id, this.value);
-            listOfMessagesPerGroup[selected] += "<h5 style='color: white;'><img src='../static/project_images/" + icon + ".png' height='30px' alt=''>  " + selected + "</h5>"
-            feedback.html(listOfMessagesPerGroup[selected])
+        this.socket.io.on(SocketEvents.SendUserName, (data) => {
+            if (data['available']) {
+                localStorage.setItem('username', this.username);
+                localStorage.setItem('color', this.color);
+                this.requestExistentGroups();
+            } else {
+                let alert = '<div class="alert alert-success alert-dismissible fade show" role="alert" style="font-weight:bolder;"><strong style="color:#fb9767;">Holy guacamole!</strong> username is not avalible, please try again :) <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true"  style="color: #fb9767;">&times;</span></button></div>'
+                this.alertDiv.append(alert)
+            }
         })
-    });
-});
+    }
+
+    checkAndRegister() {
+        if (!localStorage.getItem("username")) {
+            this.registrationModal.modal('show')
+            this.handleColorRadioButtons();
+            this.sendUsernameButton.click(() => {
+                this.registerUser()
+            })
+        }
+        else {
+            this.username = localStorage.getItem('username')
+            this.color = localStorage.getItem('color')
+            this.requestExistentGroups();
+        }
+    }
+
+    handleColorRadioButtons() {
+        $("input[type='radio']").click(() => {
+            var color = $("input[name='color']:checked").val();
+            if (color) {
+                this.color = color;
+            }
+        });
+    }
+}
 
 
+class HTMLUtils {
+    static createLiElement(data)
+    {
+        // // return element
+        // const groupLiElement = document.createElement('li')
+        // groupLiElement.innerHTML = `<a><span style="color:${updates[key][group]['groupColor']};" ><img src="../static/project_images/${updates[key][group]['groupIcon']}.png" height="20vh">  ${updates[key][group]['groupName']}</span></a>`
+        // groupLiElement.setAttribute('class', "nav-item")
+        // groupLiElement.setAttribute('id', `${updates[key][group]['groupName']}_li`)
+    }
+}
 
+class Chat {
+    constructor(socket, user) {
+        this.socket = socket
+        this.user = user;
 
+        this.sendMessageButton = $("#send_message_button");
+        this.saveGroupNameButton = $("#save_group_name_button");
+        this.groupNameInput = $('#group_name_input');
+        this.messageTextArea = $("#message_textarea");
+        this.groupChatList = $('#group_chats_list');
+        this.navTabsDiv = $('#nav-tab');
+        this.chatroomDiv = $('#chatroom_div');
+        this.privateChatsList = $('#private_chats_list')
 
+        this.timeZone = "UTC";
+        this.icon = '';
 
+        this.createReceiveMessageHandler();
+        this.createSendMessageHandler();
+        this.createNewGroupChatHandler();
+        this.createReceiveNewGroupHandler();
+        this.createReceiveExistenteGroupsHandler();
+    }
 
+    createReceiveExistenteGroupsHandler() {
 
-// var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-// var curUsername = "Anonymous"
-// var curGroupName = "---"
-// var curColor = ""
-// var curIcon = ""
+        this.socket.io.on(SocketEvents.RequestUpdates, (updates) => {
+            for (var key in updates) {
+                if (key == 'groups') {
+                    for (var group in updates[key]) {
+                        const groupLiElement = document.createElement('li')
+                        groupLiElement.innerHTML = `<a><span style="color:${updates[key][group]['groupColor']};" ><img src="../static/project_images/${updates[key][group]['groupIcon']}.png" height="20vh">  ${updates[key][group]['groupName']}</span></a>`
+                        groupLiElement.setAttribute('class', "nav-item")
+                        groupLiElement.setAttribute('id', `${updates[key][group]['groupName']}_li`)
+                        this.groupChatList.append(groupLiElement)
 
-// var message = $("#message")
-// var sendMessage = $("#send_message")
-// var username = $("#username")
-// var sendUsername = $("#send_username")
-// var changeUsername = $("#username")
-// var chatRoom = $("#chatroom")
-// var feedback = $('#feedback')
-// var listOfMessages = ""
-// var groupName = $("#chatname")
-// var newGroup = $("#new_group")
-// var sendGroupChatName = $("#send_group_chat_name")
+                        const groupTab = `<a class="nav-item nav-link btn-dark" id="${updates[key][group]['groupName']}" data-toggle="tab" href="#${updates[key][group]['groupName']}_div" role="tab" aria-controls="${updates[key][group]['groupName']}" aria-selected="false" onclick="accessChatroom(this.id)"><span><img src="../static/project_images/${updates[key][group]['groupIcon']}.png" height="25vh"> ${updates[key][group]['groupName']}</span></a>`
+                        const group_div = `<div class="tab-pane fade" id="${updates[key][group]['groupName']}_div" role="tabpanel" aria-labelledby="${updates[key][group]['groupName']}"></div>`
+                        this.navTabsDiv.append(groupTab)
+                        this.chatroomDiv.append(group_div)
+                        $(`#${updates[key][group]['groupName']}_div`).append(updates[key][group]['messages'])
+                    }
+                }
+                else if (key == 'users') {
+                    for (var user in updates[key]) {
+                        const userLiElement = document.createElement('li')
+                        userLiElement.innerHTML = `<a><span style="color:${updates[key][user]['color']};" >${updates[key][user]['username']}</span></a>`
+                        userLiElement.setAttribute('class', "nav-item")
+                        userLiElement.setAttribute('id', `${updates[key][user]['username']}_li`)
+                        this.privateChatsList.append(userLiElement)
 
-// $(document).ready(initAll
-// );
+                        // TODO create open tab system and generate divs and tabs for private chats
+                    }
+                }
+            }
+        })
+    }
 
-// function initAll() {
-//     handleRadioButtons();
-//     handleGroupCreationWindow();
-// }
+    createReceiveMessageHandler() {
+        this.socket.io.on(SocketEvents.Message, (data) => {
+            $(`#${data['group']}`).append(data['message'])
+        })
+    }
 
-// function handleRadioButtons() {
-//     $("input[type='radio']").click(function () {
-//         console.log("Here");
-//         var radioValue = $("input[name='color']:checked").val();
-//         var icon = $("input[name='icon']:checked").val();
-//         if (radioValue) {
-//             curColor = radioValue;
-//             console.log("Color is now " + curColor)
-//         }
-//         if (icon) {
-//             curIcon = icon;
-//             console.log("icon is : " + curIcon)
-//         }
-//     });
-// }
+    createSendMessageHandler() {
+        this.sendMessageButton.click(() => {
+            var message = this.messageTextArea.val()
+            const curTime = new Date().toLocaleTimeString("en-GB", { timeZone: this.timeZone, hour: "numeric", minute: "numeric", second: "numeric" })
+            var str_msg = `<p class='message'><span style='color: rgb(68, 67, 67)';>${curTime}  </span><span style='color:${this.user.color};'>${this.user.username}<span style='color: white';> $ </span> ${message}</span></p>`
+            this.socket.io.emit(SocketEvents.Message, { message: str_msg, group: curChatroom })
+            this.messageTextArea.val('')
+        })
+    }
 
-// function hideLogonWindow() {
-//     var registration = document.getElementById("registration");
-//     var m = document.getElementById("m");
-//     var i = document.getElementById("message");
-//     var s = document.getElementById("send_message");
-//     var info = document.getElementById("info");
-//     m.style.display = "block";
-//     info.style.display = "block";
-//     i.style.display = "block";
-//     s.style.display = "block";
-//     registration.style.display = "none";
-// }
+    createReceiveNewGroupHandler() {
+        this.socket.io.on(SocketEvents.SendGroupName, data => {
 
-// function hideGroupCreationWindow() {
-//     var createGroup = document.getElementById("chat_creation");
-//     createGroup.style.display = "none"
-// }
+            if (data['available']) {
+                const groupLiElement = document.createElement('li')
+                groupLiElement.innerHTML = `<a><span style="color:${data['groupColor']};" ><img src="../static/project_images/${data['groupIcon']}.png" height="20vh">  ${data['groupName']}</span></a>`
+                groupLiElement.setAttribute('class', "nav-item")
+                groupLiElement.setAttribute('id', `${data['groupName']}_li`)
+                this.groupChatList.append(groupLiElement)
 
+                const groupTab = `<a class="nav-item nav-link btn-dark" id="${data['groupName']}" data-toggle="tab" href="#${data['groupName']}_div" role="tab" aria-controls="${data['groupName']}" aria-selected="false" onclick="accessChatroom(this.id)"><span><img src="../static/project_images/${data['groupIcon']}.png" height="25vh"> ${data['groupName']}</span></a>`
+                const group_div = `<div class="tab-pane fade" id="${data['groupName']}_div" role="tabpanel" aria-labelledby="${data['groupName']}"></div>`
+                this.navTabsDiv.append(groupTab)
+                this.chatroomDiv.append(group_div)
+            } else {
+                var alert = '<div class="alert alert-info alert-dismissible fade show" role="alert"><strong>Holy guacamole!</strong> Ooops, there is a group with that name, please try again <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'
+                $('#chatroom_div').append(alert)
+            }
+        })
+    }
 
-// function handleGroupCreationWindow() {
+    createNewGroupChatHandler() {
+        this.handleIconRadioButtons();
+        this.saveGroupNameButton.click(() => {
+            let newGroupName = this.groupNameInput.val()
 
-//     newGroup.click(function () {
-//         console.log('clicked')
-//         var createGroup = document.getElementById("chat_creation");
-//         var divMessage = document.getElementById("m");
-//         if (createGroup.style.display == "none") {
-//             createGroup.style.display = "block";
-//             divMessage.style.display = "none";
+            if (newGroupName.trim() !== '') {
+                this.socket.io.emit(SocketEvents.SendGroupName, { groupName: newGroupName, groupColor: this.user.color, groupIcon: this.icon})
+                this.groupNameInput.val('');
+            }else {
+                var alert = '<div class="alert alert-info alert-dismissible fade show" role="alert"><strong>Holy guacamole!</strong> Ooops, please enter group name <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>'
+                $('#chatroom_div').append(alert)
+            }
+        })
+    }
 
-//         }
-//         else {
-//             createGroup.style.display = "none";
-//         }
-//     }
-//     )
+    handleIconRadioButtons() {
+        $("input[type='radio']").click(() => {
+            var icon = $("input[name='icon']:checked").val();
+            if (icon) {
+                this.icon = icon;
+            }
+        });
+    }
 
-//     sendGroupChatName.click(function () {
+}
 
-//         console.log("sending group name");
-//         curGroupName = groupName.val();
-
-//         if (curGroupName.trim() !== '') {
-//             groupName.val('');
-
-//             console.log("group name:" + curGroupName)
-
-//             hideGroupCreationWindow();
-
-//             const li = document.createElement('li');
-//             li.innerHTML = "<a href='' style='color:" + curColor + ";'><img src='../static/" + curIcon + ".png' height='20px' alt=''>" + curGroupName + "</a>";
-//             document.querySelector('#chats').append(li);
-
-//             return false;
-//         }
-//     })
-// }
-
-
-
-
-
-// socket.on('connect', () => {
-//     console.log("Connected");
-
-//     socket.on('message', (data) => {
-//         listOfMessages += "<p class='message' style='color:" + curColor + ";'>" + data.username + ": " + data.message + "</p>";
-//         feedback.html(listOfMessages);
-//     })
-
-
-//     sendUsername.click(function () {
-
-//         console.log("sendUsername");
-//         curUsername = username.val();
-
-
-//         if (curUsername.trim() !== '') {
-//             socket.emit('change_username', { new_username: username.val() });
-//             username.val('');
-
-//             hideLogonWindow();
-
-//         }
-//         var span = "<span id='terminal_username' style='color:" + curColor + ";'> ~/" + curUsername + "/</span><span id='chat_name'>chat_name $</span>"
-//         document.querySelector("#info").innerHTML = span
-//     })
-
-//     sendMessage.click(function () {
-//         console.log("sendMessage")
-//         socket.emit('message', { username: curUsername, message: message.val() })
-//         message.val('')
-//     })
-
-// });
+function accessChatroom(clicked_id) {
+    curChatroom = `${clicked_id}_div`;
+}

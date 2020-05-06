@@ -4,43 +4,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="../static/chat.js"></script>
+    <link rel="icon" href="/static/project_images/id2.png">
     <title>flack</title>
 </head>
+<style>
+    * {
+        font-family: monospace;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        color: white;
+    }
+
+    #green:checked+label {
+        outline: none;
+        color: #a9dc76;
+    }
+
+    #yellow:checked+label {
+        outline: none;
+        color: #ffd766;
+    }
+
+    #blue:checked+label {
+        outline: none;
+        color: #78dce8;
+
+    }
+
+    #purple:checked+label {
+        outline: none;
+        color: #ab9df2;
+    }
+
+
+    #pink:checked+label {
+        outline: none;
+        color: #ff6087;
+    }
+
+    #orange:checked+label {
+        outline: none;
+        color: #fb9767;
+    }
+
+    input[type="radio"] {
+        display: none;
+    }
+
+
+    #header_logo {
+        margin-top: 5px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    body {
+        background-color: #212121;
+    }
+
+    header {
+        background-color: #222222;
+        height: 5vh;
+    }
+
+    .navbar-brand {
+        font-size: medium;
+    }
+
+    #side_menu {
+        font-size: x-small;
+        padding: 0%;
+        height: 95vh;
+        background-color: #222222;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .navbar {
+        margin: 0px;
+        padding-left: 25px;
+        background-color: #222222 !important;
+    }
+
+    #new_group_button {
+        background-color: #222222;
+    }
+
+    .btn {
+        font-size: medium;
+        border: none;
+    }
+
+    #display_menu_button {
+        display: none;
+    }
+
+    a:hover {
+        cursor: pointer;
+    }
+
+    #user_color_div {
+        margin-top: 0px;
+    }
+
+    .form-control:focus,
+    .input-group:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
+
+    img:hover {
+        transform: scale(1.1);
+        cursor: pointer;
+    }
+
+    #group_chats_list,
+    #private_chats_list {
+        margin-left: 15px;
+    }
+
+    #chatroom_div
+    {
+        height: 75vh;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        overflow-wrap: break-word;
+    }
+    
+    #chatroom_div::-webkit-scrollbar {
+        width: 1em;
+    }
+
+    #chatroom_div::-webkit-scrollbar-thumb {
+        background-color: darkgrey;
+        outline: 1px solid slategrey;
+    }
+    
+
+    @media screen and (max-width: 441px) {
+        #side_menu {
+
+            height: 15%;
+        }
+
+        #display_menu_button {
+            display: inline;
+        }
+
+        #message_textarea {
+            width: 80vw;
+        }
+
+        #send_message_button {
+            width: 20vw;
+        }
+    }
+</style>
+<link rel="icon" href="../static/project_images/id2.png">
 <header>
-    <img src="{{ url_for('static', filename='project_images/id.png')}}" alt="" height="15px">
+    <img id="header_logo" src="../static/project_images/id.png" alt="" height="15px">
 </header>
 
 <body>
-    <div id="all" class="container-fluid">
-        <div class="row">
-            <div id="side-menu" class="col-lg-2 col-xm-1">
-                <button class="chats" id="new_group"> new group + </button>
-                <button class="chats"> group chats </button>
-                <div>
-                    <ul id="chats"></ul>
+    <div id="alert_div" class="container col-xs-12 col-md-8"></div>
+
+    <div class="modal fade" id="registration_modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background-color: #303030;">
+                <div class="modal-header">
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row col-md-10" id="username_input_div">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"
+                                        style="background-color: #303030 !important; border: none; color: white; outline: none;">username
+                                        :
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="username_input_field"
+                                    id="username_input_field"
+                                    style="background-color: #303030 !important; border: none; color: white; "
+                                    maxlength="15">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"
+                                        style="background-color: #303030 !important; border: none; color: white;">
+                                        ;</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="user_color_div">
+                        <div class="row col-md-12">
+                            <div class="col-md-4">
+                                <span id="color_label" style=" font-size: large; color: white;">color
+                                    :
+                                </span>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="button">
+                                    <input type="radio" name="color" value="#a9dc76" id="green" checked="checked" />
+                                    <label class='color' for="green"><svg id="green" class="bi bi-square-fill"
+                                            width="1em" height="1em" viewBox="0 0 16 16" fill="#a9dc76"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="14" height="14" rx="2" /></svg> #a9dc76</label></div>
+                                <div class="button">
+                                    <input type="radio" name="color" value="#ffd766" id="yellow" />
+                                    <label class='color' for="yellow"><svg id="yellow" class="bi bi-square-fill"
+                                            width="1em" height="1em" viewBox="0 0 16 16" fill="#ffd766"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="14" height="14" rx="2" /></svg> #ffd766</label></div>
+                                <div class="button">
+                                    <input type="radio" name="color" value="#78dce8" id="blue" />
+                                    <label class='color' for="blue"><svg id="blue" class="bi bi-square-fill" width="1em"
+                                            height="1em" viewBox="0 0 16 16" fill="#78dce8"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="14" height="14" rx="2" /></svg> #78dce8</label></div>
+                                <div class="button">
+                                    <input type="radio" name="color" value="#ab9df2" id="purple" />
+                                    <label class='color' for="purple"><svg id="purple" class="bi bi-square-fill"
+                                            width="1em" height="1em" viewBox="0 0 16 16" fill="#ab9df2"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="14" height="14" rx="2" /></svg> #ab9df2</label></div>
+                                <div class="button">
+                                    <input type="radio" name="color" value="#ff6087" id="pink" />
+                                    <label class='color' for="pink"><svg id="pink" class="bi bi-square-fill" width="1em"
+                                            height="1em" viewBox="0 0 16 16" fill="#ff6087"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="14" height="14" rx="2" /></svg> #ff6087</label></div>
+                                <div class="button">
+                                    <input type="radio" name="color" value="#fb9767" id="orange" />
+                                    <label class='color' for="orange"><svg id="orange" class="bi bi-square-fill"
+                                            width="1em" height="1em" viewBox="0 0 16 16" fill="#fb9767"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <rect width="14" height="14" rx="2" /></svg> #fb9767</label></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id='save_username_button'
+                        data-dismiss="modal">Save</button>
                 </div>
             </div>
-            <div class="col">
-                <div id="chat" class="row">
-                    <div id="chat_creation">
-                        <section>
-                            <div id="groupchatname">
-                                <p> chat name {<input id="chatname" type="text" autocomplete="off" />}</p>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="modal fade" id="create_group_modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content" style="background-color: #303030;">
+                <div class="modal-header">
+                    New group
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <div class="row col-md-11">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"
+                                        style="background-color: #303030 !important; border: none; color: white; outline: none;">groupname
+                                        :
+                                    </span>
+                                </div>
+                                <input type="text" class="form-control" aria-label="group_name_input"
+                                    id="group_name_input"
+                                    style="background-color: #303030 !important; border: none; color: white; "
+                                    maxlength="15">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"
+                                        style="background-color: #303030 !important; border: none; color: white;">
+                                        ;</span>
+                                </div>
                             </div>
-                        </section>
-                        <div id="icon">
-                            icon {
-                            <div class="form-row">
+                        </div>
+                    </div>
+                    <div class="container-fluid" id="icon_div">
+                        <div class="row col-md-12">
+                            <div class="col-md-3">
+                                <span id="icon_radio_buttons" style=" font-size: large; color: white;">icon
+                                    :
+                                </span>
+                            </div>
+                            <div class="col-md-8">
                                 <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                                     <div class="btn-group btn-group-lg" role="group" aria-label="First group">
                                         {% for i in range(1,10)%}
                                         <div class="button">
                                             <input type="radio" name="icon" value="{{i}}" id="{{i}}" />
-                                            <label class='icon-image' for="{{i}}"><img src="/static/project_images/{{i}}.png"
-                                                    width="30vw" alt=""></label>
+                                            <label class='icon-image' for="{{i}}"><img
+                                                    src="/static/project_images/{{i}}.png" width="30vw" alt=""></label>
                                         </div>
                                         {% endfor %}
                                     </div>
@@ -48,8 +319,8 @@
                                         {% for i in range(10,19)%}
                                         <div class="button">
                                             <input type="radio" name="icon" value="{{i}}" id="{{i}}" />
-                                            <label class='icon-image' for="{{i}}"><img src="/static/project_images/{{i}}.png"
-                                                    width="30vw" alt=""></label>
+                                            <label class='icon-image' for="{{i}}"><img
+                                                    src="/static/project_images/{{i}}.png" width="30vw" alt=""></label>
                                         </div>
                                         {% endfor %}
                                     </div>
@@ -57,8 +328,8 @@
                                         {% for i in range(19,28)%}
                                         <div class="button">
                                             <input type="radio" name="icon" value="{{i}}" id="{{i}}" />
-                                            <label class='icon-image' for="{{i}}"><img src="/static/project_images/{{i}}.png"
-                                                    width="30vw" alt=""></label>
+                                            <label class='icon-image' for="{{i}}"><img
+                                                    src="/static/project_images/{{i}}.png" width="30vw" alt=""></label>
                                         </div>
                                         {% endfor %}
                                     </div>
@@ -66,8 +337,8 @@
                                         {% for i in range(28,37)%}
                                         <div class="button">
                                             <input type="radio" name="icon" value="{{i}}" id="{{i}}" />
-                                            <label class='icon-image' for="{{i}}"><img src="/static/project_images/{{i}}.png"
-                                                    width="30vw" alt=""></label>
+                                            <label class='icon-image' for="{{i}}"><img
+                                                    src="/static/project_images/{{i}}.png" width="30vw" alt=""></label>
                                         </div>
                                         {% endfor %}
                                     </div>
@@ -75,8 +346,8 @@
                                         {% for i in range(37,46)%}
                                         <div class="button">
                                             <input type="radio" name="icon" value="{{i}}" id="{{i}}" />
-                                            <label class='icon-image' for="{{i}}"><img src="/static/project_images/{{i}}.png"
-                                                    width="30vw" alt=""></label>
+                                            <label class='icon-image' for="{{i}}"><img
+                                                    src="/static/project_images/{{i}}.png" width="30vw" alt=""></label>
                                         </div>
                                         {% endfor %}
                                     </div>
@@ -84,99 +355,83 @@
                                         {% for i in range(46,55)%}
                                         <div class="button">
                                             <input type="radio" name="icon" value="{{i}}" id="{{i}}" />
-                                            <label class='icon-image' for="{{i}}"><img src="/static/project_images/{{i}}.png"
-                                                    width="30vw" alt=""></label>
+                                            <label class='icon-image' for="{{i}}"><img
+                                                    src="/static/project_images/{{i}}.png" width="30vw" alt=""></label>
                                         </div>
                                         {% endfor %}
                                     </div>
                                 </div>
                             </div>
-                            <p>}</p>
-                            <div class="btn-group" role="group">
-                                <button id="send_group_chat_name" type="button" class="btn btn-secondary">create new
-                                    group chat</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="registration">
-                        <section>
-                            <div id="change_username">
-                                <p> name {<input id="username" type="text" autocomplete="off" />}</p>
-                            </div>
-                        </section>
-                        <div id="color">
-                            color {
-                            <div class="button">
-                                <input type="radio" name="color" value="#a9dc76ff" id="green" checked="checked" />
-                                <label class='color' for="green"><svg id="green" class="bi bi-square-fill" width="1em"
-                                        height="1em" viewBox="0 0 16 16" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="14" height="14" rx="2" /></svg> #a9dc76ff</label></div>
-                            <div class="button">
-                                <input type="radio" name="color" value="#ffd766ff" id="yellow" />
-                                <label class='color' for="yellow"><svg id="yellow" class="bi bi-square-fill" width="1em"
-                                        height="1em" viewBox="0 0 16 16" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="14" height="14" rx="2" /></svg> #ffd766ff</label></div>
-                            <div class="button">
-                                <input type="radio" name="color" value="#78dce8ff" id="blue" />
-                                <label class='color' for="blue"><svg id="blue" class="bi bi-square-fill" width="1em"
-                                        height="1em" viewBox="0 0 16 16" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="14" height="14" rx="2" /></svg> #78dce8ff</label></div>
-                            <div class="button">
-                                <input type="radio" name="color" value="#ab9df2ff" id="purple" />
-                                <label class='color' for="purple"><svg id="purple" class="bi bi-square-fill" width="1em"
-                                        height="1em" viewBox="0 0 16 16" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="14" height="14" rx="2" /></svg> #ab9df2ff</label></div>
-                            <div class="button">
-                                <input type="radio" name="color" value="#ff6087ff" id="pink" />
-                                <label class='color' for="pink"><svg id="pink" class="bi bi-square-fill" width="1em"
-                                        height="1em" viewBox="0 0 16 16" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="14" height="14" rx="2" /></svg> #ff6087ff</label></div>
-                            <div class="button">
-                                <input type="radio" name="color" value="#fb9767ff" id="orange" />
-                                <label class='color' for="orange"><svg id="orange" class="bi bi-square-fill" width="1em"
-                                        height="1em" viewBox="0 0 16 16" fill="currentColor"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <rect width="14" height="14" rx="2" /></svg> #fb9767ff</label></div>
-                            <p>}</p>
-                            <div class="btn-group" role="group">
-                                <button id="send_username" type="button" class="btn btn-secondary">submit</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-8 col-sm-2">
-                        <div id="m" class="row">
-                            <section id="chatroom">
-                                <!--create feedback section only when group is selected-->
-                                <section id="feedback" ></section>
-                                
-                            </section>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <section id="input_zone">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span id="info"></span>
-                            </div>
-                            <textarea id="message" class="form-control" type="text" /></textarea>
-                            <div class="input-group-append">
-                                <button id="send_message" class="input-group-text" type="button">send</button>
-                            </div>
-                        </div>
-                    </section>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id='save_group_name_button'
+                        data-dismiss="modal">Save</button>
                 </div>
             </div>
         </div>
     </div>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <script src="{{ url_for('static', filename='chat.js')}}"></script>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-md-2" id="side_menu">
+                <nav class="navbar navbar-collapse navbar-dark bg-dark">
+                    <a class="navbar-brand" href="#">Group chats</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbar_chats_content" aria-controls="navbar_chats_content" aria-expanded="false"
+                        aria-label="Toggle navigation">
+                        <span><svg class="bi bi-caret-down-fill" width="0.5em" height="0.5em" viewBox="0 0 16 16"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
+                            </svg></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar_chats_content">
+                        <ul class="navbar-nav mr-auto" id="group_chats_list">
+                            <li class="nav-item">
+                                <a id="new_group_button" class="nav-link" data-toggle="modal"
+                                    data-target="#create_group_modal" style="font-size: medium;">
+                                    new group
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <nav class="navbar navbar-collapse navbar-dark bg-dark">
+                    <a class="navbar-brand" href="#">Private chats</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                        data-target="#navbar_private_content" aria-controls="navbar_private_content"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                        <span><svg class="bi bi-caret-down-fill" width="0.5em" height="0.5em" viewBox="0 0 16 16"
+                                fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 01.753 1.659l-4.796 5.48a1 1 0 01-1.506 0z" />
+                            </svg></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbar_private_content">
+                        <ul class="navbar-nav mr-auto" id="private_chats_list">
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-xs-12 col-md-10">
+                <div class="row">
+                    <nav>
+                        <div class="col-md-12 nav nav-tabs" id="nav-tab" role="tablist">
+                        </div>
+                    </nav>
+                    <div class=" col-md-12 tab-content" id="chatroom_div">
+                    </div>
+                </div>
+                <div id="input_area_div" class="row" style="background-color: violet;">
+                    <textarea class="col-md-11" name="message" id="message_textarea"
+                        style=" height: 15vh; resize: none; background-color: #303030; border: none; position: fixed; bottom: 0px;"></textarea>
+                    <button class="col-md-1 btn-dark " id="send_message_button"
+                        style="height: 15vh; background-color: #303030; border: none;  position: fixed; bottom: 0px; right: 0px;">send</button>
+                </div>
+            </div>
+        </div>
 </body>
 
 </html>
