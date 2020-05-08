@@ -26,6 +26,10 @@
         color: white;
     }
 
+    .online_sign {
+        margin-right: 10px;
+    }
+
     #green:checked+label {
         outline: none;
         color: #a9dc76;
@@ -135,14 +139,13 @@
         margin-left: 15px;
     }
 
-    #chatroom_div
-    {
+    #chatroom_div {
         height: 75vh;
         overflow-y: scroll;
         overflow-x: hidden;
         overflow-wrap: break-word;
     }
-    
+
     #chatroom_div::-webkit-scrollbar {
         width: 1em;
     }
@@ -151,7 +154,7 @@
         background-color: darkgrey;
         outline: 1px solid slategrey;
     }
-    
+
 
     @media screen and (max-width: 441px) {
         #side_menu {
@@ -388,13 +391,15 @@
                             </svg></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbar_chats_content">
-                        <ul class="navbar-nav mr-auto" id="group_chats_list">
+                        <ul class="navbar-nav mr-auto nav flex-column" id="group_chats_list">
                             <li class="nav-item">
                                 <a id="new_group_button" class="nav-link" data-toggle="modal"
                                     data-target="#create_group_modal" style="font-size: medium;">
                                     new group
                                 </a>
                             </li>
+                            <li><a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" onclick="accessChatroom(this.id)" aria-selected="true">Home</a></li>
+                            
                         </ul>
                     </div>
                 </nav>
@@ -410,17 +415,13 @@
                             </svg></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbar_private_content">
-                        <ul class="navbar-nav mr-auto" id="private_chats_list">
+                        <ul class="navbar-nav mr-auto nav flex-column" id="private_chats_list">
                         </ul>
                     </div>
                 </nav>
             </div>
             <div class="col-xs-12 col-md-10">
                 <div class="row">
-                    <nav>
-                        <div class="col-md-12 nav nav-tabs" id="nav-tab" role="tablist">
-                        </div>
-                    </nav>
                     <div class=" col-md-12 tab-content" id="chatroom_div">
                     </div>
                 </div>

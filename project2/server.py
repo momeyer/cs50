@@ -1,6 +1,6 @@
 import os
 import requests
-
+import random
 from flask import Flask, jsonify, render_template, request
 from flask_socketio import SocketIO, emit
 
@@ -19,32 +19,60 @@ class User():
         return f"User-username: {self.username}\nUser-color: {self.color}"
 
 
-updates = {}
+class ServerData():
+    updates = {'users': {},
+               'groups': {}}
 
-updates['users'] = {}
-updates['groups'] = {}
+    @staticmethod
+    def add_new_user_if_available(username, color, status):
+        if username not in ServerData.updates['users'].keys():
+            ServerData.updates['users'][username] = {
+                'username': username, 'color': color, 'status': status}
+            print(ServerData.updates['users'][username])
+            return True
+        else:
+            return False
 
-updates['groups']['group1_div'] = {
-            'groupName':'group1', "groupColor": '#ffd766', 'groupIcon': '15', 'messages': 'group1'}
-updates['groups']['group2_div'] = {
-            'groupName':'group2', "groupColor": '#ab9df2', 'groupIcon': '20', 'messages': 'group1'}
-updates['groups']['group3_div'] = {
-            'groupName':'group3', "groupColor": '#fb9767', 'groupIcon': '4', 'messages': 'group1'}
+    @staticmethod
+    def add_group_if_available(group_name_key, group_name, group_color, group_icon):
+        if group_name_key not in ServerData.updates['groups'].keys():
+            ServerData.updates['groups'][group_name_key] = {'groupName': group_name,
+                                                            "groupColor": group_color,
+                                                            "groupIcon": group_icon,
+                                                            'messages': ''}
+            print(ServerData.updates['groups'][group_name_key])
+            return True
+        else:
+            return False
 
-updates['users']['fulano'] = {
-            'username':'fulano', "color": '#a9dc76'}
-updates['users']['ciclano'] = {
-            'username':'ciclano', "color": '#ffd766'}
-updates['users']['beltrano'] = {
-            'username':'beltrano', "color": '#78dce8'}
-updates['users']['another'] = {
-            'username':'another', "color": '#ab9df2'}
-updates['users']['onemore'] = {
-            'username':'onemore', "color": '#ff6087'}
-updates['users']['oooops'] = {
-            'username':'oooops', "color": '#fb9767'}
+    @staticmethod
+    def on_message(group_name, message):
+        print('group ', group_name)
+        ServerData.updates['groups'][group_name]['messages'] += message
 
-print(updates)
+    @staticmethod
+    def populateApp():
+        colors = ['#a9dc76', '#ffd766', '#78dce8',
+                  '#ab9df2', '#ff6087', '#fb9767']
+        groupNames = ['TalkingShit', 'onlyFriends', 'quarantiners',
+                      'AltijdThuis', 'talkTalkTalk', 'MigosandMigas']
+        peopleName = ['Maria', 'James', 'Kate', 'John',
+                      'Peter', 'Samantha', 'Eduard', 'Cath']
+        status = [True, False]
+
+        for name in groupNames:
+            icon = random.randint(1, 54)
+            color = random.choice(colors)
+            ServerData.updates['groups'][f'{name}_div'] = {
+                'groupName': name, "groupColor": color, 'groupIcon': icon, 'messages': ''}
+
+        for name in peopleName:
+            userStatus = random.choice(status)
+            color = random.choice(colors)
+            ServerData.updates['users'][name] = {'username': name, "color": color, 'status': userStatus}
+
+
+ServerData.populateApp()
 
 
 class ChatRoom():
@@ -55,55 +83,68 @@ class ChatRoom():
         self.messages = []
 
 
+class SocketEvents ():
+    Connect = 'connect'
+    SendUserName = 'send_username'
+    Message = 'message'
+    SendGroupName = 'send_group_name'
+    RequestUpdates = 'request_updates'
+    NewUser = 'new_user'
+    ChangeOfStatus = 'change_of_status'
+    Disconect = 'disconect'
+
+
 @app.route("/")
 def index():
     return render_template("index.html")
 
 
-@socketio.on('connect')
+@socketio.on(SocketEvents.Connect)
 def on_connect():
     print("User Connected")
 
 
-@socketio.on('disconect')
-def on_connect():
-    print("User Disconnected")
+@socketio.on(SocketEvents.ChangeOfStatus)
+def status_online(data):
+    emit(SocketEvents.ChangeOfStatus, data, broadcast=True)
+    if not data['status']:
+        emit(SocketEvents.Disconect, data,  broadcast=True)
 
 
-@socketio.on('request_updates')
+@socketio.on(SocketEvents.RequestUpdates)
 def on_request_updates():
-    print('request_updates')
-    emit('request_updates', updates)
+    emit(SocketEvents.RequestUpdates, ServerData.updates)
 
 
-@socketio.on('message')
+@socketio.on(SocketEvents.Message)
 def on_message(data):
-    updates['groups'][data['group']]['messages'] += data['message']
-    print('messages: ', updates['groups'][data['group']]['messages'])
-    emit('message', data, broadcast=True)
+    ServerData.on_message(data['group'], data['message'])
+    emit(SocketEvents.Message, data, broadcast=True)
 
 
-@socketio.on('send_username')
-def on_message(data):
-
-    if data['username'] not in updates['users'].keys():
+@socketio.on(SocketEvents.SendUserName)
+def on_new_user(data):
+    if ServerData.add_new_user_if_available(data['username'], data['color'], data['status']):
         data['available'] = True
-        updates['users'][data['username']] = {
-            'username': data['username'], 'color': data['color']}
-        print("received user: ", data)
+        emit(SocketEvents.SendUserName, data)
+    else:
+        data['available'] = False
+        emit(SocketEvents.SendUserName, data)
 
-    emit('send_username', data)
+    emit(SocketEvents.NewUser, data, broadcast=True)
 
 
-@socketio.on('send_group_name')
+@socketio.on(SocketEvents.SendGroupName)
 def create_new_group(data):
     groupName = f"{data['groupName']}_div"
-    if groupName not in updates['groups'].keys():
-        data['available'] = True
-        updates['groups'][groupName] = {
-            'groupName': data['groupName'], "groupColor": data['groupColor'], "groupIcon": data['groupIcon'], 'messages': ''}
 
-    emit('send_group_name', data, broadcast=True)
+    if ServerData.add_group_if_available(groupName, data['groupName'], data['groupColor'], data['groupIcon']):
+        data['available'] = True
+        emit(SocketEvents.SendGroupName, data, broadcast=True)
+
+    else:
+        data['available'] = False
+        emit(SocketEvents.SendGroupName, data, broadcast=True)
 
 
 if __name__ == "__main__":

@@ -1,7 +1,15 @@
+$green: #a9dc76;
+$yellow: #ffd766;
+$blue: #78dce8;
+$purple: #ab9df2;
+$pink: #ff6087;
+$orange: #fb9767;
+$font: monospace;
+
 * {
   font-size: small;
   outline: none;
-  font-family: monospace;
+  font-family: $font;
 }
 
 body {
@@ -19,9 +27,8 @@ body {
 #terminal_username {
   font-weight: bolder;
 }
-
 #chat_name {
-  color: #a9dc76;
+  color: $green;
   font-weight: bolder;
 }
 
@@ -63,51 +70,50 @@ header {
 }
 
 #green {
-  color: #a9dc76;
-}
-#green:checked + label {
-  color: #a9dc76;
-  outline: none;
+  color: $green;
+  &:checked + label {
+    color: $green;
+    outline: none;
+  }
 }
 
 #yellow {
-  color: #ffd766;
-}
-#yellow:checked + label {
-  color: #ffd766;
-  outline: none;
+  color: $yellow;
+  &:checked + label {
+    color: $yellow;
+    outline: none;
+  }
 }
 
 #blue {
-  color: #78dce8;
+  color: $blue;
+  &:checked + label {
+    color: $blue;
+    outline: none;
+  }
 }
-#blue:checked + label {
-  color: #78dce8;
-  outline: none;
-}
-
 #purple {
-  color: #ab9df2;
-}
-#purple:checked + label {
-  color: #ab9df2;
-  outline: none;
+  color: $purple;
+  &:checked + label {
+    color: $purple;
+    outline: none;
+  }
 }
 
 #pink {
-  color: #ff6087;
-}
-#pink:checked + label {
-  color: #ff6087;
-  outline: none;
+  color: $pink;
+  &:checked + label {
+    color: $pink;
+    outline: none;
+  }
 }
 
 #orange {
-  color: #fb9767;
-}
-#orange:checked + label {
-  color: #fb9767;
-  outline: none;
+  color: $orange;
+  &:checked + label {
+    color: $orange;
+    outline: none;
+  }
 }
 
 #registration {
@@ -131,7 +137,6 @@ header {
   margin-left: 25px;
   border: none;
 }
-
 #send_group_chat_name {
   background-color: #363537;
   font-size: medium;
@@ -155,6 +160,7 @@ header {
   color: white;
   border: none;
   background-color: #191919;
+
   padding-left: 25px;
   text-align: left;
   margin-top: 10px;
@@ -170,13 +176,13 @@ section {
   overflow-y: scroll;
   width: 83vw;
   overflow-wrap: break-word;
-}
-#chatroom-div::-webkit-scrollbar {
-  width: 1em;
-}
-#chatroom-div::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
-  outline: 1px solid slategrey;
+  &::-webkit-scrollbar {
+    width: 1em;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
+  }
 }
 
 #message {
@@ -200,11 +206,9 @@ section {
 .icon-image {
   margin: 5px;
 }
-
 img:hover {
   transform: scale(1.1);
 }
-
 input[type="radio"] {
   display: none;
 }
@@ -223,7 +227,7 @@ input[type="radio"] {
   display: none;
 }
 
-@media screen and (max-width: 1300px) {
+@media screen and (max-width: 414px) {
   #side-menu {
     height: 5%;
   }
@@ -233,14 +237,11 @@ input[type="radio"] {
   }
 
   #registration {
-    margin-left: 10%;
-    width: 80%;
-    height: 70%;
-  }
-  #chat_creation {
-    margin-left: 10%;
     width: 80%;
     height: 80%;
+    // margin-top: 10%;
+    // margin-left: 10%;
+    // padding: 30px;
   }
 
   #message {
@@ -258,50 +259,57 @@ input[type="radio"] {
 
   #send_group_chat_name {
     margin-top: 15px;
-    margin-left: 15%;
+    margin-left: 50px;
   }
 
   .icon-image > img {
-    width: 4vw;
+    width: 3vw;
   }
 }
 
-/*
-
 @media screen and (max-width: 1300px) and (min-width: 414px) {
-  #side-menu {
-    height: 5%; }
+    #side-menu {
+      height: 5%;
+    }
+  
+    #chat {
+      height: 80vh;
+    }
+  
+    #registration {
+      width: 30%;
+      height: 50%;
+      margin-top: 10%;
+      margin-left: 25%;
+      padding: 40px;
+    }
 
-  #chat {
-    height: 80vh; }
-
-  #registration {
-    width: 30%;
-    height: 50%;
-    margin-top: 10%;
-    margin-left: 25%;
-    padding: 40px; }
-
-  #chat_creation {
-    margin-top: 15%;
-    height: 50%; }
-
-  #message {
-    height: 20vh;
-    width: 1000px; }
-
-  #m {
-    width: 90%;
-    height: 90%;
-    margin-top: 5%;
-    margin-left: 5%;
-    padding: 30px; }
-
-  #send_group_chat_name {
-    margin-top: 15px;
-    margin-left: 50px; }
-
-  .icon-image > img {
-    width: 2vw; } } */
-
-/*# sourceMappingURL=style.css.map */
+    #chat_creation
+    {
+        margin-top: 15%;
+        height: 50%;
+    }
+  
+    #message {
+      height: 20vh;
+      width: 1000px;
+    }
+  
+    #m {
+      width: 90%;
+      height: 90%;
+      margin-top: 5%;
+      margin-left: 5%;
+      padding: 30px;
+    }
+  
+    #send_group_chat_name {
+      margin-top: 15px;
+      margin-left: 50px;
+    }
+  
+    .icon-image > img {
+      width: 2vw;
+    }
+  }
+  
