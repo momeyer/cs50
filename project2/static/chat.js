@@ -9,10 +9,6 @@ function initAll() {
         var chat = new Chat(socket, user);
 
         window.addEventListener("beforeunload", () => {
-            // var confirmationMessage = "---";
-
-            // (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-            // return confirmationMessage;                            //Webkit, Safari, Chrome
             console.log('disconected', user.username)
             socket.io.emit(SocketEvents.ChangeOfStatus, { username: user.username, color: user.color, status: false })
         });
@@ -32,6 +28,8 @@ class SocketEvents {
     static RequestUpdates = 'request_updates'
     static NewUser = 'new_user'
     static ChangeOfStatus = 'change_of_status'
+    static JoinRoom = 'join'
+    static LeaveRoom = 'leave'
 }
 
 class SocketConnector {
@@ -56,10 +54,19 @@ class HTMLUtils {
         console.log(clicked_id)
     }
 
-    static createUserLiElement(username, color, status) {
+    static createUserLiElement(username, this_user, color, status) {
         const userLiElement = document.createElement('li')
-        userLiElement.innerHTML = `<a class="nav-link" onclick="HTMLUtils.accessPrivateChat('${username}')" id="${username}" data-toggle="pill" href="#${username}_div" role="tab" aria-controls="${username}_div" aria-selected="false"><span class='status'><svg  id='${username}_status' class="bi bi-circle-fill online_sign" width="0.5em" height="0.5em" viewBox="0 0 16 16" fill="${status}" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8"/></svg></span><span style="color:${color};" >${username}</span></a>`
-        return userLiElement
+        if (username !== this_user) {
+            
+            if (username < this_user) {
+                var div_name = `${username}_${this_user}`
+            } else {
+                var div_name = `${this_user}_${username}`
+            }
+
+            userLiElement.innerHTML = `<a class="nav-link" onclick="HTMLUtils.accessPrivateChat('${div_name}')" id="${username}" data-toggle="pill" href="#${div_name}" role="tab" aria-controls="${div_name}" aria-selected="false"><span class='status'><svg  id='${username}_status' class="bi bi-circle-fill online_sign" width="0.5em" height="0.5em" viewBox="0 0 16 16" fill="${status}" xmlns="http://www.w3.org/2000/svg"><circle cx="8" cy="8" r="8"/></svg></span><span style="color:${color};" >${username}</span></a>`
+            return userLiElement
+        }
     }
     static createGroupLiElement(groupName, color, icon) {
         const groupLiElement = document.createElement('li')
@@ -71,8 +78,13 @@ class HTMLUtils {
     static createTabDiv(name, icon) {
         return `<div class="tab-pane fade" id="${name}_div" role="tabpanel" aria-labelledby="${name}"><h6><img src="../static/project_images/${icon}.png" height="35vh"> - ${name}<h6></div>`
     }
-    static createPrivateTabDiv(name, color) {
-        return `<div class="tab-pane fade" id="${name}_div" role="tabpanel" aria-labelledby="${name}"><h6 style="color:${color};">${name}<h6></div>`
+    static createPrivateTabDiv(name, this_user, color) {
+        if (name < this_user) {
+            var div_name = `${name}_${this_user}`
+        } else {
+            var div_name = `${this_user}_${name}`
+        }
+        return `<div class="tab-pane fade" id="${div_name}" role="tabpanel" aria-labelledby="${name}"><h6 style="color:${color};">${name}<h6></div>`
     }
 
     static createAlert(type, message1, message2, color) {
@@ -151,7 +163,6 @@ class User {
             this.color = localStorage.getItem('color')
             this.status = true
             this.requestExistentGroups();
-
             HTMLUtils.createAlert('success', 'Welcome back', `${this.username}!`, this.color)
             this.socket.io.emit(SocketEvents.ChangeOfStatus, { username: this.username, color: this.color, status: this.status })
         }
@@ -188,66 +199,54 @@ class Chat {
         this.createNewGroupChatHandler();
         this.createReceiveNewGroupHandler();
         this.createReceiveExistenteGroupsHandler();
-        this.createUserStatusHandler();
         this.createReceiveNewUserHandler();
+        this.createUserStatusHandler();
     }
 
     createReceiveExistenteGroupsHandler() {
 
         this.socket.io.on(SocketEvents.RequestUpdates, (updates) => {
-            console.log('requested data', updates)
-            for (var key in updates) {
-                if (key == 'groups') {
-                    for (var group in updates[key]) {
-                        console.log(updates[key][group].groupName)
-                        var groupLiElement = HTMLUtils.createGroupLiElement(updates[key][group].groupName, updates[key][group].groupColor, updates[key][group].groupIcon)
-                        this.groupChatList.append(groupLiElement)
-                        console.log(groupLiElement)
-                        var groupTabDiv = HTMLUtils.createTabDiv(updates[key][group].groupName, updates[key][group].groupIcon)
-                        this.chatroomDiv.append(groupTabDiv)
-                        console.log("access by id: ", updates[key][group].groupName)
-                        $(`#${updates[key][group].groupName}_div`).append(updates[key][group].messages)
-                    }
-                }
-                else if (key == 'users') {
-                    for (var user in updates[key]) {
-                        var status = HTMLUtils.updateStatus(updates[key][user].status)
+            var groups = updates[0]
+            var users = updates[1]
+            var privates = updates[2]
 
-                        const userLiElement = HTMLUtils.createUserLiElement(updates[key][user].username, updates[key][user].color, status)
-                        this.privateChatsList.append(userLiElement)
+            for (var group in groups) {
+                var groupLiElement = HTMLUtils.createGroupLiElement(groups[group].groupName, groups[group].groupColor, groups[group].groupIcon)
+                this.groupChatList.append(groupLiElement)
+                var groupTabDiv = HTMLUtils.createTabDiv(groups[group].groupName, groups[group].groupIcon)
+                this.chatroomDiv.append(groupTabDiv)
+                $(`#${groups[group].groupName}_div`).append(groups[group].messages)
+            }
 
-                        const userDiv = HTMLUtils.createPrivateTabDiv(updates[key][user].username, updates[key][user].color)
-                        this.chatroomDiv.append(userDiv)
+            for (var user in users) {
+                var status = HTMLUtils.updateStatus(users[user].status)
 
-                    }
-                }
+                const userLiElement = HTMLUtils.createUserLiElement(users[user].username, this.user.username, users[user].color, status)
+                this.privateChatsList.append(userLiElement)
+
+                const userDiv = HTMLUtils.createPrivateTabDiv(users[user].username, this.user.username, users[user].color)
+                this.chatroomDiv.append(userDiv)
+            }
+
+            for (var chat in privates) {
+                $(`#${chat}`).append(privates[chat]['messages'])
             }
         })
+
     }
 
     createUserStatusHandler() {
         this.socket.io.on('disconect', (data) => {
-            var status = HTMLUtils.updateStatus(data.status)
-            console.log("disocnected", data)
             document.getElementById(`${data.username}_status`).setAttribute("fill", "#222222")
-
         })
     }
 
     createReceiveNewUserHandler() {
         this.socket.io.on(SocketEvents.NewUser, (data) => {
-            if (data.status) {
-                var status = '#a9dc76'
-                console.log('true')
-            }
-            else {
-                console.log('false')
-
-                var status = '#222222'
-            }
-            const userLiElement = HTMLUtils.createUserLiElement(data.username, data.color, status)
+            const userLiElement = HTMLUtils.createUserLiElement(data.username, this.user.username, data.color, '#a9dc76')
             this.privateChatsList.append(userLiElement)
-            var userTabDiv = HTMLUtils.createPrivateTabDiv(data.username, data.color)
+            console.log('adding new user to list ')
+            var userTabDiv = HTMLUtils.createPrivateTabDiv(data.username, this.user.username, data.color)
             this.chatroomDiv.append(userTabDiv)
         })
     }
@@ -257,7 +256,7 @@ class Chat {
             var message = this.messageTextArea.val()
             const curTime = new Date().toLocaleTimeString("en-GB", { timeZone: this.timeZone, hour: "numeric", minute: "numeric", second: "numeric" })
             var str_msg = `<p class='message'><span style='color: rgb(68, 67, 67)';>${curTime}  </span><span style='color:${this.user.color};'>${this.user.username}<span style='color: white';> $ </span> ${message}</span></p>`
-            this.socket.io.emit(SocketEvents.SendMessage, { message: str_msg, name: HTMLUtils.curChatroom.name, type: HTMLUtils.curChatroom.type, sender: this.user.username})
+            this.socket.io.emit(SocketEvents.SendMessage, { message: str_msg, name: HTMLUtils.curChatroom.name, type: HTMLUtils.curChatroom.type })
             this.messageTextArea.val('')
         })
 
@@ -267,7 +266,7 @@ class Chat {
 
         this.socket.io.on(SocketEvents.PrivateMessage, (data) => {
             console.log('private', data)
-            // $(`#${data.name}`).append(data.message)
+            $(`#${data.name}`).append(data.message)
         })
     }
 

@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,171 +14,10 @@
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
     <script src="../static/chat.js"></script>
+    <link rel="stylesheet" href="../static/style.css"> 
     <link rel="icon" href="/static/project_images/id2.png">
     <title>flack</title>
 </head>
-<style>
-    * {
-        font-family: monospace;
-        overflow-x: hidden;
-        overflow-y: hidden;
-        color: white;
-    }
-
-    .nav-link
-    {
-        margin-top: 3px;
-        padding: 0px;
-    }
-    .online_sign {
-        margin-right: 10px;
-    }
-
-    #green:checked+label {
-        outline: none;
-        color: #a9dc76;
-    }
-
-    #yellow:checked+label {
-        outline: none;
-        color: #ffd766;
-    }
-
-    #blue:checked+label {
-        outline: none;
-        color: #78dce8;
-
-    }
-
-    #purple:checked+label {
-        outline: none;
-        color: #ab9df2;
-    }
-
-
-    #pink:checked+label {
-        outline: none;
-        color: #ff6087;
-    }
-
-    #orange:checked+label {
-        outline: none;
-        color: #fb9767;
-    }
-
-    input[type="radio"] {
-        display: none;
-    }
-
-
-    #header_logo {
-        margin-top: 5px;
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    body {
-        background-color: #212121;
-    }
-
-    header {
-        background-color: #222222;
-        height: 5vh;
-    }
-
-    .navbar-brand {
-        font-size: medium;
-    }
-
-    #side_menu {
-        font-size: x-small;
-        padding: 0%;
-        height: 95vh;
-        background-color: #222222;
-        margin-left: 0px;
-        margin-right: 0px;
-    }
-
-    .navbar {
-        margin: 0px;
-        padding-left: 25px;
-        background-color: #222222 !important;
-    }
-
-    #new_group_button {
-        background-color: #222222;
-    }
-
-    .btn {
-        font-size: medium;
-        border: none;
-    }
-
-    #display_menu_button {
-        display: none;
-    }
-
-    a:hover {
-        cursor: pointer;
-    }
-
-    #user_color_div {
-        margin-top: 0px;
-    }
-
-    .form-control:focus,
-    .input-group:focus {
-        outline: none !important;
-        box-shadow: none !important;
-    }
-
-    img:hover {
-        transform: scale(1.1);
-        cursor: pointer;
-    }
-
-    #group_chats_list,
-    #private_chats_list {
-        margin-left: 15px;
-    }
-
-    #chatroom_div {
-        height: 75vh;
-        overflow-y: scroll;
-        overflow-x: hidden;
-        overflow-wrap: break-word;
-    }
-
-    #chatroom_div::-webkit-scrollbar {
-        width: 1em;
-    }
-
-    #chatroom_div::-webkit-scrollbar-thumb {
-        background-color: darkgrey;
-        outline: 1px solid slategrey;
-    }
-
-
-    @media screen and (max-width: 441px) {
-        #side_menu {
-
-            height: 15%;
-        }
-
-        #display_menu_button {
-            display: inline;
-        }
-
-        #message_textarea {
-            width: 80vw;
-        }
-
-        #send_message_button {
-            width: 20vw;
-        }
-    }
-</style>
 <link rel="icon" href="../static/project_images/id2.png">
 <header>
     <img id="header_logo" src="../static/project_images/id.png" alt="" height="15px">
@@ -191,7 +29,7 @@
     <div class="modal fade" id="registration_modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content" style="background-color: #303030;">
+            <div class="modal-content">
                 <div class="modal-header">
                 </div>
                 <div class="modal-body">
@@ -199,18 +37,14 @@
                         <div class="row col-md-10" id="username_input_div">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"
-                                        style="background-color: #303030 !important; border: none; color: white; outline: none;">username
+                                    <span id="username_label">username
                                         :
                                     </span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="username_input_field"
-                                    id="username_input_field"
-                                    style="background-color: #303030 !important; border: none; color: white; "
-                                    maxlength="15">
+                                    id="username_input_field" maxlength="15">
                                 <div class="input-group-append">
-                                    <span class="input-group-text"
-                                        style="background-color: #303030 !important; border: none; color: white;">
+                                    <span class="input-group-text">
                                         ;</span>
                                 </div>
                             </div>
@@ -219,7 +53,7 @@
                     <div class="container-fluid" id="user_color_div">
                         <div class="row col-md-12">
                             <div class="col-md-4">
-                                <span id="color_label" style=" font-size: large; color: white;">color
+                                <span id="color_label">color
                                     :
                                 </span>
                             </div>
@@ -272,14 +106,10 @@
         </div>
     </div>
 
-
-
-
-
     <div class="modal fade" id="create_group_modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content" style="background-color: #303030;">
+            <div class="modal-content">
                 <div class="modal-header">
                     New group
                 </div>
@@ -288,18 +118,14 @@
                         <div class="row col-md-11">
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"
-                                        style="background-color: #303030 !important; border: none; color: white; outline: none;">groupname
+                                    <span class="input-group-text">groupname
                                         :
                                     </span>
                                 </div>
                                 <input type="text" class="form-control" aria-label="group_name_input"
-                                    id="group_name_input"
-                                    style="background-color: #303030 !important; border: none; color: white; "
-                                    maxlength="15">
+                                    id="group_name_input" maxlength="15">
                                 <div class="input-group-append">
-                                    <span class="input-group-text"
-                                        style="background-color: #303030 !important; border: none; color: white;">
+                                    <span class="input-group-text">
                                         ;</span>
                                 </div>
                             </div>
@@ -308,7 +134,7 @@
                     <div class="container-fluid" id="icon_div">
                         <div class="row col-md-12">
                             <div class="col-md-3">
-                                <span id="icon_radio_buttons" style=" font-size: large; color: white;">icon
+                                <span id="icon_radio_buttons">icon
                                     :
                                 </span>
                             </div>
@@ -399,12 +225,12 @@
                         <ul class="navbar-nav mr-auto nav flex-column" id="group_chats_list">
                             <li class="nav-item">
                                 <a id="new_group_button" class="nav-link" data-toggle="modal"
-                                    data-target="#create_group_modal" style="font-size: medium;">
+                                    data-target="#create_group_modal">
                                     new group
                                 </a>
                             </li>
-                            <li><a class="nav-link active" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" onclick="accessChatroom(this.id)" aria-selected="true">Home</a></li>
-                            
+
+
                         </ul>
                     </div>
                 </nav>
@@ -430,11 +256,9 @@
                     <div class=" col-md-12 tab-content" id="chatroom_div">
                     </div>
                 </div>
-                <div id="input_area_div" class="row" style="background-color: violet;">
-                    <textarea class="col-md-11" name="message" id="message_textarea"
-                        style=" height: 15vh; resize: none; background-color: #303030; border: none; position: fixed; bottom: 0px;"></textarea>
-                    <button class="col-md-1 btn-dark " id="send_message_button"
-                        style="height: 15vh; background-color: #303030; border: none;  position: fixed; bottom: 0px; right: 0px;">send</button>
+                <div id="input_area_div" class="row">
+                    <textarea class="col-md-11" name="message" id="message_textarea"></textarea>
+                    <button class="col-md-1 btn-dark " id="send_message_button">send</button>
                 </div>
             </div>
         </div>

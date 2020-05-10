@@ -20,41 +20,43 @@ class User():
 
 
 class ServerData():
-    updates = {'users': {},
-               'groups': {}}
+    users = {}
+    groups = {}
+    privates = {}
 
     @staticmethod
     def add_new_user_if_available(username, color, status, socket_id):
-        if username not in ServerData.updates['users'].keys():
-            ServerData.updates['users'][username] = {
+        if username not in ServerData.users.keys():
+            ServerData.users[username] = {
                 'username': username, 'color': color, 'status': status, 'socket_id': socket_id, 'messages' : {}}
-            print(ServerData.updates['users'][username])
+            print(ServerData.users[username])
             return True
         else:
             return False
 
     @staticmethod
     def add_group_if_available(group_name_key, group_name, group_color, group_icon):
-        if group_name_key not in ServerData.updates['groups'].keys():
-            ServerData.updates['groups'][group_name_key] = {'groupName': group_name,
+        if group_name_key not in ServerData.groups.keys():
+            ServerData.groups[group_name_key] = {'groupName': group_name,
                                                             "groupColor": group_color,
                                                             "groupIcon": group_icon,
                                                             'messages': ''}
-            print(ServerData.updates['groups'][group_name_key])
+            print(ServerData.groups[group_name_key])
             return True
         else:
             return False
 
     @staticmethod
-    def store_message(chat_type, receiver, message, sender):
+    def store_message(chat_type, receiver, message):
         if chat_type == 'private':
-            group_name = f'{sender}_{receiver}' if sender < receiver else f"{receiver}_{sender}"    
-            if group_name not in ServerData.updates['groups'].keys():
-                ServerData.updates['groups'][group_name] = {'messages' : message}
+            if receiver not in ServerData.privates.keys():
+                ServerData.privates[receiver] = {'messages' : message}
             else:
-                ServerData.updates['groups'][group_name]['messages'] += message
+                ServerData.privates[receiver]['messages'] += message
         else:
-            ServerData.updates['groups'][receiver]['messages'] += message
+            ServerData.groups[receiver]['messages'] += message
+
+        print('>>>>', ServerData.privates)
 
     @staticmethod
     def populateApp():
@@ -67,16 +69,16 @@ class ServerData():
         status = [True, False]
 
         for name in groupNames:
-            icon = random.randint(1, 54)
+            icon = random.randint(1, 25)
             color = random.choice(colors)
-            ServerData.updates['groups'][f'{name}_div'] = {
+            ServerData.groups[f'{name}_div'] = {
                 'groupName': name, "groupColor": color, 'groupIcon': icon, 'messages': ''}
 
         for name in peopleName:
             userStatus = random.choice(status)
             color = random.choice(colors)
             socket_id = 5454622646844587846998
-            ServerData.updates['users'][name] = {'username': name, "color": color, 'status': userStatus, 'socket_id' : socket_id}
+            ServerData.users[name] = {'username': name, "color": color, 'status': userStatus, 'socket_id' : socket_id}
             socket_id += 15
 
 
@@ -102,7 +104,8 @@ class SocketEvents ():
     NewUser = 'new_user'
     ChangeOfStatus = 'change_of_status'
     Disconect = 'disconect'
-
+    JoinRoom = 'join'
+    LeaveRoom = 'leave'
 
 @app.route("/")
 def index():
@@ -123,18 +126,16 @@ def status_online(data):
 
 @socketio.on(SocketEvents.RequestUpdates)
 def on_request_updates():
-    emit(SocketEvents.RequestUpdates, ServerData.updates)
-
+    updates = [ServerData.groups, ServerData.users, ServerData.privates]
+    emit(SocketEvents.RequestUpdates, updates)
 
 @socketio.on(SocketEvents.Message)
 def on_message(data):
-        ServerData.store_message(data['type'], data['name'],  data['message'], data['sender'])
+        ServerData.store_message(data['type'], data['name'],  data['message'])
         if data['type'] == 'group':
             emit(SocketEvents.GroupMessage, data, broadcast=True)
-        
         if data['type'] == 'private':
-            socket_id = ServerData.updates['users'][data['name']]['socket_id']
-            emit(SocketEvents.GroupMessage, data, room=socket_id)
+            emit(SocketEvents.PrivateMessage, data, broadcast=True)
 
 @socketio.on(SocketEvents.SendUserName)
 def on_new_user(data):
@@ -158,6 +159,7 @@ def create_new_group(data):
     else:
         data['available'] = False
         emit(SocketEvents.SendGroupName, data, broadcast=True)
+
 
 if __name__ == "__main__":
     app.run()
