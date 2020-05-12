@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>Pizza</h1>
+                <form action="{% url 'order' %}" method="POST">
+                    {% csrf_token %}
+                    <h4>base</h4>
+                    {% for base in bases %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="base" id="base" value="{{base.id}}">
+                        <label class="form-check-label" for="base">{{ base }}</label>
+                    </div>
+                    {% endfor%}
+                    <h4>number of toppings</h4>
+                    {% for topping in toppingOptions %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="topping" id="topping" value="{{topping.id}}">
+                        <label class="form-check-label" for="topping">{{ topping }}</label>
+                    </div>
+                    {% endfor%}
+
+                    <h4>size</h4>
+                    {% for size in sizes %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="size" id="size" value="{{size.id}}">
+                        <label class="form-check-label" for="size">{{ size }}</label>
+                    </div>
+                    {% endfor%}
+                <h4>Toppings</h4>
+                {% for topping in toppings %}
+                <div class="form-check form-check-inline" style="justify-content: left;">
+                    <input class="form-check-input" name="checks" type="checkbox" id="{{topping}}" value="{{topping}}">
+                    <label class="form-check-label" for="{{topping}}">{{topping}}</label>
+                </div>
+                {% endfor%}
+                <button type="submit">select</button>
+                </form>
+
+
+                <h1>Pasta</h1>
+                <form action="{% url 'orderPasta' %}" method="POST">
+                    {% for pasta in pastas %}
+                    {% csrf_token %}
+                    <div class="form-check " style="justify-content: left;">
+                        <input class="form-check-input" name="checks" type="checkbox" id="{{pasta}}" value="{{pasta}}">
+                        <label class="form-check-label" for="{{pasta}}">{{pasta}}</label>
+                    </div>
+                    {% endfor%}
+                    <button type="submit">select</button>
+                </form>
+
+                <h1>Subs</h1>
+                <form action="{% url 'orderSub' %}" method="POST">
+                    {% for sub in subs %}
+                    {% csrf_token %}
+                    <div class="form-check " style="justify-content: left;">
+                        <input class="form-check-input" name="checks" type="checkbox" id="{{sub}}" value="{{sub.ingredients}}">
+                        <label class="form-check-label" for="{{sub}}">{{sub.ingredients}}</label>
+                    </div>
+                    {% endfor%}
+                    <h4>size</h4>
+                    {% for size in sizes %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="subsize" id="size" value="{{size.id}}">
+                        <label class="form-check-label" for="size">{{ size }}</label>
+                    </div>
+                    {% endfor%}
+                    <button type="submit">select</button>
+                </form>
+
+                <h1>Salads</h1>
+                <form action="{% url 'orderSalad' %}" method="POST">
+                    {% for salad in salads %}
+                    {% csrf_token %}
+                    <div class="form-check " style="justify-content: left;">
+                        <input class="form-check-input" name="checks" type="checkbox" id="{{salad}}" value="{{salad.ingredients}}">
+                        <label class="form-check-label" for="{{salad}}">{{salad.ingredients}}</label>
+                    </div>
+                    {% endfor%}
+                    <button type="submit">select</button>
+                </form>
+             
+                <h1>Dinner</h1>
+                <form action="{% url 'orderDinner' %}" method="POST">
+                    {% for plate in dinnerPlates %}
+                    {% csrf_token %}
+                    <div class="form-check " style="justify-content: left;">
+                        <input class="form-check-input" name="checks" type="checkbox" id="{{plate}}" value="{{plate.ingredients}}">
+                        <label class="form-check-label" for="{{plate}}">{{plate.ingredients}}</label>
+                    </div>
+                    {% endfor%}
+                    <h4>size</h4>
+                    {% for size in sizes %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="platesize" id="size" value="{{size.id}}">
+                        <label class="form-check-label" for="size">{{ size }}</label>
+                    </div>
+                    {% endfor%}
+                    <button type="submit">select</button>
+                </form>
+            </div>
+            <div class="col-lg-4">
+                <h1>Hello, {{ user.username }}</h1>
+
+                <h1>CART</h1>
+                <h3>status: {{ order.order_status}}</h3>
+                <ul>{%for item in items%}
+                    <li>{{ item }}</li>
+                    {%endfor%}
+                </ul>
+
+
+                <h1>register</h1>
+                <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
+                    <input name="username" placeholder="username" type="text" />
+                    <input name="email" placeholder="email" type="text" />
+                    <input name="password" placeholder="password" type="password" />
+                    <input type="submit" />
+                </form>
+                <h1>Login</h1>
+                {% if message %}
+                <div>
+                    {{ message }}
+                </div>
+                {% endif %}
+
+                <form action="{% url 'login' %}" method="post">
+                    {% csrf_token %}
+                    <input name="username" autocomplete="false" type="text" />
+                    <input name="password" autocomplete="false" type="password" />
+                    <input type="submit" value="Login" />
+                </form>
+                <ul>
+                    <li><a href="{% url 'logout' %}">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
