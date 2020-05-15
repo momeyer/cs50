@@ -6,10 +6,10 @@ urlpatterns = [
     path("", views.index, name="index"),
     path("login/", views.login_view, name="login"),
     path("logout/", views.logout_view, name="logout"),
-    path("order/", views.order, name="order"),
-    path("orderPasta/", views.orderPasta, name="orderPasta"),
-    path("orderSub/", views.orderSub, name="orderSub"),
-    path("ordeSalad/", views.orderSalad, name="orderSalad"),
-    path("ordeDinner/", views.orderDinner, name="orderDinner"),
+    path("pizza/", views.orderPizza, name="orderPizza"),
+    path("Sub/", views.orderSub, name="orderSub"),
+    path("Pasta/", views.orderPasta, name="orderPasta"),
+    path("Dinner/", views.orderDinner, name="orderDinner"),
+    path("Salad/", views.orderSalad, name="orderSalad"),
     path("register/", views.register, name="register")
 ]

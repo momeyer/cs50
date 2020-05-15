@@ -78,8 +78,16 @@ class DinnerPlate(models.Model):
     price = models.FloatField(default=0.0)
 
     def __str__(self):
-        return f"{self.ingredients} {self.size}"
+        return f"{self.ingredients}"
 
+class PizzaPriceTable(models.Model):
+    baseOption = models.ForeignKey(PizzaBaseType,on_delete=models.CASCADE)
+    toppingsOpition = models.ForeignKey(PizzaTopping,on_delete=models.CASCADE)
+    sizeOption = models.ForeignKey(Size,on_delete=models.CASCADE)
+    price = models.FloatField(default=0.0)
+
+    def __str__(self):
+        return f"{self.base} {self.toppings} {self.size} {self.price}"
 
 class Order(models.Model):
     PENDING = 'PENDING'
@@ -93,11 +101,9 @@ class Order(models.Model):
     order_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default=PENDING)
 
     def __str__(self):
-        return f"""user: {self.user}   \norder: {self.id}\n    status: {self.order_status}"""
-
+        return f"""user: {self.user}   \norder: {self.id}\n  status: {self.order_status}"""
 
 class OrderItem(models.Model):
-
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()

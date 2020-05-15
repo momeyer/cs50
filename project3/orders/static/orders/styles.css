@@ -1,0 +1,40 @@
+body {
+  overflow-x: hidden;
+  font-size: medium;
+  background-color: #101010;
+  color: #cccccc;
+}
+#buttons_header
+{
+  position: absolute;
+  right: 10px;
+}
+#logo {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 25vw;
+}
+
+#header_image {
+  width: 100vw;
+}
+
+#login_nav
+{
+  margin-left: 150px;
+}
+
+@media only screen and (max-width: 414px) {
+  #large_screen{
+    display: none;
+  }
+  #pizza_image, #sub_image, #pasta_image, #salad_image, #dinner_image{
+    display: none;
+  }
+  #logo, #header
+  {
+    display: none;
+  }
+}

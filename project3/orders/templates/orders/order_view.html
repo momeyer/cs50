@@ -1,0 +1,392 @@
+{% load static %}
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{% static 'orders/styles.css' %}" />
+
+    <title>Pinocchio</title>
+</head>
+<div class="container-fluid" id="header">
+    <div class="row">
+        <!-- <img src="{% static 'orders/images/header.jpg' %}" alt="" id="header_image" width="100%"> -->
+        <!-- <img src="{% static 'orders/images/dark_logo.png' %}" alt="" id="logo"> -->
+    </div>
+</div>
+<div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #151515 !important;">
+        <a class="navbar-brand" href="#"><img src="{% static 'orders/images/white_logo.png' %}" alt=""
+                height="40px"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header_navbar"
+            aria-controls="header_navbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="header_navbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#pizza_heading">Pizza<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#sub_heading">Subs<span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#pasta_heading">Pasta<span class="sr-only"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#salad_heading">Salads<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#dinner_heading">Dinner<span class="sr-only"></span></a>
+                </li>
+                <div class="btn-group btn-group-toggle" data-toggle="buttons" id="buttons_header">
+                    <a class="btn btn-secondary" href="{% url 'logout' %}">Logout</a>
+                </div>
+            </ul>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            <!-- individual card -->
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3"
+                        style="max-width: 540px; background-color: rgba(80, 80, 80, .70); color: white;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/pizza1.jpg' %}" class="card-img" alt="..."
+                                    height="100%">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Regular Pizza</h5>
+                                    <p class="card-text">
+                                        <form action="{% url 'orderPizza' %}" class="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" id="regular_toppings"
+                                                        name="regular_toppings">
+                                                        {% for topping in toppingOptions %}
+                                                        <option value="{{ topping.id }}">{{topping}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" name="size">
+                                                        {% for size in sizes %}
+                                                        <option value="{{ size.id }}">{{size}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                        style="margin-bottom: 5px;">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <button class="btn btn-secondary" type="submit">add to cart</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3"
+                        style="max-width: 540px; background-color: rgba(80, 80, 80, .70); color: white;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/sicilian.jpg' %}" class="card-img" alt="..."
+                                    height="100%">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sicilian Pizza</h5>
+                                    <p class="card-text">
+                                        <form action="{% url 'orderPizza' %}" class="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" name="sicilian_toppings">
+                                                        {% for topping in toppingOptions %}
+                                                        <option value="{{ topping.id}}">{{topping}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" name="size">
+                                                        {% for size in sizes %}
+                                                        <option value="{{ size.id}}">{{size}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                        style="margin-bottom: 5px;">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <button class="btn btn-secondary" type="submit">add to cart</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3"
+                        style="max-width: 540px; background-color: rgba(80, 80, 80, .70); color: white;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/sub_image.jpg' %}" class="card-img" alt="..."
+                                    height="100%">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Subs</h5>
+                                    <p class="card-text">
+                                        <form action="{% url 'orderSub' %}" class="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" id="sub" name="sub">
+                                                        {% for sub in subs %}
+                                                        <option value="{{ sub.ingredients }}">{{ sub.ingredients }}
+                                                        </option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" name="size">
+                                                        {% for size in sizes %}
+                                                        <option value="{{ size.id}}">{{size}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                        style="margin-bottom: 5px;">
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" name="size">
+                                                        {% for extra in extras %}
+                                                        <option value="{{ extra.id}}">{{extra}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <button class="btn btn-secondary" type="submit">add to cart</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3"
+                        style="max-width: 540px; background-color: rgba(80, 80, 80, .70); color: white;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/pasta.jpg' %}" class="card-img" alt="..."
+                                    height="100%">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pasta</h5>
+                                    <p class="card-text">
+                                        <form action="{% url 'orderPasta' %}" class="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <select class="custom-select mr-sm-2" id="pasta" name="pasta">
+                                                        {% for pasta in pastas %}
+                                                        <option value="{{ pasta.ingredients}}">{{pasta}} {{pasta.price}}
+                                                        </option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                        style="margin-bottom: 5px;">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <button class="btn btn-secondary" type="submit">add to cart</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3"
+                        style="max-width: 540px; background-color: rgba(80, 80, 80, .70); color: white;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/dinner.jpg' %}" class="card-img" alt="..."
+                                    height="100%">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Dinner Platters</h5>
+                                    <p class="card-text">
+                                        <form action="{% url 'orderDinner' %}" class="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" id="dinner" name="dinner">
+                                                        {% for dinner in dinnerPlates %}
+                                                        <option value="{{ dinner }}">{{ dinner}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <select class="custom-select mr-sm-2" name="size">
+                                                        {% for size in sizes %}
+                                                        <option value="{{ size.id}}">{{size}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                        style="margin-bottom: 5px;">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <button class="btn btn-secondary" type="submit">add to cart</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3"
+                        style="max-width: 540px; background-color: rgba(80, 80, 80, .70); color: white;">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/salad.jpg' %}" class="card-img" alt="..."
+                                    height="100%">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Salad</h5>
+                                    <p class="card-text">
+                                        <form action="{% url 'orderSalad' %}" class="" method="POST">
+                                            {% csrf_token %}
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <select class="custom-select mr-sm-2" id="salad" name="salad">
+                                                        {% for salad in salads %}
+                                                        <option value="{{ salad }}">{{salad}} {{salad.price}}</option>
+                                                        {% endfor%}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-12 mb-3">
+                                                    <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                        style="margin-bottom: 5px;">
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <button class="btn btn-secondary" type="submit">add to cart</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-md-4">
+            <div class="container" style="background-color: #3b3b3b; border-radius: 2%; height: 112vh; padding: 15px;">
+                <h1>Hello, {{ user.username }}</h1>
+                <h3>status: {{ order.order_status}}</h3>
+
+                {%for item in items%}
+                <div class="row">
+                    <div class="col-xs-5 offset-1">{{item}}</div>
+                    <div class="col-xs-3" style="padding-left: 5px;">{{item.price}}</div>
+                    <div class="col-xs-3" style="padding-left: 5px;"><button
+                            style="background-color: #3b3b3b; border: #3b3b3b;"><svg class="bi bi-trash" width="1.5em"
+                                height="1em" viewBox="0 0 16 16" fill="white" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z" />
+                                <path fill-rule="evenodd"
+                                    d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                    clip-rule="evenodd" />
+                            </svg></button></div>
+                </div>
+                {% empty %}
+                <li>cart is empty </li>
+                {%endfor%}
+
+                <div class="row"
+                    style="position: absolute; bottom: 200px; padding-left: 10px; background-color: #303030; width: 92%;">
+                    <h4>Total:</h4>
+                    <h3 style="margin: 5%;">US$ 00.00</h3>
+                    <button class="btn btn-dark" style=" position: absolute; right: 0px; height: 100% ;">
+                        Check out
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </body>
+</html>

@@ -10,7 +10,6 @@ class ModelsTestCase(TestCase):
         # base
         regular = "REGULAR"
         sicilian = "SICILIAN"
-        
 
         # toppings
         cheese = "CHEESE"

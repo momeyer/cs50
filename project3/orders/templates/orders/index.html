@@ -1,9 +1,12 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -12,150 +15,347 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'orders/styles.css' %}" />
+
+    <title>Pinocchio</title>
 </head>
 
-<body>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-8">
-                <h1>Pizza</h1>
-                <form action="{% url 'order' %}" method="POST">
-                    {% csrf_token %}
-                    <h4>base</h4>
-                    {% for base in bases %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="base" id="base" value="{{base.id}}">
-                        <label class="form-check-label" for="base">{{ base }}</label>
-                    </div>
-                    {% endfor%}
-                    <h4>number of toppings</h4>
-                    {% for topping in toppingOptions %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="topping" id="topping" value="{{topping.id}}">
-                        <label class="form-check-label" for="topping">{{ topping }}</label>
-                    </div>
-                    {% endfor%}
+<body style="font-family: sans-serif;">
 
-                    <h4>size</h4>
-                    {% for size in sizes %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="size" id="size" value="{{size.id}}">
-                        <label class="form-check-label" for="size">{{ size }}</label>
-                    </div>
-                    {% endfor%}
-                <h4>Toppings</h4>
-                {% for topping in toppings %}
-                <div class="form-check form-check-inline" style="justify-content: left;">
-                    <input class="form-check-input" name="checks" type="checkbox" id="{{topping}}" value="{{topping}}">
-                    <label class="form-check-label" for="{{topping}}">{{topping}}</label>
+    <!-- Modal -->
+    <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: rgba(15, 15, 15, .70)!important;">
+                <div class="modal-header">
+                    <h5 class="modal-title">Login</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
-                {% endfor%}
-                <button type="submit">select</button>
-                </form>
-
-
-                <h1>Pasta</h1>
-                <form action="{% url 'orderPasta' %}" method="POST">
-                    {% for pasta in pastas %}
-                    {% csrf_token %}
-                    <div class="form-check " style="justify-content: left;">
-                        <input class="form-check-input" name="checks" type="checkbox" id="{{pasta}}" value="{{pasta}}">
-                        <label class="form-check-label" for="{{pasta}}">{{pasta}}</label>
-                    </div>
-                    {% endfor%}
-                    <button type="submit">select</button>
-                </form>
-
-                <h1>Subs</h1>
-                <form action="{% url 'orderSub' %}" method="POST">
-                    {% for sub in subs %}
-                    {% csrf_token %}
-                    <div class="form-check " style="justify-content: left;">
-                        <input class="form-check-input" name="checks" type="checkbox" id="{{sub}}" value="{{sub.ingredients}}">
-                        <label class="form-check-label" for="{{sub}}">{{sub.ingredients}}</label>
-                    </div>
-                    {% endfor%}
-                    <h4>size</h4>
-                    {% for size in sizes %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="subsize" id="size" value="{{size.id}}">
-                        <label class="form-check-label" for="size">{{ size }}</label>
-                    </div>
-                    {% endfor%}
-                    <button type="submit">select</button>
-                </form>
-
-                <h1>Salads</h1>
-                <form action="{% url 'orderSalad' %}" method="POST">
-                    {% for salad in salads %}
-                    {% csrf_token %}
-                    <div class="form-check " style="justify-content: left;">
-                        <input class="form-check-input" name="checks" type="checkbox" id="{{salad}}" value="{{salad.ingredients}}">
-                        <label class="form-check-label" for="{{salad}}">{{salad.ingredients}}</label>
-                    </div>
-                    {% endfor%}
-                    <button type="submit">select</button>
-                </form>
-             
-                <h1>Dinner</h1>
-                <form action="{% url 'orderDinner' %}" method="POST">
-                    {% for plate in dinnerPlates %}
-                    {% csrf_token %}
-                    <div class="form-check " style="justify-content: left;">
-                        <input class="form-check-input" name="checks" type="checkbox" id="{{plate}}" value="{{plate.ingredients}}">
-                        <label class="form-check-label" for="{{plate}}">{{plate.ingredients}}</label>
-                    </div>
-                    {% endfor%}
-                    <h4>size</h4>
-                    {% for size in sizes %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="platesize" id="size" value="{{size.id}}">
-                        <label class="form-check-label" for="size">{{ size }}</label>
-                    </div>
-                    {% endfor%}
-                    <button type="submit">select</button>
-                </form>
-            </div>
-            <div class="col-lg-4">
-                <h1>Hello, {{ user.username }}</h1>
-
-                <h1>CART</h1>
-                <h3>status: {{ order.order_status}}</h3>
-                <ul>{%for item in items%}
-                    <li>{{ item }}</li>
-                    {%endfor%}
-                </ul>
-
-
-                <h1>register</h1>
-                <form action="{% url 'register' %}" method="post">
-                    {% csrf_token %}
-                    <input name="username" placeholder="username" type="text" />
-                    <input name="email" placeholder="email" type="text" />
-                    <input name="password" placeholder="password" type="password" />
-                    <input type="submit" />
-                </form>
-                <h1>Login</h1>
-                {% if message %}
-                <div>
-                    {{ message }}
+                <div class="modal-body">
+                    <form action="{% url 'login' %}" method="post">
+                        <div class="form-group">
+                            {% csrf_token %}
+                            <label for="username">username</label>
+                            <input type="text" class="form-control" name="username" id="username">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" class="form-control" name="password" id="password">
+                        </div>
                 </div>
-                {% endif %}
-
-                <form action="{% url 'login' %}" method="post">
-                    {% csrf_token %}
-                    <input name="username" autocomplete="false" type="text" />
-                    <input name="password" autocomplete="false" type="password" />
-                    <input type="submit" value="Login" />
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input type="submit" class="btn btn-secondary" value="Login" />
+                </div>
                 </form>
-                <ul>
-                    <li><a href="{% url 'logout' %}">Logout</a></li>
-                </ul>
             </div>
         </div>
     </div>
+    <div class="modal fade" id="registration_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background-color: rgba(15, 15, 15, .70) !important; ">
+                <div class="modal-header">
+                    <h5 class="modal-title">Registration form</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="{% url 'register' %}" method="post">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                {% csrf_token %}
+                                <label for="fname">First Name</label>
+                                <input type="text" class="form-control" name="fname" id="fname">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="lname">Last Name</label>
+                                <input type="text" class="form-control" name="lname" id="lname">
+                            </div>
+                            
+                            <div class="form-group col-md-12">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" name="email" id="email">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="username">username</label>
+                                <input type="username" class="form-control" name="username"  id="username">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="password_registration">Password</label>
+                                <input type="password" class="form-control" name="password" id="password_registration">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" class="form-control" id="address" name="address" placeholder="1234 Main St">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="city">City</label>
+                                <input type="text" class="form-control" name="city" id="city">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="state">State</label>
+                                <input type="text" class="form-control" name="state" id="state">
+                            </div>
+                            <div class="form-group col-md-2">
+                                <label for="zip">Zip</label>
+                                <input type="text" class="form-control" name="zipCode" id="zip">
+                            </div>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <input class="btn btn-secondary" type="submit">
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="background-color: #151515 !important;">
+            <a class="navbar-brand" href="#"><img src="{% static 'orders/images/white_logo.png' %}" alt=""
+                    height="40px"></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#header_navbar"
+                aria-controls="header_navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="header_navbar">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#pizza_heading">Pizza<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sub_heading">Subs<span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pasta_heading">Pasta<span class="sr-only"></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#salad_heading">Salads<span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#dinner_heading">Dinner<span class="sr-only"></span></a>
+                    </li>
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="buttons_header">
+                    <input type="button" class="btn btn-secondary " data-toggle="modal" data-target="#login_modal" value="login"> 
+                    <input type="button" class="btn btn-secondary " data-toggle="modal" data-target="#registration_modal" value="register">
+                    </div>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid" style="padding: 0%;">
+        <div class="accordion" id="menu">
+            <div class="card" style="border: none;">
+                <div class="card-header" id="pizza_heading" style="background-color: rgba(15, 15, 15, .70) ; padding: 0%;">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                            data-target="#pizza_collapse" aria-expanded="false" aria-controls="pizza_collapse"
+                            style="padding: 0%;">
+                            <img src="{% static 'orders/images/pizza.jpg' %}" alt="" width="100%">
+                        </button>
+                    </h2>
+                </div>
+                <div id="pizza_collapse" class="collapse show" aria-labelledby="pizza_heading" data-parent="#menu">
+                    <div class="card-body" style="background-color: #121212; ">
+                        <h3>Sicilian Pizza</h3>
+                        <div class="row col-md-6">
+                            <p>Our Sicilian pizza is a deep-dish or thick-crust pizza.</p>
+                            <span> The 9-slice size is 16" x 16" and will feed anywhere from 3 to 5 people.</span>
+                            The 15-slice size is 28" x 16", comes in 2 large pizza boxes and can feed 6 to 9 people.
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6" style=" padding-left: 30px; padding-right: 15px; padding-top: 10px;">
+                                {% for top in toppingOptions %}
+                                <div>{{top}}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-xs-6" style="padding-top: 10px;">
+                                {% for top in toppingOptions %}
+                                <div> 00.00 </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <h3>Regular Pizza</h3>
+                        <div class="row col-md-5" style="margin-top: 10px;">
+                            <p>Our Regular pizza is a thin-crust or Neapolitan pizza. </p>
+                            <span>The small is suitable for 1 to 2 people (12" in diameter)
+                                The large feeds 2 to 4 people. (16" in diameter)</span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-6" style="padding-left: 30px; padding-right: 15px; padding-top: 10px;">
+                                {% for top in toppingOptions %}
+                                <div>{{top}}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-xs-6" style="padding-top: 10px;">
+                                {% for top in toppingOptions %}
+                                <div> 00.00 </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="row col-md-5" style="margin-top: 15px;">
+                            <h3>Toppings</h3>
+                            <p> {% for topping in toppings %}
+                                <span> {{ topping }} / </span>
+                                {% endfor %}
+                            </p>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="border: none;">
+            <div class="card-header" id="sub_heading" style="background-color: #121212; padding: 0%;">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                        data-target="#sub_collapse" aria-expanded="false" aria-controls="sub_collapse"
+                        style="padding: 0%;">
+                        <img src="{% static 'orders/images/sub_small.jpg' %}" alt="" width="100%">
+                    </button>
+                </h2>
+            </div>
+            <div id="sub_collapse" class="collapse show" aria-labelledby="sub_heading" data-parent="#menu">
+                <div class="card-body" style="background-color: #121212;">
+                    <h1> subs </h1>
+                    <div class="row">
+                        <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                            {% for sub in subs %}
+                            <div>{{sub}}</div>
+                            {% endfor %}
+                        </div>
+                        <h3></h3>
+                        <div class="col-xs-6" style="padding-top: 10px;">
+                            {%for sub in subs%}
+                            <div>{{sub.price }} </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <h3> Extra </h3>
+                    <div class="row">
+                        <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                            {% for extra in extras %}
+                            <div>{{extra.extra}}</div>
+                            {% endfor %}
+                        </div>
+                        <div class="col-xs-6 offset-1" style="padding-top: 10px;">
+                            {%for extra in extras%}
+                            <div>{{extra.price }} </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="border: none;">
+            <div class="card-header" id="pasta_heading" style="background-color: #121212; padding: 0%;">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                        data-target="#pasta_collapse" aria-expanded="false" aria-controls="pasta_collapse"
+                        style="padding: 0%;">
+                        <img src="{% static 'orders/images/ziti.jpg' %}" alt="" width="100%">
+                    </button>
+                </h2>
+            </div>
+            <div id="pasta_collapse" class="collapse show" aria-labelledby="pasta_heading" data-parent="#menu">
+                <div class="card-body" style="background-color: #121212;">
+                    <h1> Pasta </h1>
+                    <div class="row">
+                        <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                            {% for pasta in pastas %}
+                            <div>{{pasta}}</div>
+                            <div>{{pasta}}</div>
+                            <div>{{pasta}}</div>
+                            <div>{{pasta}}</div>
+                            <div>{{pasta}}</div>
+                            <div>{{pasta}}</div>
+                            {% endfor %}
+                        </div>
+                        <h3></h3>
+                        <div class="col-xs-6" style="padding-top: 10px; padding-left: 50px; ">
+                            {%for pasta in pastas%}
+                            <div>{{pasta.price }} </div>
+                            <div>{{pasta.price }} </div>
+                            <div>{{pasta.price }} </div>
+                            <div>{{pasta.price }} </div>
+                            <div>{{pasta.price }} </div>
+                            <div>{{pasta.price }} </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="border: none;">
+            <div class="card-header" id="salad_heading" style="background-color: #121212; padding: 0%;">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                        data-target="#salad_collapse" aria-expanded="false" aria-controls="salad_collapse"
+                        style="padding: 0%;">
+                        <img src="{% static 'orders/images/garden.jpg' %}" alt="" width="100%">
+                    </button>
+                </h2>
+            </div>
+            <div id="salad_collapse" class="collapse show" aria-labelledby="salad_heading" data-parent="#menu">
+                <div class="card-body" style="background-color: #121212;">
+                    <h1> Salad </h1>
+                    <div class="row">
+                        <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                            {% for salad in salads %}
+                            <div>{{salad}}</div>
+                            <div>{{salad}}</div>
+
+                            <div>{{salad}}</div>
+                            <div>{{salad}}</div>
+                            {% endfor %}
+                        </div>
+                        <h3></h3>
+                        <div class="col-xs-6" style="padding-top: 10px; padding-left: 50px;">
+                            {%for salad in salads%}
+                            <div>{{salad.price }} </div>
+                            <div>{{salad.price }} </div>
+                            <div>{{salad.price }} </div>
+                            <div>{{salad.price }} </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card" style="border: none;">
+            <div class="card-header" id="dinner_heading" style="background-color: #121212; padding: 0%;">
+                <h2 class="mb-0">
+                    <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse"
+                        data-target="#dinner_collapse" aria-expanded="false" aria-controls="dinner_collapse"
+                        style="padding: 0%;">
+                        <img src="{% static 'orders/images/antipasti.png' %}" alt="" width="100%">
+                    </button>
+                </h2>
+            </div>
+            <div id="dinner_collapse" class="collapse show" aria-labelledby="dinner_heading" data-parent="#menu">
+                <div class="card-body" style="background-color: #121212;">
+                    <h1> Dinner Platters </h1>
+                    <div class="row">
+                        <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                            {% for dinner in dinnerPlates %}
+                            <div>{{dinner}}</div>
+                            {% endfor %}
+                        </div>
+                        <h3></h3>
+                        <div class="col-xs-6" style="padding-top: 10px; padding-left: 50px;">
+                            {%for dinner in dinnerPlates%}
+                            <div>{{dinner.price }} </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
-
 </html>
