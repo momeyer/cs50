@@ -14,7 +14,8 @@ def orderTotal(items):
 
     return round(total, 2)
 
-def generate_context(request, order):
+def generate_context(request, order, logged=False):
+
     user = request.user
     items = OrderItem.objects.filter(order=order)
 
@@ -145,7 +146,6 @@ def login_view(request):
         return render(request, "orders/order_view.html", context)
     else:
         context = {
-            "user": user,
             "bases": PizzaBaseType.objects.all(),
             "toppingOptions": PizzaTopping.objects.all(),
             "sizes": Size.objects.all(),
@@ -350,6 +350,7 @@ def orderDinner(request):
 
 @csrf_exempt
 def removeItem(request):
+
     itemId = request.POST['itemId']
     item = OrderItem.objects.get(id=itemId)
     
