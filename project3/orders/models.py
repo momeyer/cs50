@@ -30,7 +30,7 @@ class Pizza(models.Model):
     large = models.FloatField(default=0.0)
     
     def __str__(self):
-        return f"{self.base} {self.toppings}"
+        return f"{self.base} pizza\n{self.toppings}"
 
 
 class Topping(models.Model):
@@ -94,16 +94,18 @@ class Order(models.Model):
     
 
     def __str__(self):
-        return f"""user: {self.user}  \norder: {self.id}\n    status: {self.order_status}"""
+        return f"""user: {self.user}  \norder: {self.id}\n  status: {self.order_status}"""
 
 
 class OrderItem(models.Model):
+    quantity = models.PositiveIntegerField(default=1)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()
     price = models.FloatField(null=True)
-
+    size = models.ForeignKey(Size, null=True ,on_delete=models.CASCADE)
+    extras = models.CharField(max_length=30, blank=True)
+    
     def __str__(self):
-        return f"{self.content_object}"
-
+        return f"{self.id} - {self.content_object}"

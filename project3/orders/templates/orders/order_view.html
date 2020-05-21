@@ -3,6 +3,14 @@
 
 
 {% block modal %}
+<script type="text/javascript">
+    var urlOrderPizza = '{% url "orderPizza" %}';
+    var urlOrderSub = "{% url 'orderSub' %}"
+    var urlOrderPasta = "{% url 'orderPasta' %}"
+    var urlOrderDinner = "{% url 'orderDinner' %}"
+    var urlOrderSalad = "{% url 'orderSalad' %}"
+    var urlRemoveItem = "{% url 'removeItem' %}"
+</script>
 <div class="modal fade" id="pizza" tabindex="-1" role="dialog" aria-labelledby="pizzaLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -13,23 +21,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="{% url 'orderPizza' %}" class="" method="POST">
-                    <div id="selected_pizza_div" style="display: none;"></div>
-                    {% csrf_token %}
-                    {% for topping in toppings %}
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="top_opt" value="{{ topping }}"
-                            id="top_{{topping}}">
-                        <label class="form-check-label" for="top_{{tooping}}">
-                            {{topping}}
-                        </label>
-                    </div>
-                    {% endfor %}
+                {% csrf_token %}
+                {% for topping in toppings %}
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="top_opt" value="{{ topping }}"
+                        id="top_{{topping}}">
+                    <label class="form-check-label" for="top_{{tooping}}">
+                        {{topping}}
+                    </label>
+                </div>
+                {% endfor %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" id="add_to_cart">Save to cart</button>
-                </form>
+                <button type="submit" class="btn btn-primary" id="add_pizza">Save to cart</button>
             </div>
         </div>
     </div>
@@ -48,7 +53,7 @@
                 <div class="row">
                     <div class="col-xs-6" id='checkout_items_modal'>
                         {%for item in items%}
-                        <div>{{ item }}</div>
+                        <div>{{ item.content_object }}</div>
                         {% endfor %}
                     </div>
                     <div class="col-xs-3 offset-1" id='checkout_prices_modal'>
@@ -69,6 +74,40 @@
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <div id="content_to_edit">
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#exampleModal').on('show.bs.modal', event => {
+        var button = $(event.relatedTarget);
+        var modal = $(this);
+        // Use above variables to manipulate the DOM
+
+    });
+</script>
+
 {% endblock%}
 
 
@@ -86,7 +125,7 @@
 
 {% block body %}
 <div class="row" id="row_content">
-    <div class="col-xs-12 col-md-9">
+    <div class="col-xs-12 col-md-8">
         <div class="row">
             <div class="col-xs-12 col-md-6">
                 <div class="card mb-3">
@@ -109,7 +148,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" name="size">
+                                            <select class="custom-select mr-sm-2" name="size" id="regular_size">
                                                 {% for size in sizes %}
                                                 <option value="{{ size }}">{{size}}</option>
                                                 {% endfor%}
@@ -118,7 +157,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="qnt">
+                                            <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                id="regular_qnt">
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -154,7 +194,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" name="size">
+                                            <select class="custom-select mr-sm-2" name="size" id="sicilian_size">
                                                 {% for size in sizes %}
                                                 <option value="{{ size }}">{{size}}</option>
                                                 {% endfor%}
@@ -192,47 +232,45 @@
                             <div class="card-body">
                                 <h5 class="card-title">Subs</h5>
                                 <p class="card-text">
-                                    <form action="{% url 'orderSub' %}" class="" method="POST">
-                                        {% csrf_token %}
-                                        <div class="form-row">
-                                            <div class="col-md-6 mb-3">
-                                                <select class="custom-select mr-sm-2" id="sub" name="sub">
-                                                    {% for sub in subs %}
-                                                    <option value="{{ sub.ingredients }}">
-                                                        {{ sub.ingredients }}
-                                                    </option>
-                                                    {% endfor%}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <select class="custom-select mr-sm-2" name="size">
-                                                    {% for size in sizes %}
-                                                    <option value="{{ size.id}}">{{size}}</option>
-                                                    {% endfor%}
-                                                </select>
-                                            </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <select class="custom-select mr-sm-2" id="sub" name="sub">
+                                                {% for sub in subs %}
+                                                <option value="{{ sub.ingredients }}">
+                                                    {{ sub.ingredients }}
+                                                </option>
+                                                {% endfor%}
+                                            </select>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-6 mb-3">
-                                                <input class="form-control" type="number" name="num" placeholder="qnt">
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <select class="custom-select mr-sm-2" name="extra">
-                                                    <option value="none">no extra</option>
-                                                    {% for extra in extras %}
-                                                    <option value="{{ extra.id }}">{{extra.extra}}
-                                                        {{extra.price}}</option>
-                                                    {% endfor%}
-                                                </select>
-                                            </div>
+                                        <div class="col-md-6 mb-3">
+                                            <select class="custom-select mr-sm-2" name="size" id="sub_size">
+                                                {% for size in sizes %}
+                                                <option value="{{ size }}">{{size}}</option>
+                                                {% endfor%}
+                                            </select>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-6 mb-3">
-                                                <button class="btn btn-secondary" type="submit">add to
-                                                    cart</button>
-                                            </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                id="sub_qnt">
                                         </div>
-                                    </form>
+                                        <div class="col-md-6 mb-3">
+                                            <select class="custom-select mr-sm-2" name="extra">
+                                                <option value="none">no extra</option>
+                                                {% for extra in extras %}
+                                                <option value="{{ extra.extra }}">{{extra.extra}}
+                                                    {{extra.price}}</option>
+                                                {% endfor%}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <button class="btn btn-secondary" id="add_sub" type="submit">add to
+                                                cart</button>
+                                        </div>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -249,31 +287,30 @@
                             <div class="card-body">
                                 <h5 class="card-title">Pasta</h5>
                                 <p class="card-text">
-                                    <form action="{% url 'orderPasta' %}" class="" method="POST">
-                                        {% csrf_token %}
-                                        <div class="form-row">
-                                            <div class="col-md-12 mb-3">
-                                                <select class="custom-select mr-sm-2" id="pasta" name="pasta">
-                                                    {% for pasta in pastas %}
-                                                    <option value="{{ pasta.ingredients}}">{{pasta}}
-                                                        {{pasta.price}}
-                                                    </option>
-                                                    {% endfor%}
-                                                </select>
-                                            </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12 mb-3">
+                                            <select class="custom-select mr-sm-2" id="pasta" name="pasta">
+                                                {% for pasta in pastas %}
+                                                <option value="{{ pasta.ingredients}}">{{pasta}}
+                                                    {{pasta.price}}
+                                                </option>
+                                                {% endfor%}
+                                            </select>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-12 mb-3">
-                                                <input class="form-control" type="number" name="num" placeholder="qnt">
-                                            </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12 mb-3">
+                                            <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                id="pasta_qnt">
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-6 mb-3">
-                                                <button class="btn btn-secondary" type="submit">add to
-                                                    cart</button>
-                                            </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <button class="btn btn-secondary" type="submit" id="add_pasta">add to
+                                                cart</button>
                                         </div>
-                                    </form>
+                                    </div>
+
                                 </p>
                             </div>
                         </div>
@@ -293,35 +330,34 @@
                             <div class="card-body">
                                 <h5 class="card-title">Dinner Platters</h5>
                                 <p class="card-text">
-                                    <form action="{% url 'orderDinner' %}" class="" method="POST">
-                                        {% csrf_token %}
-                                        <div class="form-row">
-                                            <div class="col-md-6 mb-3">
-                                                <select class="custom-select mr-sm-2" id="dinner" name="dinner">
-                                                    {% for dinner in dinnerPlates %}
-                                                    <option value="{{ dinner }}">{{ dinner}}</option>
-                                                    {% endfor%}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <select class="custom-select mr-sm-2" name="size">
-                                                    {% for size in sizes %}
-                                                    <option value="{{ size.id}}">{{size}}</option>
-                                                    {% endfor%}
-                                                </select>
-                                            </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <select class="custom-select mr-sm-2" id="dinner" name="dinner">
+                                                {% for dinner in dinnerPlates %}
+                                                <option value="{{ dinner }}">{{ dinner}}</option>
+                                                {% endfor%}
+                                            </select>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-12 mb-3">
-                                                <input class="form-control" type="number" name="num" placeholder="qnt">
-                                            </div>
+                                        <div class="col-md-6 mb-3">
+                                            <select class="custom-select mr-sm-2" name="size" id="dinner_size">
+                                                {% for size in sizes %}
+                                                <option value="{{ size }}">{{size}}</option>
+                                                {% endfor%}
+                                            </select>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-6 mb-3">
-                                                <button class="btn btn-secondary" type="submit">add to
-                                                    cart</button>
-                                            </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12 mb-3">
+                                            <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                id="dinner_qnt">
                                         </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <button class="btn btn-secondary" type="submit" id="add_dinner">add to
+                                                cart</button>
+                                        </div>
+                                    </div>
                                     </form>
                                 </p>
                             </div>
@@ -339,30 +375,28 @@
                             <div class="card-body">
                                 <h5 class="card-title">Salad</h5>
                                 <p class="card-text">
-                                    <form action="{% url 'orderSalad' %}" class="" method="POST">
-                                        {% csrf_token %}
-                                        <div class="form-row">
-                                            <div class="col-md-12 mb-3">
-                                                <select class="custom-select mr-sm-2" id="salad" name="salad">
-                                                    {% for salad in salads %}
-                                                    <option value="{{ salad }}">{{salad}} {{salad.price}}
-                                                    </option>
-                                                    {% endfor%}
-                                                </select>
-                                            </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12 mb-3">
+                                            <select class="custom-select mr-sm-2" id="salad" name="salad" id="salad">
+                                                {% for salad in salads %}
+                                                <option value="{{ salad }}">{{salad}} {{salad.price}}
+                                                </option>
+                                                {% endfor%}
+                                            </select>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-12 mb-3">
-                                                <input class="form-control" type="number" name="num" placeholder="qnt">
-                                            </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-12 mb-3">
+                                            <input class="form-control" type="number" name="num" placeholder="qnt"
+                                                id="salad_qnt">
                                         </div>
-                                        <div class="form-row">
-                                            <div class="col-md-6 mb-3">
-                                                <button class="btn btn-secondary" type="submit">add to
-                                                    cart</button>
-                                            </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6 mb-3">
+                                            <button class="btn btn-secondary" type="submit" id="add_salad">add to
+                                                cart</button>
                                         </div>
-                                    </form>
+                                    </div>
                                 </p>
                             </div>
                         </div>
@@ -371,49 +405,38 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-md-3">
+    <div class="col-xs-12 col-md-4">
         <div class="container" id="cart">
             <h1>Hello, {{ user.username }}</h1>
             <h3>status: {{ order.order_status}}</h3>
-
             <div class="row">
-                <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px; ">
+                <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px; "
+                    id='items_div'>
                     {%for item in items%}
-                    <div style="margin-top: 5px;">{{item}}</div>
-                    {% empty %}
-                    <li>cart is empty </li>
-                    {% endfor %}
-                </div>
-                <div class="col-xs-3" style="padding-top: 10px;">
-                    {%for item in items%}
-                    <div style="margin-top: 5px;">{% if item.price == None %}-{% else %}{{ item.price }}{% endif %}</div>
-                    {% empty %}
-                    -
-                    {% endfor %}
-                </div>
-                <div class="col-xs-3" style="padding-top: 10px;">
-                    {% for item in items %}
-                    <div style="margin-top: 3px;" class="col-xs-3 cart_items">
-                        <button class="trash" id="{{item.id}}" onclick="deleteItem(this.id)">
-                            <svg class="bi bi-trash" width="1.5em " height="1em" viewBox="0 0 16 16" fill="white" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z" />
-                                <path fill-rule="evenodd" d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z" clip-rule="evenodd"/>
-                            </svg>
-                        </button>
+                    <div id="{{item.id}}_item_div">
+                        <div style="margin-top: 5px;">{{item.quantity}}x {{item.content_object}} US$ {{item.price}}
+                            <button class="trash" id="{{item.id}}" onclick="deleteItem(this.id)">
+                                <svg class="bi bi-trash" width="1.5em " height="1em" viewBox="0 0 16 16" fill="white"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z" />
+                                    <path fill-rule="evenodd"
+                                        d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div style="margin-left: 30px;">{% if item.size != None %}size: {{item.size}} {% endif %}</div>
+                        <div style="margin-left: 30px;">{% if item.extras != None %}{{item.extras}} {% endif %}</div>
                     </div>
-                    {% empty %}
-                    -
                     {% endfor %}
                 </div>
             </div>
-            
-            
-
+            <div>
+            </div>
             <div class="row" id="total_div">
-                <h4>Total:</h4>
-                <h3 id="total">US$ {{totalPrice}}</h3>
-                <input type="button" class="btn btn-dark" data-toggle="modal" data-target="#checkoutModal"
-                    value="checkout" id="checkout_button">
+                <h1 id="total">US$ <span id="totalPrice">{{totalPrice}}</span></h1>
+                <input type="button" class="btn btn-dark"  data-toggle="modal" data-target="#checkoutModal" value="checkout" id="checkout_button">
             </div>
         </div>
     </div>

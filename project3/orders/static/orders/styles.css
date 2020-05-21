@@ -64,11 +64,12 @@ body {
 }
 
 #total_div {
-  position: absolute;
-  bottom: 200px;
-  padding-left: 10px;
+  position: fixed;
+  bottom:0%;
+  padding-bottom: 30px;
   background-color: #303030;
   width: 92%;
+  height: 20vh;
 }
 
 #total{
@@ -76,9 +77,9 @@ body {
 }
 
 #checkout_button {
-  position: absolute;
+  position: fixed;
   right: 0px;
-  height: 100%;
+  height: 20vh;
 }
 
 #cart {
