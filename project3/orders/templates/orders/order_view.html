@@ -10,6 +10,8 @@
     var urlOrderDinner = "{% url 'orderDinner' %}"
     var urlOrderSalad = "{% url 'orderSalad' %}"
     var urlRemoveItem = "{% url 'removeItem' %}"
+    var urlCheckout = "{% url 'checkout' %}"
+    
 </script>
 <div class="modal fade" id="pizza" tabindex="-1" role="dialog" aria-labelledby="pizzaLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -39,10 +41,10 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
+<div class="modal fade bd-example-modal-lg" id="checkoutModal" tabindex="-1" role="dialog"
+    aria-labelledby="checkoutModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content" style="background-color: rgba(15,15,15, .95) !important;">
             <div class="modal-header">
                 <h5 class="modal-title" id="checkoutModalLabel">Checkout</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -50,14 +52,15 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="row" >
-                    <div class="col-xs-6 items_div" >
+                <div class="row">
+                    <div class="col-xs-5 items_div" id="modal_items">
                         {%for item in items%}
                         <div class="{{item.id}}_item_div">
                             <div style="margin-top: 5px;">{{item.quantity}}x {{item.content_object}} US$ {{item.price}}
-                                <button class="trash" style="background-color:rgba(15,15,15, .70);" id="{{item.id}}" onclick="deleteItem(this.id)">
-                                    <svg class="bi bi-trash" width="1.5em " height="1em" viewBox="0 0 16 16" fill="white"
-                                        xmlns="http://www.w3.org/2000/svg">
+                                <button class="trash" style="background-color:rgba(15,15,15, .70);" id="{{item.id}}"
+                                    onclick="deleteItem(this.id)">
+                                    <svg class="bi bi-trash" width="1.5em " height="1em" viewBox="0 0 16 16"
+                                        fill="white" xmlns="http://www.w3.org/2000/svg">
                                         <path
                                             d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z" />
                                         <path fill-rule="evenodd"
@@ -66,10 +69,60 @@
                                     </svg>
                                 </button>
                             </div>
-                            <div style="margin-left: 30px;">{% if item.size != None %}size: {{item.size}} {% endif %}</div>
-                            <div style="margin-left: 30px;">{% if item.extras != None %}{{item.extras}} {% endif %}</div>
+                            <div class="size_div">{% if item.extras != None %}{{item.extras}}{% endif %}
+                            </div>
+                            <div class="size_div">{% if item.size != None %}size: {{item.size}}{% endif %}
+                            </div>
                         </div>
                         {% endfor %}
+                    </div>
+                    <div class="col-xs-5" style="max-width: 400px;">
+                        <div class="form-group col-md-12">
+                            <label> Delivery Information:</label>
+                        </div>
+
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-12">
+                                <label for="inputAddress">Address</label>
+                                <input type="text" class="form-control" id="inputAddress"
+                                    placeholder="{{order.street}}">
+                            </div>
+                        </div>
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-4">
+                                <label for="inputCity">City</label>
+                                <input type="text" class="form-control" id="inputCity" placeholder="{{order.city}}">
+                            </div>
+                            <div class="form-group col-md-5">
+                                <label for="inputState">State</label>
+                                <input type="text" class="form-control" id="inputState" placeholder="{{order.state}}">
+                            </div>
+                            <div class="form-group col-md-3">
+                                <label for="inputZip">Zip</label>
+                                <input type="text" class="form-control" id="inputZip" placeholder="{{order.zipcode}}">
+                            </div>
+                        </div>
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-12">
+                                <label for="card-number">card information</label>
+                                <input type="number" class="form-control" placeholder="1234 1234 1234 1234"
+                                    id="card-number">
+                            </div>
+                        </div>
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-6">
+                                <input type="month" class="form-control" id="card-date">
+                            </div>
+                            <div class="form-group col-md-6">
+                                <input type="number" class="form-control" placeholder="CVC" id="card-cvc">
+                            </div>
+                        </div>
+                        <div class="form-row col-md-12">
+                            <div class="form-group col-md-12">
+                                <input type="button" class="btn btn-secondary" id="playment" value="Pay"
+                                    style="width: 100%;">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -83,16 +136,6 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    $('#exampleModal').on('show.bs.modal', event => {
-        var button = $(event.relatedTarget);
-        var modal = $(this);
-        // Use above variables to manipulate the DOM
-
-    });
-</script>
 
 {% endblock%}
 
@@ -143,8 +186,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="qnt"
-                                                id="regular_qnt">
+                                            <input class="form-control" type="number" name="num" placeholder="1"
+                                                id="regular_qnt" min="1" max="50">
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -163,7 +206,7 @@
                 <div class="card mb-3">
                     <div class="row no-gutters">
                         <div class="col-md-4">
-                            <img src="{% static 'orders/images/sicilian.jpg' %}" class="card-img" alt="..."
+                            <img src="{% static 'orders/images/sicilian2.jpg' %}" class="card-img" alt="..."
                                 height="260px">
                         </div>
                         <div class="col-md-8">
@@ -190,7 +233,7 @@
                                     <div class="form-row">
                                         <div class="col-md-12 mb-3">
                                             <input class="form-control" type="number" id="sicilian_num" name="num"
-                                                placeholder="qnt">
+                                                placeholder="1" min="1" max="50">
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -238,8 +281,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-6 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="qnt"
-                                                id="sub_qnt">
+                                            <input class="form-control" type="number" name="num" placeholder="1"
+                                                id="sub_qnt" min="1" max="50">
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <select class="custom-select mr-sm-2" name="extra">
@@ -286,8 +329,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="qnt"
-                                                id="pasta_qnt">
+                                            <input class="form-control" type="number" name="num" placeholder="1"
+                                                id="pasta_qnt" min="1" max="50">
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -304,7 +347,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" id="dinner_salad">
             <div class="col-xs-12 col-md-6">
                 <div class="card mb-3">
                     <div class="row no-gutters">
@@ -334,8 +377,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="qnt"
-                                                id="dinner_qnt">
+                                            <input class="form-control" type="number" name="num" placeholder="1"
+                                                id="dinner_qnt" min="1" max="50">
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -373,8 +416,8 @@
                                     </div>
                                     <div class="form-row">
                                         <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="qnt"
-                                                id="salad_qnt">
+                                            <input class="form-control" type="number" name="num" placeholder="1"
+                                                id="salad_qnt" min="1" max="50">
                                         </div>
                                     </div>
                                     <div class="form-row">
@@ -392,14 +435,11 @@
         </div>
     </div>
     <div class="col-xs-12 col-md-4">
-        <div class="container" id="cart" style="position: fixed;">
+        <div class="container" id="cart">
             <h1>Hello, {{ user.username }}</h1>
-            <h3>status: {{ order.order_status}}</h3>
-            <div class="row">
-                <div class="col-xs-6 items_div" style="padding-right: 15px; padding-top: 10px; padding-left: 40px; ">
-                    <div style="background-color: royalblue;" class="aaa">
-
-                    </div>
+            <h3>order status: {{ order.order_status}}</h3>
+            <div class="row" id="cart_row">
+                <div class="col-xs-6 items_div" id="cart_items_div">
                     {%for item in items%}
                     <div class="{{item.id}}_item_div">
                         <div style="margin-top: 5px;">{{item.quantity}}x {{item.content_object}} US$ {{item.price}}
@@ -414,8 +454,8 @@
                                 </svg>
                             </button>
                         </div>
-                        <div style="margin-left: 30px;">{% if item.size != None %}size: {{item.size}} {% endif %}</div>
-                        <div style="margin-left: 30px;">{% if item.extras != None %}{{item.extras}} {% endif %}</div>
+                        <div class="size_div">{% if item.extras != None %}{{item.extras}} {% endif %}</div>
+                        <div class="size_div">{% if item.size != None %}size: {{item.size}} {% endif %}</div>
                     </div>
                     {% endfor %}
                 </div>
@@ -424,7 +464,8 @@
             </div>
             <div class="row" id="total_div">
                 <h1 id="total">US$ <span class="totalPrice">{{totalPrice}}</span></h1>
-                <input type="button" class="btn btn-dark"  data-toggle="modal" data-target="#checkoutModal" value="checkout" id="checkout_button">
+                <input type="button" class="btn btn-dark" data-toggle="modal" data-target="#checkoutModal"
+                    value="checkout" id="checkout_button">
             </div>
         </div>
     </div>

@@ -24,11 +24,70 @@ body {
   margin-left: 150px;
 }
 
+
+
+.pizza_toppings{
+  padding-left: 30px;
+  padding-right: 15px;
+  padding-top: 10px;
+}
+#sub_menu, #extra_menu, #pasta_menu, #dinner_menu, #salad_menu{
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-left: 40px;
+}
+#navbar{
+  background-color: #151515 !important;
+}
+
 .modal-content {
   background-color: rgba(15, 15, 15, 0.7) !important;
 }
 .close {
   color: white;
+}
+
+.size_div{
+  margin-left: 30px;
+}
+#cart{
+  position: fixed;
+}
+
+#cart_items_div{
+  padding-right: 15px;
+  padding-top: 10px;
+  padding-left: 40px;
+}
+
+#modal_items{
+  background-color:rgba(15,15,15, .70);
+  margin: 15px;
+  padding: 15px;
+  max-width: 350px;
+  overflow-y: scroll;
+  max-height: 380px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #3b3b3b; 
+}
+::-webkit-scrollbar-thumb {
+  background: #888; 
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+.sub_price{
+  margin-left: 45px;
+  padding-top: 15px;
+}
+
+#contact_info{
+  margin-top: 100px;
 }
 
 #checkout_items_modal {
@@ -73,7 +132,9 @@ body {
 }
 
 #total{
-  margin: 5%;
+  margin-top: 4%;
+  margin-left: 7%;
+  font-size: 50px;
 }
 
 #checkout_button {
@@ -89,23 +150,56 @@ body {
   padding: 15px;
 }
 
-.cart_items {
-  margin-left: 5%;
+#cart_row{
+  overflow-y: scroll;
+  max-height: 50vh;
 }
 
 @media only screen and (max-width: 414px) {
+
+  #contact_info{
+    margin-top: 0px;
+    margin-bottom: 30px;
+    margin-left: 50px;
+  }
+  
+  .pizza_toppings{
+    padding-left: 15px;
+    padding-right: 5px;
+    padding-top: 5px;
+  }
+
+  .sub_price{
+    margin-left: 20px;
+  }
+
   #large_screen {
     display: none;
   }
-  #pizza_image,
-  #sub_image,
-  #pasta_image,
-  #salad_image,
-  #dinner_image {
-    display: none;
+ 
+  .menu_items{
+    margin-right: 15px;
+    margin-top: 20px;
   }
-  #logo,
-  #header {
-    display: none;
+
+  #checkout_button{
+    height: 15vh;
+    bottom: 0%;
   }
+  #total_div{
+    left: 0%;
+    width: 100vw;
+    height: 15vh;
+  }
+
+  #total{
+    margin-top: 30px;
+    margin-left: 90px;
+    font-size: 40px;
+  }
+  #dinner_salad{
+    margin-bottom: 15vh;
+  }
+  
+
 }

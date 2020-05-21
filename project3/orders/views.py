@@ -16,13 +16,8 @@ def orderTotal(items):
 
 def generate_context(request, order, logged=False):
 
-    user = request.user
-    items = OrderItem.objects.filter(order=order)
-
-    total = orderTotal(items)
-
     context = {
-            "user": request.user,
+          
             "bases": PizzaBaseType.objects.all(),
             "toppingOptions": PizzaTopping.objects.all(),
             "sizes": Size.objects.all(),
@@ -31,11 +26,20 @@ def generate_context(request, order, logged=False):
             "extras": Extra.objects.all(),
             "pastas": Pasta.objects.all(),
             "salads": Salad.objects.all(),
+            "sicilians": Pizza.objects.filter(base="2"),
+            "regulars": Pizza.objects.filter(base="1"),
             "dinnerPlates": DinnerPlate.objects.all(),
-            "order": Order.objects.get(user=user),
-            "items": OrderItem.objects.filter(order=order),
-            "totalPrice": total
         }
+
+    if logged:
+        user = request.user
+        items = OrderItem.objects.filter(order=order)
+        total = orderTotal(items)
+        context["user"] = request.user
+        context["order"] = Order.objects.get(user=user)
+        context["items"] = OrderItem.objects.filter(order=order)
+        context["totalPrice"] = total
+
 
     return context
 
@@ -49,11 +53,11 @@ def get_pizza(request):
         base = 1
 
     toppings = {
-    "cheese": 1,
-    "one topping": 2,
-    "two toppings": 3,
-    "three toppings": 4,
-    "special": 5,
+    "Cheese": 1,
+    "One topping": 2,
+    "Two toppings": 3,
+    "Three toppings": 4,
+    "Special": 5,
     }
 
     return Pizza.objects.get(base=base, toppings=toppings[topping])
@@ -98,7 +102,6 @@ def if_pending_order(request):
 
 
 def register(request):
-    print('hello')
     username = request.POST["username"]
     password = request.POST["password"]
     fname = request.POST["fname"]
@@ -111,24 +114,10 @@ def register(request):
 
     user = User.objects.create_user(username, email, password)
     user.save()
-
     order = Order.objects.create(user=user, order_status='PENDING')
     order.save()
 
-    context = {
-            "user": user,
-            "bases": PizzaBaseType.objects.all(),
-            "toppingOptions": PizzaTopping.objects.all(),
-            "sizes": Size.objects.all(),
-            "toppings": Topping.objects.all(),
-            "subs": Sub.objects.all(),
-            "extras": Extra.objects.all(),
-            "pastas": Pasta.objects.all(),
-            "salads": Salad.objects.all(),
-            "dinnerPlates": DinnerPlate.objects.all(),
-            "order": Order.objects.get(user=user),
-            "items": OrderItem.objects.filter(order=order)
-        }
+    context = generate_context(request, order, logged=True)
 
     return render(request, "orders/order_view.html", context)
 
@@ -141,62 +130,30 @@ def login_view(request):
         login(request, user)
         order = if_pending_order(request)
 
-        context = generate_context(request, order)
-
+        context = generate_context(request, order, logged=True)
         return render(request, "orders/order_view.html", context)
-    else:
-        context = {
-            "bases": PizzaBaseType.objects.all(),
-            "toppingOptions": PizzaTopping.objects.all(),
-            "sizes": Size.objects.all(),
-            "toppings": Topping.objects.all(),
-            "subs": Sub.objects.all(),
-            "extras": Extra.objects.all(),
-            "pastas": Pasta.objects.all(),
-            "salads": Salad.objects.all(),
-            "dinnerPlates": DinnerPlate.objects.all(),
-        }
-        return render(request, "orders/index.html")
 
+    else:
+        
+        context = generate_context(request, None, logged=False)
+        return render(request, "orders/index.html", context)
+        
 
 def logout_view(request):
     logout(request)
-    context = {
-            "bases": PizzaBaseType.objects.all(),
-            "toppingOptions": PizzaTopping.objects.all(),
-            "sizes": Size.objects.all(),
-            "toppings": Topping.objects.all(),
-            "regulars": Pizza.objects.filter(base=1),
-            "sicilians": Pizza.objects.filter(base=2),
-            "subs": Sub.objects.all(),
-            "extras": Extra.objects.all(),
-            "pastas": Pasta.objects.all(),
-            "salads": Salad.objects.all(),
-            "dinnerPlates": DinnerPlate.objects.all(),
-        }
+    context = generate_context(request, None, logged=False)
     return render(request, "orders/index.html", context)
 
 
 def index(request):
+    
     if not request.user.is_authenticated:
-        context = {
-            "user": request.user,
-            "bases": PizzaBaseType.objects.all(),
-            "toppingOptions": PizzaTopping.objects.all(),
-            "regulars": Pizza.objects.filter(base=1),
-            "sicilians": Pizza.objects.filter(base=2),
-            "sizes": Size.objects.all(),
-            "toppings": Topping.objects.all(),
-            "subs": Sub.objects.all(),
-            "extras": Extra.objects.all(),
-            "pastas": Pasta.objects.all(),
-            "salads": Salad.objects.all(),
-            "dinnerPlates": DinnerPlate.objects.all(),
-        }
+        context = generate_context(request, None, logged=False)
+
         return render(request, "orders/index.html", context)
 
     order = if_pending_order(request)
-    context = generate_context(request, order)
+    context = generate_context(request, order, logged=True)
 
     return render(request, "orders/order_view.html", context)
 
@@ -211,9 +168,9 @@ def orderPizza(request):
     num = int(request.POST["num"])
  
     if size == 'small':
-        price = pizza.small
+        price = pizza.small * num
     else:
-        price = pizza.large
+        price = pizza.large * num
 
     pizzaItem = OrderItem(quantity=num, order=order, content_object=pizza, object_id=pizza.id, price=price, size=Size.objects.get(size=size), extras=", ".join(toppings))
     pizzaItem.save()
@@ -246,9 +203,9 @@ def orderSub(request):
     print(size)
 
     if size == 'small':
-        price = sub.small
+        price = sub.small * num
     else:
-        price = sub.large
+        price = sub.large * num
 
     item = OrderItem(quantity=num, order=order, content_object=sub, object_id=sub.id, price=price, size=Size.objects.get(size=size), extras=extra)
     item.save()
@@ -329,9 +286,9 @@ def orderDinner(request):
 
 
     if size == 'small':
-        price = dinner.small
+        price = dinner.small * num
     else:
-        price = dinner.large
+        price = dinner.large * num
 
     item = OrderItem(quantity=num, order=order, content_object=dinner, object_id=dinner.id, price=price, size=Size.objects.get(size=size))
     item.save()
@@ -354,7 +311,6 @@ def removeItem(request):
     itemId = request.POST['itemId']
     item = OrderItem.objects.get(id=itemId)
     
-
     order = if_pending_order(request)
     item.delete()
     print(item)
@@ -364,6 +320,27 @@ def removeItem(request):
     jsonResponse =  {
                     'total' : orderTotal(items),
                     'itemId': itemId
+                    }
+
+    return JsonResponse(jsonResponse, safe=False)
+
+
+
+@csrf_exempt
+def checkout(request):
+    order = Order.objects.get(user=request.user, order_status="PENDING")
+
+    if request.POST["street"] == "" and request.POST["city"] == "" and request.POST["state"] == "" and request.POST["zip"] == "":
+        pass
+    else:
+        order.street = request.POST["street"]
+        order.city = request.POST["city"]
+        order.state = request.POST["state"]
+        order.zipcode = request.POST["zip"]
+        order.save()
+    
+    jsonResponse =  {
+                    "address" : f"Address: {order.street} {order.city} {order.state} {order.zipcode}"
                     }
 
     return JsonResponse(jsonResponse, safe=False)

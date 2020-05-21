@@ -3,7 +3,7 @@
 
 {% block modal %}
 <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Login</h5>
@@ -110,9 +110,9 @@
 {% endblock%}
 
 {% block body %}
-<div class="row" style="margin-right: 15px; margin-top: 20px;">
+<div class="row menu_items">
     <div class="card mb-3 offset-1">
-        <img src="{% static 'orders/images/pizza.jpg' %}" class="card-img-top" alt="...">
+        <img src="{% static 'orders/images/sicilian1.jpg' %}" class="card-img-top" alt="...">
         <div class="card-body">
 
             <div class="card-text">
@@ -123,23 +123,23 @@
                     The 15-slice (28" x 16"), 2 large pizza boxes and can feed 6 to 9 people.
                 </div>
                 <div class="row">
-                    <div class="col-xs-6" style=" padding-left: 30px; padding-right: 15px; padding-top: 10px;">
+                    <div class="col-xs-6 pizza_toppings">
                         {% for top in toppingOptions %}
                         <div>{{top}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1" style="padding-top: 10px;">
+                    <div class="col-xs-3 offset-1 pizza_toppings">
                         {% for sicilian in sicilians %}
                         <div> {{sicilian.small}} </div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1" style="padding-top: 10px;">
+                    <div class="col-xs-3 offset-1 pizza_toppings">
                         {% for sicilian in sicilians %}
                         <div> {{sicilian.large}}  </div>
                         {% endfor %}
                     </div>
                 </div>
-                <div class="row col-md-12" style="margin-top: 15px;">
+                <div class="row col-md-12">
                     <h3>Toppings</h3>
                     <p> {% for topping in toppings %}
                         <span> {{ topping }} / </span>
@@ -155,29 +155,29 @@
 
             <div class="card-text">
                 <h3>Regular Pizza</h3>
-                <div class="row col-md-12" style="margin-top: 10px;">
+                <div class="row col-md-12">
                     <p>Our Regular pizza is a thin-crust or Neapolitan pizza. </p>
                     <p>The small is suitable for 1 to 2 people (12" in diameter)
                         The large feeds 2 to 4 people. (16" in diameter)</p>
                 </div>
                 <div class="row">
-                    <div class="col-xs-6" style="padding-left: 30px; padding-right: 15px; padding-top: 10px;">
+                    <div class="col-xs-6 pizza_toppings" >
                         {% for top in toppingOptions %}
                         <div>{{top}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1" style="padding-top: 10px;">
+                    <div class="col-xs-3 offset-1 pizza_toppings">
                         {% for regular in regulars %}
                         <div> {{regular.small}} </div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1" style="padding-top: 10px;">
+                    <div class="col-xs-3 offset-1 pizza_toppings">
                         {% for regular in regulars %}
                         <div> {{regular.large}}  </div>
                         {% endfor %}
                     </div>
                 </div>
-                <div class="row col-md-12" style="margin-top: 15px;">
+                <div class="row col-md-12">
                     <h3>Toppings</h3>
                     <p> {% for topping in toppings %}
                         <span> {{ topping }} / </span>
@@ -189,7 +189,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row menu_items">
     <div class="card mb-3 offset-1">
         <img src="{% static 'orders/images/sub_small.jpg' %}" class="card-img-top" alt="...">
         <div class="card-body">
@@ -197,17 +197,17 @@
             <div class="card-text">
                 <h3>Subs</h3>
                 <div class="row">
-                    <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                    <div class="col-xs-3" id="sub_menu">
                         {% for sub in subs %}
                         <div>{{sub}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1" style="padding-top: 10px;">
+                    <div class="col-xs-3 sub_price">
                         {% for sub in subs %}
-                        <div> {{sub.small}} </div>
+                        <div>{% if sub.small == 0.0 %}-{% else%}{{sub.small}}{% endif %}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1" style="padding-top: 10px;">
+                    <div class="col-xs-3 sub_price">
                         {% for sub in subs %}
                         <div> {{sub.large}}  </div>
                         {% endfor %}
@@ -215,12 +215,12 @@
                 </div>
                 <h3> Extra </h3>
                 <div class="row">
-                    <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                    <div class="col-xs-6" id="extra_menu">
                         {% for extra in extras %}
                         <div>{{extra.extra}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-6 offset-3" style="padding-top: 10px;">
+                    <div class="col-xs-6 offset-3">
                         {%for extra in extras%}
                         <div>{{extra.price }} </div>
                         {% endfor %}
@@ -236,7 +236,7 @@
             <div class="card-text">
                 <h3>Pasta</h3>
                 <div class="row">
-                    <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                    <div class="col-xs-6" id="pasta_menu">
                         {% for pasta in pastas %}
                         <div>{{pasta}}</div>
                         <div>{{pasta}}</div>
@@ -247,7 +247,7 @@
                         <div>{{pasta}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1" style="padding-top: 10px;">
+                    <div class="col-xs-3 offset-1">
                         {% for pasta in pastas %}
                         <div>{{pasta.price}}</div>
                         <div>{{pasta.price}}</div>
@@ -264,7 +264,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row menu_items">
     <div class="card mb-3 offset-1">
         <img src="{% static 'orders/images/garden.jpg' %}" class="card-img-top" alt="...">
         <div class="card-body">
@@ -272,12 +272,12 @@
             <div class="card-text">
                 <h3>Salads</h3>
                 <div class="row">
-                    <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                    <div class="col-xs-6" id="salad_menu">
                         {% for salad in salads %}
                         <div>{{salad}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-3" style="padding-top: 10px;">
+                    <div class="col-xs-3 offset-3">
                         {% for salad in salads %}
                         <div>{{salad.price}}</div>
                         {% endfor %}
@@ -293,17 +293,17 @@
             <div class="card-text">
                 <h3>Dinner Platters</h3>
                 <div class="row">
-                    <div class="col-xs-6" style="padding-right: 15px; padding-top: 10px; padding-left: 40px;">
+                    <div class="col-xs-6" id="dinner_menu" >
                         {% for dinner in dinnerPlates %}
                         <div>{{dinner}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-3" style="padding-top: 10px;">
+                    <div class="col-xs-3 offset-3">
                         {% for dinner in dinnerPlates %}
                         <div>{{ dinner.small }} </div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1" style="padding-top: 10px;">
+                    <div class="col-xs-3 offset-1">
                         {% for dinner in dinnerPlates %}
                         <div>{{ dinner.large }} </div>
                         {% endfor %}
@@ -314,30 +314,19 @@
     </div>
 </div>
 
-<div id="contact" class="row">
+<div id="contact" class="row menu_items">
     <div class="col-md-5 offset-1" style="padding: 0%; margin-bottom: 100px;">
         <img src="{%  static 'orders/images/map.gif'  %}" class="card-img" alt="..." style="max-width: 540px;">    
     </div>
-    <div class="col-md-5" style="margin-top: 100px;">
+    <div class="col-md-5">
         <div class="row">
-            <div class="col-md-2 offset-1">
-                <p>Telefone:</p>
-                <p>Fax:</p>
-                <p>Twitter:</p>
-                <p>Instagram:</p>
-                <p>Email:</p>
-                <p>address:</p>
-
-            </div>
-            <div class="col-md-9">
-                <p>617-876-4897 or 617-876-0012</p>
-                <p>617-661-6188</p>
-                <p>@PinocchiosPizz</p>
-                <p>@pinocchiospizza1</p>
-                <p>pinocchiospizza1@gmail.com</p>
-                <p>Pinocchio's Pizza
-                    74 Winthrop Street
-                    Cambridge, MA 02138</p>
+            <div class="col-md-9 offset-1" id="contact_info">
+                <p>Telefone: 617-876-4897 or 617-876-0012</p>
+                <p>Fax: 617-661-6188</p>
+                <p>Twitter: @PinocchiosPizz</p>
+                <p>Instagram: @pinocchiospizza1</p>
+                <p>Email: pinocchiospizza1@gmail.com</p>
+                <p>address: Pinocchio's Pizza 74 Winthrop Street Cambridge, MA 02138</p>
             </div>
         </div>
     </div>            

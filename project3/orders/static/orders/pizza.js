@@ -1,9 +1,9 @@
 toppings = {
-    'cheese': 1,
-    'one topping': 2,
-    'two toppings': 3,
-    'three toppings': 4,
-    'special': 5,
+    'Cheese': 1,
+    'One topping': 2,
+    'Two toppings': 3,
+    'Three toppings': 4,
+    'Special': 5,
 }
 
 $(document).ready(() => {
@@ -23,6 +23,7 @@ $(document).ready(() => {
     var pasta_button = $("#add_pasta")
     var salad_button = $("#add_salad")
     var dinner_button = $("#add_dinner")
+    var payButton = $("#playment")
 
     // related to Pizzas only
     var modal = $("#pizza")
@@ -53,39 +54,110 @@ $(document).ready(() => {
     var total = $(".totalPrice")
 
 
+    // payment info
+    var street = $("#inputAddress")
+    var state = $("#inputState") 
+    var city = $("#inputCity")
+    var zipcode = $("#inputZip")
+    var checkoutModal = $("#checkoutModal")
+
+
+
+    payButton.click( () => {
+        console.log("pay")
+        console.log(street.val(), state.val(), city.val(), zipcode.val())
+        alert(" Your order will be delivered soon.")
+        
+        data = {
+            "street" : street.val(),
+            "state" : state.val(),
+            "city" : city.val(),
+            "zip" : zipcode.val(),
+        }
+
+        $.ajax(
+            {
+                type: "POST",
+                url: urlCheckout,
+                data: data,
+                success: function (data) {
+                    alert(data.address)
+                },
+                error: function () {
+                    alert("error, please try again")
+                }
+            })
+
+
+
+        checkoutModal.modal("hide")
+    }
+
+    )
+
+
     regular_pizza_button.click(() => {
+        if (regularQnt.val() < 1){
+            qnt = 1;
+        } else {
+            qnt = regularQnt.val()
+        }
 
         dataPizza = {
             "regular_toppings": regularTop.val(),
             "size": regularSize.val(),
-            "num": regularQnt.val(),
+            "num": qnt,
             'top_opt': []
 
         }
-        if (regularTop.val() !== 'cheese') {
+        if (regularTop.val() !== 'Cheese' && regularTop.val() !== 'Special') {
             modal.modal('show')
             limitToppings(toppings[regularTop.val()])
         }
         else {
-            $("#add_pizza").click()
+            if (regularTop.val() === 'Cheese')
+            {
+                $("#add_pizza").click()
+            }
+            if (regularTop.val() === 'Special')
+            {
+                dataPizza.top_opt.push('Cheff will prepere something special.')
+                $("#add_pizza").click()
+            }
         }
 
 
     });
+
+   
+
     sicilian_pizza_button.click(() => {
+        if (sicilianQnt.val() < 1){
+            qnt = 1;
+        } else {
+            qnt = sicilianQnt.val()
+        }
         dataPizza = {
             "sicilian_toppings": sicilianTop.val(),
             "size": sicilianSize.val(),
-            "num": sicilianQnt.val(),
+            "num": qnt,
             'top_opt': []
 
         }
-        if (sicilianTop.val() !== 'cheese') {
+        if (sicilianTop.val() !== 'Cheese' && sicilianTop.val() !== 'Special') {
             modal.modal('show')
             limitToppings(toppings[sicilianTop.val()])
         }
         else {
-            $("#add_pizza").click()
+            if (sicilianTop.val() === 'Cheese')
+            {
+                $("#add_pizza").click()
+            }
+            if (sicilianTop.val() === 'Special')
+            {
+                dataPizza.top_opt.push('Cheff will prepere something special.')
+                $("#add_pizza").click()
+            }
         }
     });
 
@@ -101,12 +173,19 @@ $(document).ready(() => {
 
     })
 
+    
     sub_button.click(() => {
+
+        if (subQnt.val() < 1){
+            qnt = 1;
+        } else {
+            qnt = subQnt.val()
+        }
 
         dataSub = {
             "sub": sub.val(),
             "size": subSize.val(),
-            "num": subQnt.val(),
+            "num": qnt,
             'extra': extra.val()
         }
         makeAjaxRequest(urlOrderSub, dataSub)
@@ -115,9 +194,15 @@ $(document).ready(() => {
 
     pasta_button.click(() => {
 
+        if (pastaQnt.val() < 1){
+            qnt = 1;
+        } else {
+            qnt = pastaQnt.val()
+        }
+
         dataPasta = {
             "pasta": pasta.val(),
-            "num": pastaQnt.val(),
+            "num": qnt,
         }
         makeAjaxRequest(urlOrderPasta, dataPasta)
 
@@ -126,9 +211,15 @@ $(document).ready(() => {
 
     salad_button.click(() => {
 
+        if (saladQnt.val() < 1){
+            qnt = 1;
+        } else {
+            qnt = saladQnt.val()
+        }
+
         dataSalad = {
             "salad": salad.val(),
-            "num": saladQnt.val(),
+            "num": qnt,
         }
         makeAjaxRequest(urlOrderSalad, dataSalad)
 
@@ -136,10 +227,15 @@ $(document).ready(() => {
 
     dinner_button.click(() => {
 
+        if (dinnerQnt.val() < 1){
+            qnt = 1;
+        } else {
+            qnt = dinnerQnt.val()
+        }
         dataDinner = {
             "dinner": dinner.val(),
             "size": dinnerSize.val(),
-            "num": dinnerQnt.val(),
+            "num": qnt,
         }
         makeAjaxRequest(urlOrderDinner, dataDinner)
 
@@ -164,10 +260,10 @@ $(document).ready(() => {
                             </button>
                         </div>`
                     if (data.toppings !== undefined && data.toppings !== "none") {
-                        divElement += `<div style="margin-left: 30px;">${data.toppings}</div>`
+                        divElement += `<div class="size_div">${data.toppings}</div>`
                     }
                     if (data.size !== undefined) {
-                        divElement += `<div style="margin-left: 30px;">size: ${data.size}</div>`
+                        divElement += `<div class="size_div">size: ${data.size}</div>`
                     }
 
                     divElement += "</div>"

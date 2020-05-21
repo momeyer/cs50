@@ -91,7 +91,11 @@ class Order(models.Model):
     ]
     user =  models.ForeignKey(User, on_delete=models.CASCADE)
     order_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default=PENDING)
-    
+    street = models.CharField(max_length=64, blank=True)
+    city = models.CharField(max_length=64, blank=True)
+    state = models.CharField(max_length=64, blank=True)
+    zipcode = models.PositiveIntegerField( null=True)
+
 
     def __str__(self):
         return f"""user: {self.user}  \norder: {self.id}\n  status: {self.order_status}"""
