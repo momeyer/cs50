@@ -60,13 +60,20 @@ body {
   padding-left: 40px;
 }
 
+
+#username_cart_div{
+  margin-left: 20px;
+}
+
 #modal_items{
-  background-color:rgba(15,15,15, .70);
+  background-color:#3b3b3b;
+  border-radius: 3%;
   margin: 15px;
   padding: 15px;
   max-width: 350px;
+  width: 350px;
   overflow-y: scroll;
-  max-height: 380px;
+  max-height: 390px;
 }
 
 ::-webkit-scrollbar {
@@ -151,8 +158,19 @@ body {
 }
 
 #cart_row{
+  width: 470px;
   overflow-y: scroll;
-  max-height: 50vh;
+  max-height: 55vh;
+}
+
+.menu_items{
+  margin-top: 30px;
+  margin-left: 15px;
+}
+
+
+#modal_item_div > button{
+  background-color:rgba(15,15,15, .70);
 }
 
 @media only screen and (max-width: 414px) {

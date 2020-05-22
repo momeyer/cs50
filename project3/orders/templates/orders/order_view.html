@@ -11,7 +11,7 @@
     var urlOrderSalad = "{% url 'orderSalad' %}"
     var urlRemoveItem = "{% url 'removeItem' %}"
     var urlCheckout = "{% url 'checkout' %}"
-    
+
 </script>
 <div class="modal fade" id="pizza" tabindex="-1" role="dialog" aria-labelledby="pizzaLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -56,8 +56,8 @@
                     <div class="col-xs-5 items_div" id="modal_items">
                         {%for item in items%}
                         <div class="{{item.id}}_item_div">
-                            <div style="margin-top: 5px;">{{item.quantity}}x {{item.content_object}} US$ {{item.price}}
-                                <button class="trash" style="background-color:rgba(15,15,15, .70);" id="{{item.id}}"
+                            <div class="modal_item_div" style="margin-top: 5px;">{{item.quantity}}x {{item.content_object}} US$ {{item.price}}
+                                <button class="trash" id="{{item.id}}"
                                     onclick="deleteItem(this.id)">
                                     <svg class="bi bi-trash" width="1.5em " height="1em" viewBox="0 0 16 16"
                                         fill="white" xmlns="http://www.w3.org/2000/svg">
@@ -142,12 +142,14 @@
 
 {% block navContent %}
 <ul class="navbar-nav mr-auto">
-    <li class="nav-item active">
-        <a class="nav-link" href="#cart">Cart<span class="sr-only"></span></a>
-    </li>
     <div class="btn-group btn-group-toggle" data-toggle="buttons" id="buttons_header">
+        <input type="button" class="btn btn-secondary " data-toggle="modal" data-target="" value="previous orders">
         <a class="btn btn-secondary" href="{% url 'logout' %}">Logout</a>
     </div>
+<!-- 
+    <div class="btn-group btn-group-toggle" data-toggle="buttons" id="buttons_header">
+        <a class="btn btn-secondary" href="{% url 'logout' %}">Logout</a>
+    </div> -->
 </ul>
 {% endblock%}
 
@@ -436,8 +438,7 @@
     </div>
     <div class="col-xs-12 col-md-4">
         <div class="container" id="cart">
-            <h1>Hello, {{ user.username }}</h1>
-            <h3>order status: {{ order.order_status}}</h3>
+            <h1 id="username_cart_div">Hello, {{ user.username }}</h1>
             <div class="row" id="cart_row">
                 <div class="col-xs-6 items_div" id="cart_items_div">
                     {%for item in items%}

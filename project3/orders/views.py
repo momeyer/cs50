@@ -2,7 +2,7 @@ from django.shortcuts import render, reverse
 from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from .models import Pizza, Topping, Sub, Extra, Pasta, Salad, DinnerPlate, PizzaBaseType, Size, PizzaTopping, Order, OrderItem, User
+from .models import Pizza, Topping, Sub, Extra, Pasta, Salad, DinnerPlate, PizzaBaseType, Size, PizzaTopping, Order, OrderItem, User, OrderStatus
 # Create your views here.
 
 
@@ -17,7 +17,6 @@ def orderTotal(items):
 def generate_context(request, order, logged=False):
 
     context = {
-          
             "bases": PizzaBaseType.objects.all(),
             "toppingOptions": PizzaTopping.objects.all(),
             "sizes": Size.objects.all(),
@@ -36,10 +35,10 @@ def generate_context(request, order, logged=False):
         items = OrderItem.objects.filter(order=order)
         total = orderTotal(items)
         context["user"] = request.user
-        context["order"] = Order.objects.get(user=user)
+        pending = OrderStatus.objects.get(order_status="PENDING")
+        context["order"] = Order.objects.get(user=user, order_status=pending)
         context["items"] = OrderItem.objects.filter(order=order)
         context["totalPrice"] = total
-
 
     return context
 
@@ -93,10 +92,11 @@ def if_dinner(request):
 
 
 def if_pending_order(request):
+    pending = OrderStatus.objects.get(order_status="PENDING")
     try:
-        order = Order.objects.get(user=request.user, order_status='PENDING')
+        order = Order.objects.get(user=request.user, order_status=pending)
     except:
-        order = Order.objects.create(user=request.user, order_status='PENDING')
+        order = Order.objects.create(user=request.user, order_status=pending)
         order.save()
     return order
 
@@ -114,12 +114,16 @@ def register(request):
 
     user = User.objects.create_user(username, email, password)
     user.save()
-    order = Order.objects.create(user=user, order_status='PENDING')
+    pending = OrderStatus.objects.get(order_status='PENDING')
+    order = Order.objects.create(user=user, order_status=pending)
     order.save()
 
-    context = generate_context(request, order, logged=True)
+    if user is not None:
+        login(request, user)
 
-    return render(request, "orders/order_view.html", context)
+        context = generate_context(request, order, logged=True)
+
+        return render(request, "orders/order_view.html", context)
 
 
 def login_view(request):
@@ -324,11 +328,11 @@ def removeItem(request):
 
     return JsonResponse(jsonResponse, safe=False)
 
-
-
 @csrf_exempt
 def checkout(request):
-    order = Order.objects.get(user=request.user, order_status="PENDING")
+    pending = OrderStatus.objects.get(order_status="PENDING")
+    preparing = OrderStatus.objects.get(order_status="PREPARING")
+    order = Order.objects.get(user=request.user, order_status=pending)
 
     if request.POST["street"] == "" and request.POST["city"] == "" and request.POST["state"] == "" and request.POST["zip"] == "":
         pass
@@ -337,10 +341,16 @@ def checkout(request):
         order.city = request.POST["city"]
         order.state = request.POST["state"]
         order.zipcode = request.POST["zip"]
-        order.save()
+        
     
+    order.order_status = preparing
+    order.save()
+    
+    print(order.order_status)
+
     jsonResponse =  {
                     "address" : f"Address: {order.street} {order.city} {order.state} {order.zipcode}"
                     }
+
 
     return JsonResponse(jsonResponse, safe=False)

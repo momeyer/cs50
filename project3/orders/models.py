@@ -81,16 +81,25 @@ class DinnerPlate(models.Model):
     def __str__(self):
         return f"{self.ingredients}"
 
-class Order(models.Model):
+class OrderStatus(models.Model):
     PENDING = 'PENDING'
+    PREPARING = 'PREPARING'
     DONE = 'DONE'
-  
+    
     ORDER_STATUS_CHOICES = [
         (PENDING, 'pending'),
         (DONE, 'done'),
+        (PREPARING, 'preparing')
     ]
-    user =  models.ForeignKey(User, on_delete=models.CASCADE)
     order_status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default=PENDING)
+
+    def __str__(self):
+        return f"{self.order_status}"
+    
+class Order(models.Model):
+
+    user =  models.ForeignKey(User, on_delete=models.CASCADE)
+    order_status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
     street = models.CharField(max_length=64, blank=True)
     city = models.CharField(max_length=64, blank=True)
     state = models.CharField(max_length=64, blank=True)
