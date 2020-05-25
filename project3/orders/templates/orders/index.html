@@ -197,17 +197,17 @@
             <div class="card-text">
                 <h3>Subs</h3>
                 <div class="row">
-                    <div class="col-xs-3" id="sub_menu">
+                    <div class="col-xs-3 sub_menu">
                         {% for sub in subs %}
                         <div>{{sub}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 sub_price">
+                    <div class="col-xs-3 sub_menu">
                         {% for sub in subs %}
                         <div>{% if sub.small == 0.0 %}-{% else%}{{sub.small}}{% endif %}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 sub_price">
+                    <div class="col-xs-3 sub_menu">
                         {% for sub in subs %}
                         <div> {{sub.large}}  </div>
                         {% endfor %}
@@ -215,12 +215,12 @@
                 </div>
                 <h3> Extra </h3>
                 <div class="row">
-                    <div class="col-xs-6" id="extra_menu">
+                    <div class="col-xs-6 extra_menu">
                         {% for extra in extras %}
                         <div>{{extra.extra}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-6 offset-3">
+                    <div class="col-xs-6 offset-3 extra_menu">
                         {%for extra in extras%}
                         <div>{{extra.price }} </div>
                         {% endfor %}
@@ -236,25 +236,13 @@
             <div class="card-text">
                 <h3>Pasta</h3>
                 <div class="row">
-                    <div class="col-xs-6" id="pasta_menu">
+                    <div class="col-xs-6 pasta_menu">
                         {% for pasta in pastas %}
-                        <div>{{pasta}}</div>
-                        <div>{{pasta}}</div>
-                        <div>{{pasta}}</div>
-                        <div>{{pasta}}</div>
-                        <div>{{pasta}}</div>
-                        <div>{{pasta}}</div>
                         <div>{{pasta}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1">
+                    <div class="col-xs-3 offset-1 pasta_menu">
                         {% for pasta in pastas %}
-                        <div>{{pasta.price}}</div>
-                        <div>{{pasta.price}}</div>
-                        <div>{{pasta.price}}</div>
-                        <div>{{pasta.price}}</div>
-                        <div>{{pasta.price}}</div>
-                        <div>{{pasta.price}}</div>
                         <div>{{pasta.price}}</div>
                         {% endfor %}
                     </div>
@@ -272,12 +260,12 @@
             <div class="card-text">
                 <h3>Salads</h3>
                 <div class="row">
-                    <div class="col-xs-6" id="salad_menu">
+                    <div class="col-xs-6 salad_menu">
                         {% for salad in salads %}
                         <div>{{salad}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-3">
+                    <div class="col-xs-3 offset-3 salad_menu">
                         {% for salad in salads %}
                         <div>{{salad.price}}</div>
                         {% endfor %}
@@ -293,17 +281,17 @@
             <div class="card-text">
                 <h3>Dinner Platters</h3>
                 <div class="row">
-                    <div class="col-xs-6" id="dinner_menu" >
+                    <div class="col-xs-6 dinner_menu" >
                         {% for dinner in dinnerPlates %}
                         <div>{{dinner}}</div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-3">
+                    <div class="col-xs-3 offset-3 dinner_menu">
                         {% for dinner in dinnerPlates %}
                         <div>{{ dinner.small }} </div>
                         {% endfor %}
                     </div>
-                    <div class="col-xs-3 offset-1">
+                    <div class="col-xs-3 offset-1 dinner_menu">
                         {% for dinner in dinnerPlates %}
                         <div>{{ dinner.large }} </div>
                         {% endfor %}

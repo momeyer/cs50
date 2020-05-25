@@ -2,7 +2,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from django.db import models
-from enum import Enum
 
 # Create your models here.
 class PizzaBaseType(models.Model):

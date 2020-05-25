@@ -9,8 +9,7 @@ from .models import Pizza, Topping, Sub, Extra, Pasta, Salad, DinnerPlate, Pizza
 def orderTotal(items):
     total = 0.0
     for item in items:
-        if item.price != None:
-            total += item.price * item.quantity
+        total += item.price
 
     return round(total, 2)
 
@@ -58,24 +57,20 @@ def get_pizza(request):
     "Three toppings": 4,
     "Special": 5,
     }
-
     return Pizza.objects.get(base=base, toppings=toppings[topping])
 
 
 
 def get_sub_and_extras(request):
     ing = request.POST["sub"]
-    print(ing)
     
     extra = request.POST["extra"]
-    print("extra", extra)
-
+    
     return Sub.objects.get(ingredients=ing), extra
 
 
 def get_pasta(request):
     pasta = request.POST["pasta"]
-
     return Pasta.objects.get(ingredients=pasta)
 
 
@@ -133,16 +128,13 @@ def login_view(request):
     if user is not None:
         login(request, user)
         order = if_pending_order(request)
-
         context = generate_context(request, order, logged=True)
         return render(request, "orders/order_view.html", context)
 
     else:
-        
         context = generate_context(request, None, logged=False)
         return render(request, "orders/index.html", context)
         
-
 def logout_view(request):
     logout(request)
     context = generate_context(request, None, logged=False)
@@ -251,6 +243,7 @@ def orderPasta(request):
                     'qnt' : item.quantity,
                     'total' : orderTotal(items)
                     }
+    print(jsonResponse)
 
     return JsonResponse(jsonResponse, safe=False)
 

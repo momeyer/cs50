@@ -7,6 +7,7 @@ body {
 #buttons_header {
   position: absolute;
   right: 10px;
+  top: 15px;
 }
 #logo {
   position: absolute;
@@ -24,18 +25,21 @@ body {
   margin-left: 150px;
 }
 
-
+h3{
+  margin-left: 20px;
+}
 
 .pizza_toppings{
   padding-left: 30px;
   padding-right: 15px;
   padding-top: 10px;
 }
-#sub_menu, #extra_menu, #pasta_menu, #dinner_menu, #salad_menu{
+.sub_menu, .extra_menu, .pasta_menu, .dinner_menu, .salad_menu{
   padding-right: 15px;
   padding-top: 10px;
   padding-left: 40px;
 }
+
 #navbar{
   background-color: #151515 !important;
 }
