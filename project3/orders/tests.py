@@ -8,6 +8,8 @@ class OrderTestCase(TestCase):
 
     def setUp(self):
         pending = OrderStatus.objects.create(order_status="PENDING")
+        preparing = OrderStatus.objects.create(order_status="PREPARING")
+        
         small = Size.objects.create(size='small')
         large = Size.objects.create(size="large")
 
@@ -30,8 +32,8 @@ class OrderTestCase(TestCase):
             base=sicilianBase, toppings=special, small=30.0, large=40.0)
         pizzaRegular = Pizza.objects.create(
             base=regularBase, toppings=special, small=20.0, large=30.0)
-        order_item = OrderItem.objects.create(
-            quantity=2, order=self.order, content_object=pizzaSicilian, object_id=pizzaSicilian.id, price=pizzaSicilian.small, size=small)
+
+        order_item = OrderItem.objects.create(quantity=2, order=self.order, content_object=pizzaSicilian, object_id=pizzaSicilian.id, price=pizzaSicilian.small, size=small)
 
         sub = Sub.objects.create(
             ingredients="Meatballs", small=6.00, large=9.00)
@@ -133,5 +135,35 @@ class OrderTestCase(TestCase):
                                                     "zipCode": 123,
                                                     "state": "state",
                                                     })
-
         self.assertEqual(response.status_code, 200)
+
+    def test_checkout(self):
+        self.client.post('/register/', {
+                                                    "username": "John",
+                                                    "password": "John111",
+                                                    "fname": "John",
+                                                    "lname": "Smith",
+                                                    "email": "John@Smith",
+                                                    "address": "street111",
+                                                    "city": "cityaa",
+                                                    "zipCode": 123,
+                                                    "state": "state",
+                                                    })
+        self.client.post('/Sub/', {"sub": "Meatballs", "size": 'small', "num": 1, "extra": "none"})
+        # testig empty form (using information from db as address)
+        response = self.client.post('/Checkout/', { "street": "",
+                                                    "city": "",
+                                                    "zip": "",
+                                                    "state": "",
+                                                    })
+        self.assertEqual(response.status_code, 200)
+        # testig filled form (updating db information)
+        self.client.post('/login/', {'username': 'user1', 'password': 'user123'})
+        response = self.client.post('/Checkout/',{ 
+                                                    "street": "AnotherStreet",
+                                                    "city": "AnotherCity",
+                                                    "zip": 456,
+                                                    "state": "AnotherState",
+                                                 })
+        self.assertEqual(response.status_code, 200)
+        

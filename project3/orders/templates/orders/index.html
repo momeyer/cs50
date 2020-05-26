@@ -110,9 +110,9 @@
 {% endblock%}
 
 {% block body %}
-<div class="row menu_items">
-    <div class="card mb-3 offset-1">
-        <img src="{% static 'orders/images/sicilian1.jpg' %}" class="card-img-top" alt="...">
+<div class="row ">
+    <div class="card mb-3 menu_items">
+        <img src="{% static 'orders/images/sicilian_index_menu.jpg' %}" class="card-img-top" alt="...">
         <div class="card-body">
 
             <div class="card-text">
@@ -149,8 +149,8 @@
             </div>
         </div>
     </div>
-    <div class="card mb-3 offset-1">
-        <img src="{% static 'orders/images/pizza.jpg' %}" class="card-img-top" alt="...">
+    <div class="card mb-3 menu_items">
+        <img src="{% static 'orders/images/regular_index_menu.jpg' %}" class="card-img-top" alt="...">
         <div class="card-body">
 
             <div class="card-text">
@@ -189,15 +189,14 @@
     </div>
 </div>
 
-<div class="row menu_items">
-    <div class="card mb-3 offset-1">
-        <img src="{% static 'orders/images/sub_small.jpg' %}" class="card-img-top" alt="...">
+<div class="row ">
+    <div class="card mb-3 menu_items">
+        <img src="{% static 'orders/images/sub_index_menu.jpg' %}" class="card-img-top" alt="...">
         <div class="card-body">
-
             <div class="card-text">
                 <h3>Subs</h3>
                 <div class="row">
-                    <div class="col-xs-3 sub_menu">
+                    <div class="col-xs-2 sub_menu">
                         {% for sub in subs %}
                         <div>{{sub}}</div>
                         {% endfor %}
@@ -229,8 +228,8 @@
             </div>
         </div>
     </div>
-    <div class="card mb-3 offset-1">
-        <img src="{%  static 'orders/images/ziti.jpg' %}" class="card-img-top" alt="...">
+    <div class="card mb-3 menu_items">
+        <img src="{%  static 'orders/images/pasta_index_menu.jpg' %}" class="card-img-top" alt="...">
         <div class="card-body">
 
             <div class="card-text">
@@ -252,9 +251,9 @@
     </div>
 </div>
 
-<div class="row menu_items">
-    <div class="card mb-3 offset-1">
-        <img src="{% static 'orders/images/garden.jpg' %}" class="card-img-top" alt="...">
+<div class="row ">
+    <div class="card mb-3 menu_items">
+        <img src="{% static 'orders/images/salad_index_menu.jpg' %}" class="card-img-top" alt="...">
         <div class="card-body">
 
             <div class="card-text">
@@ -274,8 +273,8 @@
             </div>
         </div>
     </div>
-    <div class="card mb-3 offset-1">
-        <img src="{%  static 'orders/images/dinner1.jpg'  %}" class="card-img-top" alt="..." style="max-height: 200px;">
+    <div class="card mb-3 menu_items">
+        <img src="{%  static 'orders/images/dinner_index_menu.jpg'  %}" class="card-img-top" alt="..." style="max-height: 200px;">
         <div class="card-body">
 
             <div class="card-text">
@@ -303,12 +302,13 @@
 </div>
 
 <div id="contact" class="row menu_items">
-    <div class="col-md-5 offset-1" style="padding: 0%; margin-bottom: 100px;">
-        <img src="{%  static 'orders/images/map.gif'  %}" class="card-img" alt="..." style="max-width: 540px;">    
+    <div class="col-md-5 " style="padding: 0%; margin-bottom: 100px;">
+        <a href="https://www.google.com/maps/place/Pinocchio's+Pizza+%26+Subs/@42.3719941,-71.1225542,17z/data=!4m13!1m7!3m6!1s0x89e3775d51d69b07:0xa4d76bff98604ad5!2s74+Winthrop+St,+Cambridge,+MA+02138!3b1!8m2!3d42.3719941!4d-71.1203655!3m4!1s0x89e3775d4e48fa43:0xcab27982991e9fe3!8m2!3d42.3720081!4d-71.1202842"><img src="{%  static 'orders/images/map_index.gif'  %}" class="card-img" alt="..." style="max-width: 520px;"></a>
     </div>
-    <div class="col-md-5">
+    <div class="col-md-5 ">
         <div class="row">
-            <div class="col-md-9 offset-1" id="contact_info ">
+            <div class="col-md-9" id="contact_info">
+                <img id="logo_map" src="{% static 'orders/images/white_logo.png' %}" width="40%" alt="">
                 <p>Telefone: 617-876-4897 or 617-876-0012</p>
                 <p>Fax: 617-661-6188</p>
                 <p>Twitter: @PinocchiosPizz</p>

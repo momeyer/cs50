@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import Pizza, Topping, Sub, Extra, Pasta, Salad, DinnerPlate, PizzaBaseType, Size, PizzaTopping, Order, OrderItem, User, OrderStatus
+import random
 # Create your views here.
 
 
@@ -113,6 +114,13 @@ def register(request):
     order = Order.objects.create(user=user, order_status=pending)
     order.save()
 
+    order.street = address
+    order.city = city
+    order.state = state
+    order.zipcode = zipCode
+
+    order.save()
+
     if user is not None:
         login(request, user)
 
@@ -181,7 +189,6 @@ def orderPizza(request):
                     'total' : orderTotal(items)
                     }
 
-    print(jsonResponse)
 
     return JsonResponse(jsonResponse, safe=False)
 
@@ -196,7 +203,6 @@ def orderSub(request):
 
     size = request.POST["size"]
     num = int(request.POST["num"])
-    print(size)
 
     if size == 'small':
         price = sub.small * num
@@ -215,8 +221,6 @@ def orderSub(request):
                     'toppings' : extra,
                     'total' : orderTotal(items)
                     }
-
-    print(jsonResponse)
 
     return JsonResponse(jsonResponse, safe=False)
 
@@ -243,8 +247,6 @@ def orderPasta(request):
                     'qnt' : item.quantity,
                     'total' : orderTotal(items)
                     }
-    print(jsonResponse)
-
     return JsonResponse(jsonResponse, safe=False)
 
 @csrf_exempt
@@ -310,7 +312,6 @@ def removeItem(request):
     
     order = if_pending_order(request)
     item.delete()
-    print(item)
 
     items = OrderItem.objects.filter(order=order)
 
@@ -338,12 +339,11 @@ def checkout(request):
     
     order.order_status = preparing
     order.save()
-    
-    print(order.order_status)
 
+    time = random.choice([20,30,40,50])
     jsonResponse =  {
-                    "address" : f"Address: {order.street} {order.city} {order.state} {order.zipcode}"
-                    }
-
-
+            "username" : str(order.user).capitalize(),
+            "address" : f"{order.street}, zipcode: {order.zipcode}",
+            "delivery_time" : time
+            }
     return JsonResponse(jsonResponse, safe=False)

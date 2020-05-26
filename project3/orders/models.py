@@ -106,7 +106,7 @@ class Order(models.Model):
 
 
     def __str__(self):
-        return f"""user: {self.user}  \norder: {self.id}\n  status: {self.order_status}"""
+        return f"""{self.id} status: {self.order_status} user: {self.user} address: {self.street}, {self.city}, {self.state}, {self.zipcode} """
 
 
 class OrderItem(models.Model):

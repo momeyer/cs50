@@ -17,6 +17,10 @@ body {
   width: 25vw;
 }
 
+#logo_map{
+  margin-bottom: 30px ;
+}
+
 #header_image {
   width: 100vw;
 }
@@ -27,6 +31,13 @@ body {
 
 h3{
   margin-left: 20px;
+}
+
+.delivery_info{
+  color: white;
+  font-size: large;
+  margin: 15px;
+  text-align: center;
 }
 
 .pizza_toppings{
@@ -41,7 +52,7 @@ h3{
 }
 
 #navbar{
-  background-color: #151515 !important;
+  background-color: #303030 !important;
 }
 
 .modal-content {
@@ -98,7 +109,7 @@ h3{
 }
 
 #contact_info{
-  margin-top: 100px;
+  margin-left: 100px;
 }
 
 #checkout_items_modal {
@@ -127,6 +138,10 @@ h3{
 .trash {
   background-color: #3b3b3b;
   border: #3b3b3b;
+}
+
+.card-img{
+  height: 260px; 
 }
 #row_content {
   margin-top: 15px;
@@ -169,8 +184,8 @@ h3{
 
 .menu_items{
   margin-top: 30px;
-  margin-left: 15px;
-}
+  margin-left: 10%;
+ }
 
 
 #modal_item_div > button{
@@ -178,7 +193,14 @@ h3{
 }
 
 @media only screen and (max-width: 414px) {
+  
+  .card-img{
+    height: 490px;
+  }
 
+  #navbar_div{
+    width: 105vw;
+  }
   #contact_info{
     margin-top: 0px;
     margin-bottom: 30px;
@@ -191,17 +213,28 @@ h3{
     padding-top: 5px;
   }
 
-  .sub_price{
-    margin-left: 20px;
+  .sub_menu{
+    max-width: 55%;
+    margin-left: 0%;
+  }
+  .dinner_menu{
+    max-width: 55%;
+    margin-left: 0%;
   }
 
-  #large_screen {
-    display: none;
-  }
- 
   .menu_items{
-    margin-right: 15px;
+    margin-right: 0%;
     margin-top: 20px;
+    margin-left: 5%;
+  }
+
+  #contact_info{
+    margin-left: 10%;
+    margin-bottom: 15%;
+  }
+  #logo_map{
+    margin-left: 20%;
+    margin-bottom: 15%;
   }
 
   #checkout_button{
