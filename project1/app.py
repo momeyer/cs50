@@ -50,6 +50,7 @@ def generate_rate_dict(books_list):
             
     return rate_dict
 
+
 class Database():
 
     @staticmethod

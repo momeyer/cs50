@@ -15,7 +15,7 @@ header {
     content: " to Gameland!"; }
 
   .card-text::after {
-    content: "information about the procjec"; }
+    content: " information about the project"; }
 
   .card span {
     display: none; } }
