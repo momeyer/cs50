@@ -60,13 +60,13 @@ $(document).ready(() => {
     var city = $("#inputCity")
     var zipcode = $("#inputZip")
     var checkoutModal = $("#checkoutModal")
+    var deliveryModal = $("#deliveryInfo")
 
 
 
     payButton.click( () => {
         console.log("pay")
         console.log(street.val(), state.val(), city.val(), zipcode.val())
-        alert(" Your order will be delivered soon.")
         
         data = {
             "street" : street.val(),
@@ -81,14 +81,15 @@ $(document).ready(() => {
                 url: urlCheckout,
                 data: data,
                 success: function (data) {
-                    alert(data.address)
+                    $("#delivery_name").html(data.username)
+                    $("#delivery_address").html(data.address)
+                    $("#delivery_time").html(data.delivery_time)
+                    deliveryModal.modal('show')
                 },
                 error: function () {
                     alert("error, please try again")
                 }
             })
-
-
 
         checkoutModal.modal("hide")
     }
