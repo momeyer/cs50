@@ -1,0 +1,28 @@
+
+
+# Basic Requirements
+#   - if admin, have access to editable sections of web page
+#       * name, logo, selection of colors.
+
+#   - login / logout
+#   - registration
+#   - search for houses (rent or buy) even if not registered/logged in.
+#   - search by address, zipcode, city
+#   - select preferences for search (option to save it) new to list, furnished or not, num of bed, num of bath, range of m2, range of price, type of house
+#   - if logged, user can like offered houses (save to look later)
+#   - if logged, user can post a house, add pictures, description and required fields
+#   - list of houses containing all relevant information, and possible to view the pictures without opening the house page.
+#   - each house will have: id, offer type ( rent or buy ), house type (house, appartament, condo) city, street, zipcode, price, num of beds, num of baths, size, home details (ex: sqrm price, days announced, built year, heating type, air conditioning, dishwasher, garage, parking space, descrition, pool, gym, balcony,  )
+#   - schedule a visit or request information ( on first page, try to make it possible without opening the house page )
+#   - when house is selected:
+        # house pictures
+        # house information (address, nb of beds/bath, furnished or not, extras)
+        # house price 
+        # schedule tour (form with personal info and selected date)
+        # request more information (form with personal info, email and text)
+
+
+# Next Requirements
+#   - display map on large screens containing the houses that match the query. ( try to make if interactive, display house info on hover for example )
+#       * on small screens, user can choose between map or list view.
+

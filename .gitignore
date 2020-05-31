@@ -3,7 +3,10 @@
 *.a
 *.so
 *.pyc
+*.lock
 
 *.css.map
 *.sass-cache
 *.scssc
+
+*.sqlite3
