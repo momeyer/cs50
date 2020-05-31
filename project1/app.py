@@ -252,7 +252,9 @@ def submit_review(book_id):
     else:
         Database.insert_into_reviews(session['user_id'], review, rate, book_id)
         all_books_list = Database.select_all_books()
-        return render_template("all_books.html", books_list=all_books_list, pagetitle="All Books A-Z" )
+        rate_dict = generate_rate_dict(all_books_list)
+
+        return render_template("home.html", books_list=all_books_list, rate_dict=rate_dict, pagetitle="All Books A-Z")
 
 @app.route("/api/<book_isbn>")
 def book_api(book_isbn):
