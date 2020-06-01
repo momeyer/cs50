@@ -4,7 +4,7 @@ export class Header extends Component {
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-light bg-light">
-        <a className="navbar-brand" href="#">Real State Webpage </a>
+        <a className="navbar-brand" href="#">Real State Webpage</a>
         <button
           className="navbar-toggler"
           type="button"
