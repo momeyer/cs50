@@ -2,6 +2,8 @@
 *.o
 *.a
 *.so
+*.log
+*.pot
 *.pyc
 *.lock
 
@@ -9,4 +11,9 @@
 *.sass-cache
 *.scssc
 
+__pycache__/
+
 *.sqlite3
+node_modules
+media
+local_settings.py
