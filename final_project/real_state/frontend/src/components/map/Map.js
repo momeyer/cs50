@@ -1,8 +1,11 @@
-import React, { Component } from 'react'
+import React, { Component } from "react";
+import { GoogleMap, withScriptjs, withGoogleMap } from "react-google-maps";
 
-export class Map extends Component {
-    render() {
-        return <h1>map</h1>
+
+class Map extends Component {
+    render() { 
+        return <div> map </div>;
     }
 }
+ 
 export default Map;

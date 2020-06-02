@@ -1,5 +1,7 @@
 import React, { Component, Fragment } from "react";
 import Carousel from "./Carousel.js";
+import InformationButton from "./InformationButton";
+import InformationModal from "./InformationModal.js";
 
 export class House extends Component {
   render() {
@@ -17,14 +19,8 @@ export class House extends Component {
               <p>Property type: {this.props.house.property_type}</p>
               <p>Offered since: {this.props.house.created_at.slice(0, 10)}</p>
             </div>
-            <a
-              href="#"
-              className="btn btn-outline-primary btn-block"
-              style={{ borderRadius: "10px" }}
-            >
-              Check Availability
-            </a>
           </div>
+          <InformationButton key={`info_button_house_${this.props.house.id}`} house={this.props.house} />
         </div>
       </Fragment>
     );

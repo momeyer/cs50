@@ -13,7 +13,6 @@ export class Carousel extends Component {
             <h5>
               {i + 1} of {numberOfPics}
             </h5>
-            <LikeButton />
           </div>
         </div>
       );
@@ -40,7 +39,6 @@ export class Carousel extends Component {
               <img src="https://picsum.photos/200" className="d-block w-100" />
               <div className="carousel-caption d-none d-md-block">
                 <h5> 1 of {numberOfPics}</h5>
-                <LikeButton />
               </div>
             </div>
             {picElements}

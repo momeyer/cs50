@@ -8,20 +8,19 @@ export class Houses extends Component {
   static propTypes = {
     houses: PropTypes.array.isRequired,
   };
+
   componentDidMount() {
     this.props.getHouses();
   }
 
   render() {
-    return (
-      <Fragment>
-        <div className="row">
-          {this.props.houses.map((house) => (
-            <House key={house.id} house={house}/>
-          ))}
-        </div>
-      </Fragment>
-    );
+    const houses = this.props.houses.map((house) => {
+      return (
+            <House key={house.id} house={house} />
+      );
+    });
+
+    return <div className="row">{houses}</div>;
   }
 }
 
