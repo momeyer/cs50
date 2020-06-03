@@ -36,7 +36,7 @@ export class Carousel extends Component {
               key={`house_${this.props.houseId}_pic_0`}
               className="carousel-item active"
             >
-              <img src="https://picsum.photos/200" className="d-block w-100" />
+              <img style={{borderTopLeftRadius:'10px', borderTopRightRadius:'10px'}} src="https://picsum.photos/200" className="d-block w-100" />
               <div className="carousel-caption d-none d-md-block">
                 <h5> 1 of {numberOfPics}</h5>
               </div>

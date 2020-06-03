@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_HOUSES } from "./types.js";
+import { GET_HOUSES, UPDATE_HOUSE_FILTER } from "./types.js";
 
 // GET HOUSES
 export const getHouses = () => (dispatch) => {
@@ -13,3 +13,9 @@ export const getHouses = () => (dispatch) => {
     })
     .catch((err) => console.log(err));
 };
+
+// UPDATE_HOUSE_FILTER
+export const updateHouseFilter = ( searchFilter ) => ( {
+  type: UPDATE_HOUSE_FILTER,
+  payload: searchFilter,
+})

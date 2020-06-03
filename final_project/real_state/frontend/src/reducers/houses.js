@@ -1,7 +1,8 @@
-import { GET_HOUSES } from "../actions/types.js";
+import { GET_HOUSES, UPDATE_HOUSE_FILTER } from "../actions/types.js";
 
 const initialState = {
   houses: [],
+  search: "Sao Paulo",
 };
 
 export default function (state = initialState, action) {
@@ -10,6 +11,11 @@ export default function (state = initialState, action) {
       return {
         ...state,
         houses: action.payload,
+      };
+    case UPDATE_HOUSE_FILTER:
+      return {
+        ...state,
+        search: action.payload,
       };
     default:
       return state;

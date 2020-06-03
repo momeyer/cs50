@@ -5,27 +5,35 @@ import { connect } from "react-redux";
 import { getHouses } from "../../actions/houses.js";
 
 export class Houses extends Component {
+
   static propTypes = {
     houses: PropTypes.array.isRequired,
   };
 
   componentDidMount() {
-    this.props.getHouses();
+    this.props.getMostRecentHouses();
   }
 
-  render() {
-    const houses = this.props.houses.map((house) => {
-      return (
-            <House key={house.id} house={house} />
-      );
+  render () {
+    console.log(this.props)
+    const houses = this.props.houses.map( ( house ) => {
+      if ( house.city === this.props.search )
+      {
+          return <House key={house.id} house={house} />;
+      }
     });
 
-    return <div className="row">{houses}</div>;
+    return <div style={{overflowY: 'scroll', maxHeight:'90vh'}} className="row">{houses}</div>;
   }
 }
 
-const mapStateToProps = (state) => ({
-  houses: state.houses.houses,
+const mapStateToProps = ( state ) => ({
+  houses: state.housesReducer.houses,
+  search: state.housesReducer.search
 });
 
-export default connect(mapStateToProps, { getHouses })(Houses);
+const mapDispatchToProps = {
+  getMostRecentHouses: getHouses,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Houses);
