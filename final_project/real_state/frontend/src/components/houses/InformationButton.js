@@ -1,13 +1,20 @@
 import React, { Component, Fragment } from "react";
-import InformationModal from "./InformationModal.js";
 
 class InformationButton extends Component {
-  render() {
-    const house = this.props.house;
+  showModal = () => {
+    document.getElementById(
+      "house_address"
+    ).innerHTML = `${this.props.house.address} - ${this.props.house.city}`;
+    document.getElementById("house_price").innerHTML = this.props.house.price;
+  };
 
+  render() {
     return (
       <Fragment>
         <button
+          onClick={() => {
+            this.showModal();
+          }}
           style={{ borderRadius: "10px" }}
           type="button"
           className="btn btn-outline-primary btn-block"
@@ -16,7 +23,6 @@ class InformationButton extends Component {
         >
           Check Availability
         </button>
-        <InformationModal key="modal" house={house} />
       </Fragment>
     );
   }

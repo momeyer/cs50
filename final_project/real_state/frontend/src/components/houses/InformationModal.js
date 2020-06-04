@@ -30,10 +30,18 @@ class InformationModal extends Component {
               <div className="modal-body">
                 <form>
                   <div className="form-group row">
+                    <img
+                      style={{
+                        borderRadius: "10px",
+                        marginLeft: '15px'
+                      }}
+                      src="../static/images/House.jpg"
+                      width="30%"
+                    />
                     <div className="col-sm-7">
-                      <p id="house_address">{this.props.house.address}</p>
+                      <p id="house_address"></p>
                       <p>
-                        $<span id="house_price">{this.props.house.price}</span>
+                        $<span id="house_price"></span>
                         /month
                       </p>
                     </div>
@@ -73,12 +81,17 @@ class InformationModal extends Component {
               <div className="modal-footer">
                 <button
                   type="button"
-                  className="btn btn-secondary"
+                  className="btn btn-outline-secondary"
                   data-dismiss="modal"
+                  style={{ borderRadius: "5px" }}
                 >
                   Close
                 </button>
-                <button type="button" className="btn btn-primary">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  style={{ borderRadius: "5px" }}
+                >
                   Save changes
                 </button>
               </div>

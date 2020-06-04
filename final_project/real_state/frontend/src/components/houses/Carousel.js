@@ -1,14 +1,13 @@
 import React, { Component, Fragment } from "react";
-import LikeButton from './LikeButton.js'
 
 export class Carousel extends Component {
-
-  generateDivPics(houseId, numberOfPics ) {
-    const divElements = [];
+  generateDivPics(houseId, numberOfPics) {
+    const divElements = [''];
     for (var i = 1; i < numberOfPics; i++) {
       divElements.push(
         <div key={`house_${houseId}_pic_${i}`} className="carousel-item">
-          <img src="https://picsum.photos/200" className="d-block w-100" />
+          <img src={`../static/images/House${i}.jpg`} className="d-block w-100" style={{maxHeight:'112px', borderTopLeftRadius: "10px",
+                  borderTopRightRadius: "10px"}} />
           <div className="carousel-caption d-none d-md-block">
             <h5>
               {i + 1} of {numberOfPics}
@@ -20,10 +19,10 @@ export class Carousel extends Component {
     return divElements;
   }
 
-  render () {
-    var numberOfPics = 6
+  render() {
+    var numberOfPics = 5;
     const picElements = this.generateDivPics(this.props.houseId, numberOfPics);
-    
+
     return (
       <Fragment>
         <div
@@ -36,7 +35,14 @@ export class Carousel extends Component {
               key={`house_${this.props.houseId}_pic_0`}
               className="carousel-item active"
             >
-              <img style={{borderTopLeftRadius:'10px', borderTopRightRadius:'10px'}} src="https://picsum.photos/200" className="d-block w-100" />
+              <img
+                style={{
+                  borderTopLeftRadius: "10px",
+                  borderTopRightRadius: "10px",
+                }}
+                src="../static/images/House.jpg"
+                className="d-block w-100"
+              />
               <div className="carousel-caption d-none d-md-block">
                 <h5> 1 of {numberOfPics}</h5>
               </div>

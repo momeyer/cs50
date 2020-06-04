@@ -2,7 +2,8 @@ import { GET_HOUSES, UPDATE_HOUSE_FILTER } from "../actions/types.js";
 
 const initialState = {
   houses: [],
-  search: "Sao Paulo",
+  search: "",
+  modalInformation: []
 };
 
 export default function (state = initialState, action) {

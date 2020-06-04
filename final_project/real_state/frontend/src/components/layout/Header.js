@@ -1,17 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateHouseFilter } from "../../actions/houses.js";
+import SaveSearchButton from './SaveSearchButton.js'
 
 export class Header extends Component {
-
   search = () => {
     this.props.updateFilter(document.getElementById("search-content").value);
-  }
+  };
 
-  render () {
-    
-
-
+  render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-light bg-light">
         <a className="navbar-brand" href="#">
@@ -28,15 +25,15 @@ export class Header extends Component {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="form-inline my-2 my-lg-0">
+        <div className="form-inline my-5 my-lg-0">
           <input
             id="search-content"
-            className="form-control mr-sm-2 "
+            className="form-control mr-sm-1 "
             type="search"
             placeholder="Search"
             aria-label="Search"
           />
-          <button onClick={ this.search } className="btn btn-danger my-2">
+          <button onClick={this.search} className="btn btn-danger my-2">
             <svg
               className="bi bi-search"
               width="1em"
@@ -56,6 +53,7 @@ export class Header extends Component {
             </svg>
           </button>
         </div>
+        <SaveSearchButton />
         <div className="collapse navbar-collapse" id="navbarTogglerDemo02">
           <ul className="navbar-nav mr-auto mt-2 mt-lg-0"></ul>
         </div>
