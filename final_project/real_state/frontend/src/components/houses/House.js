@@ -24,24 +24,24 @@ export class House extends Component {
                   <img
                     src="../static/images/bed.png"
                     height="15px"
-                    style={{ marginBottom: "7px" }}
-                  />{" "}
+                    className="mr-2 mb-2"
+                  />
                   4bd
                 </span>
                 <span>
                   <img
                     src="../static/images/bath.png"
                     height="15px"
-                    style={{ marginBottom: "7px", marginLeft: "5px" }}
-                  />{" "}
+                    className="ml-2 mr-2 mb-2"
+                  />
                   2ba
                 </span>
                 <span>
                   <img
                     src="../static/images/size.png"
                     height="15px"
-                    style={{ marginBottom: "7px", marginLeft: "5px" }}
-                  />{" "}
+                    className="ml-2 mr-2 mb-2"
+                  />
                   120 m2
                 </span>
               </p>

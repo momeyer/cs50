@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import House from "./House.js";
-import Filters from '../layout/Filters.js'
+import Filters from '../filters/Filters.js'
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getHouses } from "../../actions/houses.js";
