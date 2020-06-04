@@ -20,12 +20,9 @@ class App extends Component {
                 <Houses />
               </div>
               <div
-                className="col-md-4"
+                className="col-md-4 ml-n2 mt-3 mb-3"
                 style={{
-                  borderStyle: "solid",
-                  borderRadius: "5%",
-                  borderWidth: "1px",
-                  borderColor: "#66ccff",
+                  maxHeight: '87vh', overflow: 'hidden', borderRadius:'10px'
                 }}
               >
                 <Map />

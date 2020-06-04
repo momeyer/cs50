@@ -5,6 +5,7 @@ import BathFilter from './BathFilter.js'
 import HomeTypeFilter from './HomeTypeFilter.js'
 import BuiltYearFilter from './BuiltYearFilter.js'
 import SizeFilter from "./SizeFilter.js";
+import SaveSearchButton from '../layout/SaveSearchButton.js'
 
 
 class Filters extends Component {
@@ -56,6 +57,9 @@ class Filters extends Component {
             </li>
             <li className="nav-item">
              <SizeFilter />
+            </li>
+            <li>
+              <SaveSearchButton />
             </li>
           </ul>
         </div>

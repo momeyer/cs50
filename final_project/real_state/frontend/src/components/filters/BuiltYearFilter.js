@@ -45,7 +45,7 @@ class BuiltYearFilter extends Component {
               height="15px"
               className="mb-1 mr-2"
             />
-            Built Year
+            Built
           </span>
         </button>
 

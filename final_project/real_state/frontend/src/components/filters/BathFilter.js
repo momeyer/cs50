@@ -42,7 +42,7 @@ class BathFilter extends Component {
               height="15px"
               className="mb-1 mr-2"
             />
-            N. of Baths
+            Baths
           </span>
         </button>
 

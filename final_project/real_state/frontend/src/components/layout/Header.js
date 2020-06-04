@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import SaveSearchButton from "./SaveSearchButton.js";
 import SearchEngine from "../houses/SearchEngine.js";
+import Login from './Login.js'
 
 export class Header extends Component {
   render() {
@@ -25,8 +26,8 @@ export class Header extends Component {
             <li className="nav-item">
               <SearchEngine />
             </li>
-            <li className="nav-item">
-              <SaveSearchButton />
+            <li>
+              <Login />
             </li>
           </ul>
         </div>

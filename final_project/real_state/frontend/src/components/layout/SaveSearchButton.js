@@ -5,7 +5,7 @@ class SaveSearchButton extends Component {
         return (
           <button
             type="button"
-            className=" btn btn-outline-primary mt-2 ml-0"
+            className=" btn btn-outline-primary mt-3"
           >
             <span style={{ fontWeight: "bold" }}>
               <svg
