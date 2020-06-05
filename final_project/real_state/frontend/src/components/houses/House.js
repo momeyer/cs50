@@ -16,7 +16,7 @@ export class House extends Component {
               className="card-title"
               style={{ fontWeight: "bold", color: "#606060" }}
             >
-              US$ {this.props.house.price} /month
+              US$ {this.props.house.price } /month
             </h5>
             <div className="card-text">
               <p>

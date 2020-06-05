@@ -8,11 +8,12 @@ class Property(models.Model):
     offer_type = models.CharField(max_length=16)
     bedroom = models.PositiveIntegerField(default=1)
     bathroom = models.PositiveIntegerField(default=1)
+    year = models.PositiveIntegerField(default=2000)
     size = models.PositiveIntegerField(default=40)
     price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
 
 
     def __str__(self):
-        return f"Location: {address} - {city} Type: {property_type} ({offer_type}) ({bedroom} beds, {bathroom}baths, {size}m2) ${price} Posted: {created_at}"
+        return f"Location: {self.address} - {self.city} Type: {self.property_type} ({self.offer_type}) ({self.bedroom} beds, {self.bathroom} baths, {self.size} m2, construction year: {self.year}) ${self.price} Posted: {self.created_at}"
        

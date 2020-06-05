@@ -6,11 +6,11 @@ import HomeTypeFilter from "./HomeTypeFilter.js";
 import BuiltYearFilter from "./BuiltYearFilter.js";
 import SizeFilter from "./SizeFilter.js";
 import SaveSearchButton from "../layout/SaveSearchButton.js";
+import RadioDropDown from "./RadioDropDown.js";
 
 class Filters extends Component {
   render() {
     return (
-
       <nav className="navbar navbar-expand-lg ">
         <button
           className="navbar-toggler bg-danger ml-n3"
@@ -39,24 +39,77 @@ class Filters extends Component {
           </span>
         </button>
         <div className="collapse navbar-collapse" id="filters">
-          <ul className="navbar-nav mr-auto ml-3 mt-2 mt-lg-0">
+          <ul className="navbar-nav mr-auto ml-n2 mt-2 mt-lg-0">
             <li className="nav-item">
-              <PriceFilter />
+              <RadioDropDown
+                type="price"
+                options={[
+                  "up to US$ ",
+                  "up to US$ ",
+                  "up to US$ ",
+                  "up to US$ ",
+                  "up to US$ ",
+                ]}
+                values={[500, 1000, 1500, 2000, 2500, 3000]}
+                title="Price"
+              />
             </li>
             <li className="nav-item">
-              <BedsFilter />
+              <RadioDropDown
+                type="bed"
+                options={[
+                  "studio+",
+                  "1+ Beds",
+                  "2+ Beds",
+                  "3+ Beds",
+                  "4+ Beds",
+                ]}
+                values={[0, 1, 2, 3, 4]}
+                title="Beds"
+              />
             </li>
             <li className="nav-item">
-              <BathFilter />
+              <RadioDropDown
+                type="bath"
+                options={[
+                  "No Preference",
+                  "1+ Baths",
+                  "2+ Baths",
+                  "3+ Baths",
+                  "4+ Baths",
+                ]}
+                values={[0, 1, 2, 3, 4]}
+                title="Bath"
+              />
             </li>
+            <li className="nav-item"></li>
+            <li className="nav-item"></li>
             <li className="nav-item">
               <HomeTypeFilter />
             </li>
             <li className="nav-item">
-              <BuiltYearFilter />
+              <RadioDropDown
+                type="built"
+                options={["1900+", "2000+", "2010+", "2015+", "2020+"]}
+                values={[1900, 2000, 2010, 2015, 2020]}
+                title="Year"
+              />
             </li>
             <li className="nav-item">
-              <SizeFilter />
+              <RadioDropDown
+                type="size"
+                options={[
+                  "40+ m2",
+                  "50+ m2",
+                  "60+ m2",
+                  "70+ m2",
+                  "80+ m2",
+                  "90+ m2",
+                  "100+ m2",
+                ]}
+                values={[40, 50, 60, 70, 80, 90, 100]}
+                title="Size"
+              />
             </li>
             <li>
               <SaveSearchButton />

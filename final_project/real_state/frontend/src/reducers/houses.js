@@ -10,26 +10,36 @@ const initialState = {
   filter: {
     bed: 0,
     bath: 0,
-    price:0,
+    price: 50000,
+    built: 0,
+    size:0
   },
 };
 
-function applyFilter(house, search, filter ){
-  var newHouses;
-  if ( search !== "" )
-  {
-    newHouses =
+function applyFilter(house, search, filter) {
+  if (search === house.city && house.bedroom >= filter.bed) {
+    console.log(house);
+  }
+    if ( search !== "" )
+    {
+    var newHouses =
       house.bedroom >= filter.bed &&
       house.bathroom >= filter.bath &&
-      house.price >= filter.price &&
+      house.year >= filter.built &&
+      house.price <= filter.price &&
+      house.size >= filter.size &&
       house.city === search;
-  }
-  else
+  } else
   {
-    newHouses = house.bedroom >= filter.bed && house.bathroom >= filter.bath;
+    var newHouses =
+      house.bedroom >= filter.bed &&
+      house.bathroom >= filter.bath &&
+      house.size >= filter.size &&
+      house.price <= filter.price &&
+      house.year >= filter.built;
   }
-  
-  return newHouses
+
+  return newHouses;
 }
 
 export default function (state = initialState, action) {
@@ -43,14 +53,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         search: action.search,
-        houses: action.payload.filter((house) => applyFilter(house, action.search, state.filter)),
+        houses: action.payload.filter((house) =>
+          applyFilter(house, action.search, state.filter)
+        ),
       };
-    
+
     case UPDATE_SEARCH_FILTER:
       return {
         ...state,
         filter: action.filter,
-        houses: action.payload.filter((house) => applyFilter(house, state.search, action.filter)),
+        houses: action.payload.filter((house) =>
+          applyFilter(house, state.search, action.filter)
+        ),
       };
     default:
       return state;

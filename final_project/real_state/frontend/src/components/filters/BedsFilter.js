@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { updateSearchFilter } from "../../actions/houses.js";
 
 class BedsFilter extends Component {
+
   filter = () => {
     this.props.filter['bed'] = parseInt(document.querySelector("input[name=bed]:checked").value);
     this.props.updateFilter( this.props.filter )
@@ -33,7 +34,13 @@ class BedsFilter extends Component {
   }
 
   render() {
-    const bedsFilers = ["Studio +", " 1+ Bed", " 2+ Beds", " 3+ Beds", "4+ Beds"];
+    const bedsFilers = [
+      "Studio +",
+      " 1+ Bed",
+      " 2+ Beds",
+      " 3+ Beds",
+      "4+ Beds",
+    ];
     const options = this.generateButtons(bedsFilers);
 
     return (
