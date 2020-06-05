@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { updateHouseFilter } from "../../actions/houses.js";
+import { updateHouseSearch } from "../../actions/houses.js";
 
 export class SearchEngine extends Component {
   search = () => {
-    this.props.updateFilter(document.getElementById("search-content").value);
+    this.props.updateSearch(
+      document.getElementById("search-content").value.trim()
+    );
   };
 
   render() {
@@ -51,7 +53,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  updateFilter: updateHouseFilter,
+  updateSearch: updateHouseSearch,
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchEngine);

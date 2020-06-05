@@ -16,7 +16,7 @@ export class House extends Component {
               className="card-title"
               style={{ fontWeight: "bold", color: "#606060" }}
             >
-              {this.props.house.price}/month
+              US$ {this.props.house.price} /month
             </h5>
             <div className="card-text">
               <p>
@@ -26,7 +26,7 @@ export class House extends Component {
                     height="15px"
                     className="mr-2 mb-2"
                   />
-                  4bd
+                  {this.props.house.bedroom}bd
                 </span>
                 <span>
                   <img
@@ -34,7 +34,7 @@ export class House extends Component {
                     height="15px"
                     className="ml-2 mr-2 mb-2"
                   />
-                  2ba
+                  {this.props.house.bathroom}ba
                 </span>
                 <span>
                   <img
@@ -42,7 +42,7 @@ export class House extends Component {
                     height="15px"
                     className="ml-2 mr-2 mb-2"
                   />
-                  120 m2
+                  {this.props.house.size} m2
                 </span>
               </p>
               <span>

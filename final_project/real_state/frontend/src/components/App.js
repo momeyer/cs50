@@ -4,7 +4,6 @@ import Header from "./layout/Header.js";
 import Houses from "./houses/Houses.js";
 import Map from "../components/map/Map.js";
 import InformationModal from '../components/houses/InformationModal.js'
-
 import { Provider } from "react-redux";
 import store from "../store.js";
 

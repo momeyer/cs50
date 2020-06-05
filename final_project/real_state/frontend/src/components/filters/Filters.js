@@ -1,17 +1,17 @@
 import React, { Component } from "react";
-import PriceFilter from './PriceFilter.js'
+import PriceFilter from "./PriceFilter.js";
 import BedsFilter from "./BedsFilter.js";
-import BathFilter from './BathFilter.js'
-import HomeTypeFilter from './HomeTypeFilter.js'
-import BuiltYearFilter from './BuiltYearFilter.js'
+import BathFilter from "./BathFilter.js";
+import HomeTypeFilter from "./HomeTypeFilter.js";
+import BuiltYearFilter from "./BuiltYearFilter.js";
 import SizeFilter from "./SizeFilter.js";
-import SaveSearchButton from '../layout/SaveSearchButton.js'
-
+import SaveSearchButton from "../layout/SaveSearchButton.js";
 
 class Filters extends Component {
   render() {
     return (
-      <nav className="navbar navbar-expand-lg">
+
+      <nav className="navbar navbar-expand-lg ">
         <button
           className="navbar-toggler bg-danger ml-n3"
           type="button"
@@ -38,8 +38,8 @@ class Filters extends Component {
             </svg>
           </span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-          <ul className="navbar-nav mr-auto ml-n3 mt-2 mt-lg-0">
+        <div className="collapse navbar-collapse" id="filters">
+          <ul className="navbar-nav mr-auto ml-3 mt-2 mt-lg-0">
             <li className="nav-item">
               <PriceFilter />
             </li>
@@ -56,7 +56,7 @@ class Filters extends Component {
               <BuiltYearFilter />
             </li>
             <li className="nav-item">
-             <SizeFilter />
+              <SizeFilter />
             </li>
             <li>
               <SaveSearchButton />

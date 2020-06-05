@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from "react";
 import House from "./House.js";
-import Filters from '../filters/Filters.js'
+import Filters from "../filters/Filters.js";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getHouses } from "../../actions/houses.js";
@@ -12,7 +12,21 @@ export class Houses extends Component {
 
   style = {
     overflowY: "scroll",
+    Height: "80vh",
     maxHeight: "80vh",
+  };
+
+  searchHouses = (house) => {
+    switch (this.props.search) {
+      case "":
+        return <House key={house.id} house={house} />;
+      case house.property_type:
+        return <House key={house.id} house={house} />;
+      case house.city:
+        return <House key={house.id} house={house} />;
+      default:
+        break;
+    }
   };
 
   componentDidMount() {
@@ -21,11 +35,7 @@ export class Houses extends Component {
 
   render() {
     const houses = this.props.houses.map((house) => {
-      if (this.props.search === "") {
-        return <House key={house.id} house={house} />;
-      } else if (house.city === this.props.search) {
-        return <House key={house.id} house={house} />;
-      }
+      return this.searchHouses(house);
     });
 
     return (
@@ -42,6 +52,7 @@ export class Houses extends Component {
 const mapStateToProps = (state) => ({
   houses: state.housesReducer.houses,
   search: state.housesReducer.search,
+  filter: state.housesReducer.filter,
 });
 
 const mapDispatchToProps = {
