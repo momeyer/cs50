@@ -1,10 +1,5 @@
 import React, { Component } from "react";
-import PriceFilter from "./PriceFilter.js";
-import BedsFilter from "./BedsFilter.js";
-import BathFilter from "./BathFilter.js";
-import HomeTypeFilter from "./HomeTypeFilter.js";
-import BuiltYearFilter from "./BuiltYearFilter.js";
-import SizeFilter from "./SizeFilter.js";
+import CheckboxDropDown from './CheckboxDropDown.js'
 import SaveSearchButton from "../layout/SaveSearchButton.js";
 import RadioDropDown from "./RadioDropDown.js";
 
@@ -85,7 +80,7 @@ class Filters extends Component {
             <li className="nav-item"></li>
             <li className="nav-item"></li>
             <li className="nav-item">
-              <HomeTypeFilter />
+              <CheckboxDropDown options={['House', 'Apartment',]} title="Home Type" />
             </li>
             <li className="nav-item">
               <RadioDropDown

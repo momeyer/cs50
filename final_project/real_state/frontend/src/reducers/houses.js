@@ -10,9 +10,10 @@ const initialState = {
   filter: {
     bed: 0,
     bath: 0,
-    price: 50000,
+    price: 50000000,
     built: 0,
-    size:0
+    size: 0,
+    home_type: [],
   },
 };
 
@@ -20,26 +21,28 @@ function applyFilter(house, search, filter) {
   if (search === house.city && house.bedroom >= filter.bed) {
     console.log(house);
   }
-    if ( search !== "" )
-    {
-    var newHouses =
+  if (search !== "") {
+    var includeNewHouse =
       house.bedroom >= filter.bed &&
       house.bathroom >= filter.bath &&
       house.year >= filter.built &&
       house.price <= filter.price &&
       house.size >= filter.size &&
       house.city === search;
-  } else
-  {
-    var newHouses =
+  } else {
+    var includeNewHouse =
       house.bedroom >= filter.bed &&
       house.bathroom >= filter.bath &&
       house.size >= filter.size &&
       house.price <= filter.price &&
       house.year >= filter.built;
   }
+  if (filter.home_type.length > 0) {
+    includeNewHouse =
+      includeNewHouse && filter.home_type.includes(house.property_type);
+  }
 
-  return newHouses;
+  return includeNewHouse;
 }
 
 export default function (state = initialState, action) {
