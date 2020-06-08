@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { updateSearchFilter } from "../../actions/houses.js";
-import { element } from "prop-types";
 
 class CheckboxDropDown extends Component {
     filter = () => {

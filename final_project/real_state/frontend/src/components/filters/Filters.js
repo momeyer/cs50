@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import CheckboxDropDown from './CheckboxDropDown.js'
-import SaveSearchButton from "../layout/SaveSearchButton.js";
+import SaveSearchButton from "./SaveSearchButton.js";
 import RadioDropDown from "./RadioDropDown.js";
 
 class Filters extends Component {

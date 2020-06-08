@@ -10,13 +10,15 @@ export class House extends Component {
           className="card"
           style={{ width: "16rem", margin: "15px", border: "none" }}
         >
-          <Carousel houseId={this.props.house.id} />
+          <div style={{maxHeight:'100px', overflow:'hidden'}}>
+            <Carousel houseId={this.props.house.id} />
+          </div>
           <div className="card-body">
             <h5
               className="card-title"
               style={{ fontWeight: "bold", color: "#606060" }}
             >
-              US$ {this.props.house.price } /month
+              US$ {this.props.house.price} /month
             </h5>
             <div className="card-text">
               <p>

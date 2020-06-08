@@ -6,7 +6,7 @@ export class Carousel extends Component {
     for (var i = 1; i < numberOfPics; i++) {
       divElements.push(
         <div key={`house_${houseId}_pic_${i}`} className="carousel-item">
-          <img src={`../static/images/House${i}.jpg`} className="d-block w-100" style={{maxHeight:'112px', borderTopLeftRadius: "10px",
+          <img src={`../static/images/House${i}.jpg`} className="d-block w-100" style={{borderTopLeftRadius: "10px",
                   borderTopRightRadius: "10px"}} />
           <div className="carousel-caption d-none d-md-block">
             <h5>

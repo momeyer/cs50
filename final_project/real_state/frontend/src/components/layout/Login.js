@@ -60,11 +60,21 @@ export class Login extends Component {
               />
             </div>
           </div>
-          <div className="col-2 btn-group">
-            <button type="submit" className="btn btn-primary btn-group mb-2">
+          <div className="col-1">
+            <button
+              type="submit"
+              className="btn btn-outline-primary mb-2 mr-1"
+              style={{ border: "none" }}
+            >
               Login
             </button>
-            <button type="submit" className="btn btn-primary mb-2">
+          </div>
+          <div className="col-1">
+            <button
+              type="submit"
+              className="btn btn-outline-primary mb-2"
+              style={{ border: "none" }}
+            >
               Register
             </button>
           </div>

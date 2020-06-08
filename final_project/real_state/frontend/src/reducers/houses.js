@@ -4,31 +4,33 @@ import {
   UPDATE_SEARCH_FILTER,
 } from "../actions/types.js";
 
+var filters =
+  JSON.parse(localStorage.getItem("filters")) != null
+    ? JSON.parse(localStorage.getItem("filters"))
+    : {
+        bed: 0,
+        bath: 0,
+        size: 0,
+        built: 0,
+        price: 500000000,
+        home_type: [],
+      };
+
+console.log(">>", filters);
 const initialState = {
   houses: [],
   search: "",
-  filter: {
-    bed: 0,
-    bath: 0,
-    price: 50000000,
-    built: 0,
-    size: 0,
-    home_type: [],
-  },
+  filter: filters,
 };
 
 function applyFilter(house, search, filter) {
-  if (search === house.city && house.bedroom >= filter.bed) {
-    console.log(house);
-  }
   if (search !== "") {
     var includeNewHouse =
       house.bedroom >= filter.bed &&
       house.bathroom >= filter.bath &&
       house.year >= filter.built &&
       house.price <= filter.price &&
-      house.size >= filter.size &&
-      house.city === search;
+      house.size >= filter.size;
   } else {
     var includeNewHouse =
       house.bedroom >= filter.bed &&
@@ -60,7 +62,6 @@ export default function (state = initialState, action) {
           applyFilter(house, action.search, state.filter)
         ),
       };
-
     case UPDATE_SEARCH_FILTER:
       return {
         ...state,

@@ -16,16 +16,41 @@ export class Houses extends Component {
     maxHeight: "80vh",
   };
 
+  applyFilter(house, search, filter) {
+    if (search !== "") {
+      var includeNewHouse =
+        house.bedroom >= filter.bed &&
+        house.bathroom >= filter.bath &&
+        house.year >= filter.built &&
+        house.price <= filter.price &&
+        house.size >= filter.size;
+    } else {
+      var includeNewHouse =
+        house.bedroom >= filter.bed &&
+        house.bathroom >= filter.bath &&
+        house.size >= filter.size &&
+        house.price <= filter.price &&
+        house.year >= filter.built;
+    }
+    if (filter.home_type.length > 0) {
+      includeNewHouse =
+        includeNewHouse && filter.home_type.includes(house.property_type);
+    }
+
+    return includeNewHouse;
+  }
+
   searchHouses = (house) => {
-    switch (this.props.search) {
-      case "":
+    if (this.props.search === "") {
+      if (this.applyFilter(house, this.props.search, this.props.filter)) {
         return <House key={house.id} house={house} />;
-      case house.property_type:
-        return <House key={house.id} house={house} />;
-      case house.city:
-        return <House key={house.id} house={house} />;
-      default:
-        break;
+      }
+    } else if (this.props.search.toLowerCase() === house.city.toLowerCase()) {
+      return <House key={house.id} house={house} />;
+    } else if (
+      house.city.toLowerCase().includes(this.props.search.toLowerCase())
+    ) {
+      return <House key={house.id} house={house} />;
     }
   };
 
@@ -34,6 +59,7 @@ export class Houses extends Component {
   }
 
   render() {
+    console.log(this.props.houses);
     const houses = this.props.houses.map((house) => {
       return this.searchHouses(house);
     });

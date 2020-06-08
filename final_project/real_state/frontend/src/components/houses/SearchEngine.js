@@ -22,7 +22,7 @@ export class SearchEngine extends Component {
           />
         </div>
         <div className="col-2">
-          <button onClick={this.search} className="btn btn-danger mt-2">
+          <button onClick={this.search} id='search-button' className="btn btn-danger mt-2">
             <svg
               className="bi bi-search"
               width="1em"
