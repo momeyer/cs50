@@ -9,6 +9,7 @@ verify_ssl = true
 Django = ">=2.2.10"
 djangorestframework = "*"
 django-rest-knox = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.6"

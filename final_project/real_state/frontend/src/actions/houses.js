@@ -3,6 +3,7 @@ import {
   GET_HOUSES,
   UPDATE_HOUSE_SEARCH,
   UPDATE_SEARCH_FILTER,
+  POST_REQUEST
 } from "./types.js";
 
 // GET HOUSES
@@ -47,3 +48,16 @@ export const updateSearchFilter = ( filter ) => ( dispatch ) => {
     })
     .catch((err) => console.log(err));
 };
+
+export const sendRequest = (request) => (dispatch) => {
+  axios
+    .post("/api/request/", request)
+    .then((res) => {
+      dispatch({
+        type: POST_REQUEST,
+        payload: res.data,
+      });
+    })
+    .catch((err) => alert('try again'));
+};
+

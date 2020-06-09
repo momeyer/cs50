@@ -10,7 +10,7 @@ export class House extends Component {
           className="card"
           style={{ width: "16rem", margin: "15px", border: "none" }}
         >
-          <div style={{maxHeight:'100px', overflow:'hidden'}}>
+          <div style={{ maxHeight: "100px", overflow: "hidden" }}>
             <Carousel houseId={this.props.house.id} />
           </div>
           <div className="card-body">
@@ -18,7 +18,9 @@ export class House extends Component {
               className="card-title"
               style={{ fontWeight: "bold", color: "#606060" }}
             >
-              US$ {this.props.house.price} /month
+              US$ {this.props.house.offer_type === "Rent"
+                ? `${this.props.house.price}/mo`
+                : `${this.props.house.price}`}
             </h5>
             <div className="card-text">
               <p>

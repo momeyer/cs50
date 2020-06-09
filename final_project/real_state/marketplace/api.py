@@ -1,6 +1,6 @@
-from .models import Property
+from .models import Property, Request
 from rest_framework import viewsets, permissions
-from .serializers import PropertySerializer
+from .serializers import PropertySerializer, RequestSerializer
 
 
 # Property Viewset
@@ -10,3 +10,11 @@ class PropertyViewSet(viewsets.ModelViewSet):
         permissions.AllowAny
     ]
     serializer_class = PropertySerializer
+    
+
+class RequestViewSet(viewsets.ModelViewSet):
+    queryset = Request.objects.all()
+    permissions_classes = [
+        permissions.IsAuthenticated
+    ]
+    serializer_class = RequestSerializer

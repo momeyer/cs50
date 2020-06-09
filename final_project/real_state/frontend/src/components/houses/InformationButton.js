@@ -8,6 +8,7 @@ class InformationButton extends Component {
     var numBath = document.getElementById("num_bath");
     var size = document.getElementById("size");
     var details = document.getElementById("details");
+    var id = document.getElementById("house_id");
     var houseDetais = [
       "Multi Family",
       "Cats, small dogs allowed",
@@ -27,12 +28,13 @@ class InformationButton extends Component {
     }
 
     for (var i = 0; i < houseDetais.length; i++) {
-      details.innerHTML +=` <li>${houseDetais[i]}</li>`;
+      details.innerHTML += ` <li>${houseDetais[i]}</li>`;
     }
 
     numBed.innerHTML = `${this.props.house.bedroom} bedrooms`;
     numBath.innerHTML = `${this.props.house.bathroom} bathrooms`;
     size.innerHTML = `${this.props.house.size} m2`;
+    id.innerHTML = this.props.house.id;
   };
 
   render() {

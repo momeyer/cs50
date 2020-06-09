@@ -2,6 +2,7 @@ import {
   GET_HOUSES,
   UPDATE_HOUSE_SEARCH,
   UPDATE_SEARCH_FILTER,
+  POST_REQUEST
 } from "../actions/types.js";
 
 var filters =
@@ -14,6 +15,7 @@ var filters =
         built: 0,
         price: 500000000,
         home_type: [],
+        offer_type: "Rent",
       };
 
 console.log(">>", filters);
@@ -30,14 +32,16 @@ function applyFilter(house, search, filter) {
       house.bathroom >= filter.bath &&
       house.year >= filter.built &&
       house.price <= filter.price &&
-      house.size >= filter.size;
+      house.size >= filter.size &&
+      house.offer_type === filter.offer_type;
   } else {
     var includeNewHouse =
       house.bedroom >= filter.bed &&
       house.bathroom >= filter.bath &&
       house.size >= filter.size &&
       house.price <= filter.price &&
-      house.year >= filter.built;
+      house.year >= filter.built &&
+      house.offer_type === filter.offer_type;
   }
   if (filter.home_type.length > 0) {
     includeNewHouse =
@@ -70,6 +74,9 @@ export default function (state = initialState, action) {
           applyFilter(house, state.search, action.filter)
         ),
       };
+    case POST_REQUEST:
+      console.log(action.payload)
+      return { ...state };
     default:
       return state;
   }

@@ -1,8 +1,16 @@
 import React, { Component } from "react";
 import SearchEngine from "../houses/SearchEngine.js";
-import Login from './Login.js'
+import Login from "./Login.js";
+import { connect } from "react-redux";
+import { updateSearchFilter } from "../../actions/houses.js";
 
 export class Header extends Component {
+  filter = ( value ) => {
+    this.props.filter.offer_type = value
+    console.log(this.props.filter);
+     this.props.updateFilter(this.props.filter);
+  };
+
   render() {
     return (
       <nav className="navbar navbar-expand-sm navbar-light bg-light">
@@ -25,17 +33,17 @@ export class Header extends Component {
             <li className="nav-item">
               <SearchEngine />
             </li>
-            <li className="nav-item">
+            <li className="nav-item mt-2 mr-3 ">
               <button
-                className="btn btn-outline-secondary mt-2 ml-n3"
+                onClick={() => this.filter("Rent")}
+                className="btn btn-outline-secondary mr-2"
                 style={{ border: "none" }}
               >
                 Rent
               </button>
-            </li>
-            <li className="nav-item">
               <button
-                className="btn btn-outline-secondary mt-2 ml-2 mr-4"
+                onClick={() => this.filter("Buy")}
+                className="btn btn-outline-secondary "
                 style={{ border: "none" }}
               >
                 Buy
@@ -50,4 +58,13 @@ export class Header extends Component {
     );
   }
 }
-export default Header;
+
+const mapStateToProps = (state) => ({
+  filter: state.housesReducer.filter,
+});
+
+const mapDispatchToProps = {
+  updateFilter: updateSearchFilter,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import Carousel from "./Carousel.js";
+import RequestForm from "./RequestForm.js";
 
 class InformationModal extends Component {
   render() {
@@ -69,6 +70,9 @@ class InformationModal extends Component {
                         </span>
                       </p>
                       <h5 className="ml-3">Description:</h5>
+                      <p className="ml-3">
+                        house ID: <span id="house_id"></span>
+                      </p>
                       <p className="m-3 text-justify">
                         Vivamus non sem libero. Proin sit amet risus tincidunt,
                         dapibus purus sed, pretium justo. Vivamus ultricies
@@ -96,57 +100,11 @@ class InformationModal extends Component {
                       <h5 className="ml-3">
                         Details for <span className="house_address"></span>
                       </h5>
-                      <ul id="details">
-                        
-                      </ul>
+                      <ul id="details"></ul>
                     </div>
                   </div>
                   <div className="col-md-4">
-                    <form>
-                      <div className="form-group row">
-                        <div className="col-sm-12 mt-5">
-                          <p className="house_address"></p>
-                          <p className="house_price"></p>
-                        </div>
-                      </div>
-                      <div className="form-group row">
-                        <div className="col-sm-12">
-                          <input
-                            type="email"
-                            className="form-control"
-                            id="inputEmail"
-                            placeholder="Your email "
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group row">
-                        <div className="col-sm-12">
-                          <input
-                            type="name"
-                            className="form-control"
-                            id="inputName"
-                            placeholder="Your name"
-                          />
-                        </div>
-                      </div>
-                      <div className="form-group row">
-                        <div className="col-sm-12">
-                          <textarea
-                            type="request"
-                            className="form-control"
-                            id="inputRequest"
-                            placeholder="Let us know what information you are looking for."
-                          />
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary"
-                        style={{ borderRadius: "5px" }}
-                      >
-                        send
-                      </button>
-                    </form>
+                    <RequestForm />
                   </div>
                 </div>
               </div>

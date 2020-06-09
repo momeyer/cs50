@@ -23,14 +23,16 @@ export class Houses extends Component {
         house.bathroom >= filter.bath &&
         house.year >= filter.built &&
         house.price <= filter.price &&
-        house.size >= filter.size;
+        house.size >= filter.size &&
+        house.offer_type === filter.offer_type;
     } else {
       var includeNewHouse =
         house.bedroom >= filter.bed &&
         house.bathroom >= filter.bath &&
         house.size >= filter.size &&
         house.price <= filter.price &&
-        house.year >= filter.built;
+        house.year >= filter.built &&
+        house.offer_type === filter.offer_type;
     }
     if (filter.home_type.length > 0) {
       includeNewHouse =
