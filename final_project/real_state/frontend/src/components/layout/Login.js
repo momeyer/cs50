@@ -5,7 +5,7 @@ export class Login extends Component {
     return (
       <form>
         <div className="form-row align-items-center mt-2 ">
-          <div className="col-5">
+          <div className="col-md-5 col-xs-8">
             <div className="input-group mb-2">
               <div className="input-group-prepend">
                 <div className="input-group-text">
@@ -32,7 +32,7 @@ export class Login extends Component {
               />
             </div>
           </div>
-          <div className="col-5">
+          <div className="col-md-5 col-xs-8">
             <div className="input-group mb-2">
               <div className="input-group-prepend">
                 <div className="input-group-text">
@@ -60,7 +60,7 @@ export class Login extends Component {
               />
             </div>
           </div>
-          <div className="col-1">
+          <div className="col-md-1 col-2-xs">
             <button
               type="submit"
               className="btn btn-outline-primary mb-2 mr-1"
@@ -69,7 +69,7 @@ export class Login extends Component {
               Login
             </button>
           </div>
-          <div className="col-1">
+          <div className="col-md-1 col-2-xs">
             <button
               type="submit"
               className="btn btn-outline-primary mb-2"

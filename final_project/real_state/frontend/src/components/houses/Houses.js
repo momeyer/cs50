@@ -16,24 +16,19 @@ export class Houses extends Component {
     maxHeight: "80vh",
   };
 
-  applyFilter(house, search, filter) {
-    if (search !== "") {
-      var includeNewHouse =
-        house.bedroom >= filter.bed &&
-        house.bathroom >= filter.bath &&
-        house.year >= filter.built &&
-        house.price <= filter.price &&
-        house.size >= filter.size &&
-        house.offer_type === filter.offer_type;
-    } else {
-      var includeNewHouse =
-        house.bedroom >= filter.bed &&
-        house.bathroom >= filter.bath &&
-        house.size >= filter.size &&
-        house.price <= filter.price &&
-        house.year >= filter.built &&
-        house.offer_type === filter.offer_type;
-    }
+  checkFilters ( house, filter ) {
+    return (house.bedroom >= filter.bed &&
+      house.bathroom >= filter.bath &&
+      house.year >= filter.built &&
+      house.price <= filter.price &&
+      house.size >= filter.size &&
+      house.offer_type === filter.offer_type);
+  }
+
+
+  applyFilter(house, filter) {
+    var includeNewHouse = this.checkFilters(house, filter)
+    
     if (filter.home_type.length > 0) {
       includeNewHouse =
         includeNewHouse && filter.home_type.includes(house.property_type);
@@ -44,14 +39,15 @@ export class Houses extends Component {
 
   searchHouses = (house) => {
     if (this.props.search === "") {
-      if (this.applyFilter(house, this.props.search, this.props.filter)) {
+      if (this.applyFilter(house, this.props.filter)) {
         return <House key={house.id} house={house} />;
       }
     } else if (this.props.search.toLowerCase() === house.city.toLowerCase()) {
       return <House key={house.id} house={house} />;
-    } else if (
-      house.city.toLowerCase().includes(this.props.search.toLowerCase())
-    ) {
+    }
+
+    else if (house.city.toLowerCase().includes(this.props.search.toLowerCase()) || house.address.toLowerCase().includes( this.props.search.toLowerCase()))
+    {
       return <House key={house.id} house={house} />;
     }
   };

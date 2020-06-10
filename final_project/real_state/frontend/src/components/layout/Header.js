@@ -30,7 +30,7 @@ export class Header extends Component {
         </button>
         <div className="collapse navbar-collapse" id="navbar">
           <ul className="navbar-nav ">
-            <li className="nav-item">
+            <li className="nav-item col-md-3">
               <SearchEngine />
             </li>
             <li className="nav-item mt-2 mr-3 ">

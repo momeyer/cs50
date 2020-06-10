@@ -3,14 +3,11 @@ import { connect } from "react-redux";
 import { updateSearchFilter } from "../../actions/houses.js";
 
 class CheckboxDropDown extends Component {
-    filter = () => {
-        var checked = document.querySelectorAll('input[type=checkbox]:checked');
-        var dict = this.props.filter.home_type;
-        for ( var i = 0; i < checked.length; i++ )
-        {
-            var index = dict.indexOf(`${checked[i].value}`);
-            index < 0 ? dict.push( checked[ i ].value ) : console.log('');
-        }
+  filter = (value) => {
+    console.log("clicked" + value);
+    var dict = this.props.filter.home_type;
+    var index = dict.indexOf(`${value}`);
+    index < 0 ? dict.push( value ) : dict.splice(index, 1);
     
     this.props.updateFilter(this.props.filter);
   };
@@ -22,7 +19,7 @@ class CheckboxDropDown extends Component {
         <div key={`hometype_${this.props.options[i]}`} className="form-group ml-3">
           <div className="form-check">
                   <input
-                      onClick={this.filter}
+                      onClick={e => this.filter(e.target.value)}
               value={this.props.options[i]}
               type="checkbox"
               className="form-check-input"

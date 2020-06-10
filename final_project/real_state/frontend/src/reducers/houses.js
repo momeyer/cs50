@@ -5,6 +5,15 @@ import {
   POST_REQUEST
 } from "../actions/types.js";
 
+function checkFilters ( house, filter ) {
+    return (house.bedroom >= filter.bed &&
+      house.bathroom >= filter.bath &&
+      house.year >= filter.built &&
+      house.price <= filter.price &&
+      house.size >= filter.size &&
+      house.offer_type === filter.offer_type);
+  }
+
 var filters =
   JSON.parse(localStorage.getItem("filters")) != null
     ? JSON.parse(localStorage.getItem("filters"))
@@ -18,32 +27,18 @@ var filters =
         offer_type: "Rent",
       };
 
-console.log(">>", filters);
 const initialState = {
   houses: [],
   search: "",
   filter: filters,
 };
 
-function applyFilter(house, search, filter) {
-  if (search !== "") {
-    var includeNewHouse =
-      house.bedroom >= filter.bed &&
-      house.bathroom >= filter.bath &&
-      house.year >= filter.built &&
-      house.price <= filter.price &&
-      house.size >= filter.size &&
-      house.offer_type === filter.offer_type;
-  } else {
-    var includeNewHouse =
-      house.bedroom >= filter.bed &&
-      house.bathroom >= filter.bath &&
-      house.size >= filter.size &&
-      house.price <= filter.price &&
-      house.year >= filter.built &&
-      house.offer_type === filter.offer_type;
-  }
-  if (filter.home_type.length > 0) {
+
+function applyFilter(house, filter) {
+  var includeNewHouse = checkFilters(house, filter)
+  
+  if ( filter.home_type.length > 0 )
+  {
     includeNewHouse =
       includeNewHouse && filter.home_type.includes(house.property_type);
   }
@@ -63,15 +58,16 @@ export default function (state = initialState, action) {
         ...state,
         search: action.search,
         houses: action.payload.filter((house) =>
-          applyFilter(house, action.search, state.filter)
+          applyFilter(house, state.filter)
         ),
       };
     case UPDATE_SEARCH_FILTER:
+      console.log(action.filter)
       return {
         ...state,
         filter: action.filter,
         houses: action.payload.filter((house) =>
-          applyFilter(house, state.search, action.filter)
+          applyFilter(house, action.filter)
         ),
       };
     case POST_REQUEST:

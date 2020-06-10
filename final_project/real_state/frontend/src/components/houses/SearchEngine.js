@@ -11,11 +11,11 @@ export class SearchEngine extends Component {
 
   render() {
     return (
-      <div className="form-row align-items-center  mr-5 ">
+      <div className="form-row align-items-center">
         <div className="col-10">
           <input
             id="search-content"
-            className="form-control mt-2 mr-1"
+            className="form-control mt-2"
             type="search"
             placeholder="Search"
             aria-label="Search"
