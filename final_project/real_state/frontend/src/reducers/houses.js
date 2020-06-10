@@ -62,7 +62,6 @@ export default function (state = initialState, action) {
         ),
       };
     case UPDATE_SEARCH_FILTER:
-      console.log(action.filter)
       return {
         ...state,
         filter: action.filter,
@@ -71,7 +70,6 @@ export default function (state = initialState, action) {
         ),
       };
     case POST_REQUEST:
-      console.log(action.payload)
       return { ...state };
     default:
       return state;

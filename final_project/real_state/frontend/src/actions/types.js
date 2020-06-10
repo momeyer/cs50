@@ -3,4 +3,9 @@ export const UPDATE_HOUSE_SEARCH = "UPDATE_HOUSE_SEARCH";
 export const UPDATE_SEARCH_FILTER = "UPDATE_SEARCH_FILTER";
 export const POST_REQUEST = "POST_REQUEST";
 
+export const USER_LOADING = "USER_LOADING";
+export const USER_LOADED = "USER_LOADED";
+export const AUTH_ERROR = "AUTH_ERROR";
 
+export const LOGIN_SUCCESS = "LOGIN_SUCCESS";
+export const LOGIN_FAIL = "LOGIN_FAIL";

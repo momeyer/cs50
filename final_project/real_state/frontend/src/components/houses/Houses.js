@@ -57,7 +57,6 @@ export class Houses extends Component {
   }
 
   render() {
-    console.log(this.props.houses);
     const houses = this.props.houses.map((house) => {
       return this.searchHouses(house);
     });

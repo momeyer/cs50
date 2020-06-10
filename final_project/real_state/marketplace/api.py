@@ -11,6 +11,9 @@ class PropertyViewSet(viewsets.ModelViewSet):
     ]
     serializer_class = PropertySerializer
 
+    def get_authenticators(self):
+        return []
+
     def get_permissions(self):
         return [permission() for permission in self.permissions_classes]
     
@@ -29,6 +32,9 @@ class RequestViewSet(viewsets.ModelViewSet):
         'update': [permissions.IsAdminUser],
         'destroy': [permissions.IsAdminUser],
     }
+
+    def get_authenticators(self):
+        return []
 
     def get_permissions(self):
         print("Action ", self.action)

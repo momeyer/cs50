@@ -33,7 +33,6 @@ export const updateHouseSearch = (search) => (dispatch) => {
     .catch((err) => console.log(err));
 };
 
-
 // UPDATE_SEARCH_FILTER
 export const updateSearchFilter = ( filter ) => ( dispatch ) => {
 

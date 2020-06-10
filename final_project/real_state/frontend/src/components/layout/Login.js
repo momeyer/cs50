@@ -1,9 +1,30 @@
 import React, { Component } from "react";
+import { connect } from 'react-redux'
+import {login} from '../../actions/auth.js'
+
+
 
 export class Login extends Component {
-  render() {
+  state = {
+    username: "",
+    password: "",
+  };
+
+  onSubmit = e => {
+    e.preventDefault();
+    console.log("Submit")
+  }
+
+  onChange = e => this.setState({
+    [ e.target.username ]: e.target.value
+  })
+
+  render () {
+    
+    const { username, password } = this.state;
+
     return (
-      <form>
+      <form onSubmit={this.onSubmit}>
         <div className="form-row align-items-center mt-2 ">
           <div className="col-md-5 col-xs-8">
             <div className="input-group mb-2">
@@ -28,7 +49,10 @@ export class Login extends Component {
                 type="text"
                 className="form-control"
                 id="username"
+                name='username'
                 placeholder="Username"
+                onChange={this.onChange}
+                value={ username }
               />
             </div>
           </div>
@@ -57,6 +81,9 @@ export class Login extends Component {
                 className="form-control"
                 id="password"
                 placeholder="Pasword"
+                name='password'
+                value={ password }
+                onChange={ this.onChange }
               />
             </div>
           </div>
@@ -71,7 +98,9 @@ export class Login extends Component {
           </div>
           <div className="col-md-1 col-2-xs">
             <button
-              type="submit"
+              type="button"
+              data-toggle="modal"
+              data-target="#registrationModal"
               className="btn btn-outline-primary mb-2"
               style={{ border: "none" }}
             >
@@ -84,4 +113,4 @@ export class Login extends Component {
   }
 }
 
-export default (Login);
+export default Login;
