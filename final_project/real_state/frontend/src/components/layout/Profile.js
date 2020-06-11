@@ -10,10 +10,10 @@ class Profile extends Component {
 
   render() {
     return (
-      <div className="container-fluid">
+      <div className="container-fluid text-secondary mt-5">
         <div className="row">
           <div className="col-md-8">
-            <h1>Profile Page</h1>
+            <h1 style={{textTransform:'capitalize'}}> Welcome {localStorage.getItem('user')}!</h1>
             <Link
               to="/"
               className="btn btn-outline-secondary "

@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { registerUser } from "../../actions/auth.js";
+import { connect } from "react-redux";
 
 class RegistrationForm extends Component {
   state = {
@@ -9,7 +11,13 @@ class RegistrationForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log("Submit registration: ", this.state);
+    const newUser = {
+      username: this.state.username,
+      password: this.state.password,
+      email: this.state.email,
+    };
+    this.props.register( newUser );
+    
   };
 
   onChange = (e) =>
@@ -28,10 +36,12 @@ class RegistrationForm extends Component {
         aria-labelledby="registrationModalLabel"
         aria-hidden="true"
       >
-        <div className="modal-dialog">
+        <div className="modal-dialog modal-sm">
           <div className="modal-content text-black-50">
             <div className="modal-header">
-              <h5 className="modal-title" id="registrationModalLabel"></h5>
+              <h5 className="modal-title" id="registrationModalLabel">
+                Register
+              </h5>
               <button
                 type="button"
                 className="close"
@@ -42,10 +52,10 @@ class RegistrationForm extends Component {
               </button>
             </div>
             <div className="modal-body">
-              <div className="row col-11 ml-3">
+              <div className="row col-12 ml-2">
                 <form onSubmit={this.onSubmit}>
                   <div className="form-row">
-                    <div className="form-group col-md-6">
+                    <div className="form-group col-md-12">
                       <label htmlFor="RegistrationUsername">Username</label>
                       <input
                         onChange={this.onChange}
@@ -84,7 +94,7 @@ class RegistrationForm extends Component {
                     type="submit"
                     className="btn btn-outline-primary my-3"
                   >
-                    Sign in
+                    Register
                   </button>
                   <button
                     type="button"
@@ -102,5 +112,12 @@ class RegistrationForm extends Component {
     );
   }
 }
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.authReducer.isAuthenticated,
+});
 
-export default RegistrationForm;
+const mapDispatchToProps = {
+  register: registerUser,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationForm);

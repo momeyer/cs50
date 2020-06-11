@@ -25,7 +25,7 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <Fragment>
-            <Header />
+              <Header />
             <Switch>
               <Route exact path="/" component={HouseSearch} />
               <PrivateRoute exact path="/profile" component={Profile} />
