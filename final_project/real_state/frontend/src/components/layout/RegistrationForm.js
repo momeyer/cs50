@@ -1,8 +1,24 @@
 import React, { Component } from "react";
 
 class RegistrationForm extends Component {
-  state = {};
+  state = {
+    username: "",
+    email: "",
+    password: "",
+  };
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submit registration: ", this.state);
+  };
+
+  onChange = (e) =>
+    this.setState({
+      [e.target.name]: e.target.value,
+    });
+
   render() {
+    const { username, email, password } = this.state;
     return (
       <div
         className="modal fade"
@@ -27,28 +43,26 @@ class RegistrationForm extends Component {
             </div>
             <div className="modal-body">
               <div className="row col-11 ml-3">
-                <form>
+                <form onSubmit={this.onSubmit}>
                   <div className="form-row">
                     <div className="form-group col-md-6">
-                      <label htmlFor="firstName">First Name</label>
+                      <label htmlFor="RegistrationUsername">Username</label>
                       <input
+                        onChange={this.onChange}
+                        name="username"
+                        value={username}
                         type="text"
                         className="form-control"
-                        id="firstName"
-                      />
-                    </div>
-                    <div className="form-group col-md-6">
-                      <label htmlFor="lastName">Last Name</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="lastName"
+                        id="RegistrationUsername"
                       />
                     </div>
                   </div>
                   <div className="form-group">
                     <label htmlFor="registrationEmail">Email</label>
                     <input
+                      onChange={this.onChange}
+                      name="email"
+                      value={email}
                       type="email"
                       className="form-control"
                       id="registrationEmail"
@@ -58,6 +72,9 @@ class RegistrationForm extends Component {
                   <div className="form-group">
                     <label htmlFor="registrationPassword">Password</label>
                     <input
+                      onChange={this.onChange}
+                      name="password"
+                      value={password}
                       type="password"
                       className="form-control"
                       id="registrationPassword"

@@ -4,8 +4,8 @@ import {
   AUTH_ERROR,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
 } from "../actions/types.js";
-import store from "../store.js";
 
 const initialState = {
   token: localStorage.getItem("token"),
@@ -32,23 +32,24 @@ export default function (state = initialState, action) {
         user: action.payload,
       };
     case LOGIN_SUCCESS:
-      localStorage.setItem("token", action.payload);
+      localStorage.setItem("token", action.payload.token);
+      console.log(">>>>", action.payload.token );
       return {
         ...state,
-        ...action.payload.token,
+        ...action.payload,
         isAuthenticated: true,
         isLoading: false,
       };
 
     case AUTH_ERROR:
     case LOGIN_FAIL:
-      console.log("----- error ----- ");
-      localStorage.removeItem("token");
+    case LOGOUT_SUCCESS:
+      localStorage.removeItem( "token" );
       return {
         ...state,
         isAuthenticated: null,
         isLoading: false,
-        toke: null,
+        token: null,
       };
 
     default:
