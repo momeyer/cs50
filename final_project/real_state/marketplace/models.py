@@ -28,6 +28,8 @@ class Property(models.Model):
     year = models.PositiveIntegerField(default=2000)
     size = models.PositiveIntegerField(default=40)
     price = models.FloatField()
+    lon = models.FloatField(default=45.467134581917357)
+    lat = models.FloatField(default=-75.546518086577947)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

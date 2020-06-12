@@ -6,7 +6,6 @@ import InformationModal from "../../components/houses/InformationModal.js";
 
 class HouseSearch extends Component {
  
-  
 
   render() {
     return (
