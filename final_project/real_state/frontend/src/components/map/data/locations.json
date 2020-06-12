@@ -1,0 +1,54 @@
+{
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "HOUSE_ID": 960,
+        "ADDRESS": "Verissimo Prado, 150 - Campinas",
+        "DESCRIPTIO": "2 bedrooms / 1 bathroom / 40 m2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [45.383321536272049, -75.3372987731628]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "HOUSE_ID": 1219,
+        "ADDRESS": "Ignacio Bilia, 250 - Sao Jose",
+        "DESCRIPTIO": "3 bedrooms / 2  bathroom / 70 m2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [45.467134581917357, -75.546518086577947]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "HOUSE_ID": 1652,
+        "ADDRESS": "Jardin Nova Estancia, 1050 - Sao Paulo",
+        "DESCRIPTIO": "4 bedrooms / 3  bathroom / 120 m2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [45.30534581917357, -75.546518086577947]
+      }
+    },
+
+    {
+      "type": "Feature",
+      "properties": {
+        "HOUSE_ID": 1552,
+        "ADDRESS": "Armelio Jesus, 50 - Joaquina",
+        "DESCRIPTIO": "2 bedrooms / 1  bathroom / 65 m2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [45.20534581917357, -76.206518086577947]
+      }
+    }
+  ]
+}

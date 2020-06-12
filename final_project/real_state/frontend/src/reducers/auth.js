@@ -19,14 +19,12 @@ const initialState = {
 export default function (state = initialState, action) {
   switch (action.type) {
     case USER_LOADING:
-      console.log("----- user loading ----- ");
       return {
         ...state,
         isLoading: true,
       };
 
     case USER_LOADED:
-      console.log("-----   user loaded ----- ");
       return {
         ...state,
         isAuthenticated: true,

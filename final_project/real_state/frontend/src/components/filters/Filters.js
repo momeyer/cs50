@@ -80,7 +80,7 @@ class Filters extends Component {
             <li className="nav-item"></li>
             <li className="nav-item"></li>
             <li className="nav-item">
-              <CheckboxDropDown options={['House', 'Apartment',]} title="Home Type" />
+              <CheckboxDropDown options={['House', 'Apartment',]} title="Type" />
             </li>
             <li className="nav-item">
               <RadioDropDown

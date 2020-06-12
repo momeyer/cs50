@@ -36,7 +36,7 @@ export class Carousel extends Component {
               className="carousel-item active"
             >
               <img
-                style={{
+                style={ {
                   borderTopLeftRadius: "10px",
                   borderTopRightRadius: "10px",
                 }}

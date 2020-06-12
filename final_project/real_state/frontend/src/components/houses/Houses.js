@@ -64,7 +64,7 @@ export class Houses extends Component {
     return (
       <Fragment>
         <Filters />
-        <div style={this.style} className="row">
+        <div id="houses_div" style={this.style} className="row">
           {houses}
         </div>
       </Fragment>

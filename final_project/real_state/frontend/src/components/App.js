@@ -13,14 +13,14 @@ import { loadUser } from "../actions/auth.js";
 import HouseSearch from "./layout/HouseSearch.js";
 import Profile from "./layout/Profile.js";
 import PrivateRoute from './common/PrivateRoute.js'
-
+import { Map, LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
 
 class App extends Component {
-
   componentDidMount() {
     store.dispatch( loadUser() );
   }
-  render() { 
+  
+  render() {
     return (
       <Provider store={store}>
         <Router>
