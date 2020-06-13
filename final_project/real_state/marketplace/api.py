@@ -1,6 +1,6 @@
-from .models import Property, Request
+from .models import Property, Request, LikedHouses
 from rest_framework import viewsets, permissions
-from .serializers import PropertySerializer, RequestSerializer
+from .serializers import PropertySerializer, RequestSerializer, LikedHousesSerializer
 
 
 # Property Viewset
@@ -39,3 +39,18 @@ class RequestViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         print("Action ", self.action)
         return [permission() for permission in self.permission_classes_by_action[self.action]]
+
+
+class LikedHousesViewSet(viewsets.ModelViewSet):
+    queryset = LikedHouses.objects.all()
+    permissions_classes = [
+        permissions.AllowAny
+    ]
+    serializer_class = LikedHousesSerializer
+
+    def get_authenticators(self):
+        return []
+
+    def get_permissions(self):
+        return [permission() for permission in self.permissions_classes]
+    

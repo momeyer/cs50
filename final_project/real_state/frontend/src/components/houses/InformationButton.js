@@ -1,7 +1,12 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import {updateSelected} from '../../actions/houses.js'
 
 class InformationButton extends Component {
   showModal = () => {
+    
+    this.props.select(this.props.house)
+    
     var houseAddress = document.getElementsByClassName("house_address");
     var housePrice = document.getElementsByClassName("house_price");
     var numBed = document.getElementById("num_bed");
@@ -17,6 +22,7 @@ class InformationButton extends Component {
       "Parking",
       "Laundry: Dryer Washer",
     ];
+
 
     for (var i = 0; i < houseAddress.length; i++) {
       houseAddress[
@@ -37,7 +43,7 @@ class InformationButton extends Component {
     id.innerHTML = this.props.house.id;
   };
 
-  render() {
+  render () {
     return (
       <Fragment>
         <button
@@ -57,4 +63,14 @@ class InformationButton extends Component {
   }
 }
 
-export default InformationButton;
+const mapStateToProps = (state) => ({
+  selected: state.housesReducer.selected
+} );
+
+
+const mapDispatchToProps = {
+  select: updateSelected,
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(InformationButton);

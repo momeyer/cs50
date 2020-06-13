@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Property(models.Model):
@@ -45,4 +46,11 @@ class Request(models.Model):
     
     def __str__(self):
         return f"{self.email} - {self.time}"
-    
+
+
+class LikedHouses(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    house_id = models.ForeignKey(Property, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"user: {self.user_id} - house: {self.house_id}"

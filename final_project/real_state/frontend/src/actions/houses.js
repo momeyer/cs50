@@ -3,7 +3,9 @@ import {
   GET_HOUSES,
   UPDATE_HOUSE_SEARCH,
   UPDATE_SEARCH_FILTER,
-  POST_REQUEST
+  POST_REQUEST,
+  UPDATE_SELECTED,
+  GET_LIKED_HOUSES,
 } from "./types.js";
 
 // GET HOUSES
@@ -14,6 +16,18 @@ export const getHouses = () => (dispatch) => {
       dispatch({
         type: GET_HOUSES,
         payload: res.data,
+      });
+    })
+    .catch((err) => console.log(err));
+};
+
+export const getLikedHouses = (userId) => (dispatch) => {
+  axios
+    .get("/api/liked/")
+    .then( ( res ) => {
+      dispatch({
+        type: GET_LIKED_HOUSES,
+        payload: res.data.filter((data) => data.user_id === userId),
       });
     })
     .catch((err) => console.log(err));
@@ -34,18 +48,24 @@ export const updateHouseSearch = (search) => (dispatch) => {
 };
 
 // UPDATE_SEARCH_FILTER
-export const updateSearchFilter = ( filter ) => ( dispatch ) => {
-
+export const updateSearchFilter = (filter) => (dispatch) => {
   axios
     .get("/api/marketplace/")
     .then((res) => {
       dispatch({
         type: UPDATE_SEARCH_FILTER,
         payload: res.data,
-        filter: filter
+        filter: filter,
       });
     })
     .catch((err) => console.log(err));
+};
+
+export const updateSelected = (house) => (dispatch) => {
+  dispatch({
+    type: UPDATE_SELECTED,
+    payload: house,
+  });
 };
 
 export const sendRequest = (request) => (dispatch) => {
@@ -57,6 +77,5 @@ export const sendRequest = (request) => (dispatch) => {
         payload: res.data,
       });
     })
-    .catch((err) => alert('try again'));
+    .catch((err) => alert("try again"));
 };
-

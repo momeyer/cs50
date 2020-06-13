@@ -2,7 +2,9 @@ import {
   GET_HOUSES,
   UPDATE_HOUSE_SEARCH,
   UPDATE_SEARCH_FILTER,
-  POST_REQUEST
+  POST_REQUEST,
+  UPDATE_SELECTED,
+  GET_LIKED_HOUSES
 } from "../actions/types.js";
 
 function checkFilters ( house, filter ) {
@@ -31,6 +33,8 @@ const initialState = {
   houses: [],
   search: "",
   filter: filters,
+  selected: null,
+  likedHouses: []
 };
 
 
@@ -53,6 +57,11 @@ export default function (state = initialState, action) {
         ...state,
         houses: action.payload,
       };
+    case GET_LIKED_HOUSES:
+      return {
+        ...state,
+        likedHouses: action.payload,
+      };
     case UPDATE_HOUSE_SEARCH:
       return {
         ...state,
@@ -68,6 +77,11 @@ export default function (state = initialState, action) {
         houses: action.payload.filter((house) =>
           applyFilter(house, action.filter)
         ),
+      };
+    case UPDATE_SELECTED:
+      return {
+        ...state,
+        selected: action.payload,
       };
     case POST_REQUEST:
       return { ...state };

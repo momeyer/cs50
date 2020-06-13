@@ -1,16 +1,14 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 
 class Save extends Component {
-    saveHouse = () => {
+  saveHouse = () => {
+    console.log(this.props.selected)
+  };
 
-        console.log( "save" );
-    };
-    
-
-    render ()
-    {   
-        return (
-        <button
+  render() {
+    return (
+      <button
         onClick={this.saveHouse}
         type="button"
         className="btn btn-outline-danger"
@@ -35,4 +33,8 @@ class Save extends Component {
   }
 }
 
-export default Save;
+const mapStateToProps = (state) => ({
+  selected: state.housesReducer.selected,
+});
+
+export default connect(mapStateToProps)(Save);
