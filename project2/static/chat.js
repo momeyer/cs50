@@ -2,14 +2,12 @@ $(document).ready(initAll);
 
 
 function initAll() {
-    console.log("InitAll")
     var socket = new SocketConnector();
     socket.io.on(SocketEvents.Connect, () => {
         var user = new User(socket);
         var chat = new Chat(socket, user);
 
         window.addEventListener("beforeunload", () => {
-            console.log('disconected', user.username)
             socket.io.emit(SocketEvents.ChangeOfStatus, { username: user.username, color: user.color, status: false })
         });
 
@@ -45,14 +43,12 @@ class HTMLUtils {
     static accessChatroom(clicked_id) {
         HTMLUtils.curChatroom.name = `${clicked_id}_div`
         HTMLUtils.curChatroom.type = 'group'
-        console.log(clicked_id)
-    }
+        }
 
     static accessPrivateChat(clicked_id) {
         HTMLUtils.curChatroom.name = `${clicked_id}`
         HTMLUtils.curChatroom.type = 'private'
-        console.log(clicked_id)
-    }
+        }
 
     static createUserLiElement(username, this_user, color, status) {
         const userLiElement = document.createElement('li')
@@ -70,7 +66,6 @@ class HTMLUtils {
     }
     static createGroupLiElement(groupName, color, icon) {
         const groupLiElement = document.createElement('li')
-        console.log('group name', groupName)
         groupLiElement.innerHTML = `<a class="nav-link" onclick="HTMLUtils.accessChatroom('${groupName}')" id="${groupName}" data-toggle="pill" href="#${groupName}_div" role="tab" aria-controls="${groupName}_div" aria-selected="false"><span style="color:${color};" ><img src="../static/project_images/${icon}.png" height="20vh">  ${groupName}</span></a>`
         return groupLiElement
     }
@@ -121,14 +116,12 @@ class User {
 
     requestExistentGroups() {
         this.socket.io.emit(SocketEvents.RequestUpdates);
-        console.log('request')
-    }
+        }
 
     registerUser() {
         this.username = this.usernameInputField.val();
         this.status = true;
-        console.log(this.username, this.color, this.status)
-
+        
         if (this.username.trim() !== '' && this.username.length > 0) {
 
             this.socket.io.emit(SocketEvents.SendUserName, { username: this.username, color: this.color, status: this.status, socket_id: this.socket.io.id });
@@ -138,7 +131,6 @@ class User {
 
         this.socket.io.on(SocketEvents.SendUserName, (data) => {
             if (data.available) {
-                console.log('available')
                 localStorage.setItem('username', this.username);
                 localStorage.setItem('color', this.color);
                 this.status = data.status
@@ -245,7 +237,6 @@ class Chat {
         this.socket.io.on(SocketEvents.NewUser, (data) => {
             const userLiElement = HTMLUtils.createUserLiElement(data.username, this.user.username, data.color, '#a9dc76')
             this.privateChatsList.append(userLiElement)
-            console.log('adding new user to list ')
             var userTabDiv = HTMLUtils.createPrivateTabDiv(data.username, this.user.username, data.color)
             this.chatroomDiv.append(userTabDiv)
         })
@@ -265,7 +256,6 @@ class Chat {
         })
 
         this.socket.io.on(SocketEvents.PrivateMessage, (data) => {
-            console.log('private', data)
             $(`#${data.name}`).append(data.message)
         })
     }
@@ -275,7 +265,6 @@ class Chat {
             if (data.available) {
                 var groupLiElement = HTMLUtils.createGroupLiElement(data.groupName, data.groupColor, data.groupIcon)
                 this.groupChatList.append(groupLiElement)
-                console.log(groupLiElement)
                 var groupTabDiv = HTMLUtils.createTabDiv(data.groupName, data.groupIcon)
                 this.chatroomDiv.append(groupTabDiv)
 

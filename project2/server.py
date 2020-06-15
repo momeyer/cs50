@@ -7,8 +7,6 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
-# print(dir(socketio))
-
 
 class User():
     def __init__(self, username, color):
@@ -29,7 +27,6 @@ class ServerData():
         if username not in ServerData.users.keys():
             ServerData.users[username] = {
                 'username': username, 'color': color, 'status': status, 'socket_id': socket_id, 'messages' : {}}
-            print(ServerData.users[username])
             return True
         else:
             return False
@@ -41,7 +38,6 @@ class ServerData():
                                                             "groupColor": group_color,
                                                             "groupIcon": group_icon,
                                                             'messages': ''}
-            print(ServerData.groups[group_name_key])
             return True
         else:
             return False
@@ -55,8 +51,6 @@ class ServerData():
                 ServerData.privates[receiver]['messages'] += message
         else:
             ServerData.groups[receiver]['messages'] += message
-
-        print('>>>>', ServerData.privates)
 
     @staticmethod
     def populateApp():
