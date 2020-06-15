@@ -1,11 +1,13 @@
 import React, { Component, Fragment } from "react";
 import Carousel from "./Carousel.js";
 import RequestForm from "./RequestForm.js";
+import { connect } from "react-redux";
 import Save from './Save.js'
 
 
 class InformationModal extends Component {
-  render() {
+  
+  render () {
     return (
       <Fragment>
         <div
@@ -23,6 +25,11 @@ class InformationModal extends Component {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title" id="informatioModalLabel">
+                  <img
+                    src="../static/images/logo.png"
+                    height="50px"
+                    className="mr-2"
+                  />{" "}
                   Contact this Property
                 </h5>
                 <button
@@ -37,7 +44,10 @@ class InformationModal extends Component {
               <div className="modal-body text-dark">
                 <div className="row">
                   <div className="col-md-8">
-                    <div id="house_info" style={{ maxHeight: "470px", overflowY: "scroll" }}>
+                    <div
+                      id="house_info"
+                      style={{ maxHeight: "470px", overflowY: "scroll" }}
+                    >
                       <div style={{ maxHeight: "300px", overflow: "hidden" }}>
                         <Carousel />
                       </div>
@@ -119,7 +129,7 @@ class InformationModal extends Component {
                 >
                   Close
                 </button>
-                <Save />
+                {this.props.auth.user != null ? <Save /> : console.log("")}
               </div>
             </div>
           </div>
@@ -129,4 +139,8 @@ class InformationModal extends Component {
   }
 }
 
-export default InformationModal;
+const mapStateToProps = (state) => ({
+  auth: state.authReducer
+} );
+
+export default connect(mapStateToProps)(InformationModal);

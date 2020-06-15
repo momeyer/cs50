@@ -19,3 +19,5 @@ export const UPDATE_SELECTED = "UPDATE_SELECTED";
 
 export const GET_LIKED_HOUSES = "GET_LIKED_HOUSES";
 export const ADD_LIKED_HOUSES = "ADD_LIKED_HOUSES";
+
+export const SAVE_HOUSE = "SAVE_HOUSE";

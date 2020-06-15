@@ -6,6 +6,7 @@ import {
   POST_REQUEST,
   UPDATE_SELECTED,
   GET_LIKED_HOUSES,
+  SAVE_HOUSE
 } from "./types.js";
 
 // GET HOUSES
@@ -32,6 +33,20 @@ export const getLikedHouses = (userId) => (dispatch) => {
     })
     .catch((err) => console.log(err));
 };
+
+
+export const saveHouse = (user_and_house_ids) => (dispatch) => {
+  axios
+    .post("/api/liked/", user_and_house_ids)
+    .then((res) => {
+      dispatch({
+        type: SAVE_HOUSE,
+        payload: res.data,
+      });
+    })
+    .catch((err) => alert("error saving house"));
+};
+
 
 // UPDATE_HOUSE_SEARCH
 export const updateHouseSearch = (search) => (dispatch) => {
@@ -79,3 +94,5 @@ export const sendRequest = (request) => (dispatch) => {
     })
     .catch((err) => alert("try again"));
 };
+
+

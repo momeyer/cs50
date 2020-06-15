@@ -13,7 +13,7 @@ export class Houses extends Component {
   style = {
     overflowY: "scroll",
     Height: "80vh",
-    maxHeight: "80vh",
+    maxHeight: "78vh",
   };
 
   checkFilters ( house, filter ) {

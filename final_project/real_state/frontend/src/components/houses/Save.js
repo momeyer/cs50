@@ -1,9 +1,19 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { saveHouse } from '../../actions/houses.js'
+
 
 class Save extends Component {
   saveHouse = () => {
-    console.log(this.props.selected)
+
+    const ids = {
+      user_id: this.props.auth.user.id,
+      house_id: this.props.selected.id
+    }
+
+
+    this.props.saveHouse(ids)
+    console.log(ids)
   };
 
   render() {
@@ -35,6 +45,12 @@ class Save extends Component {
 
 const mapStateToProps = (state) => ({
   selected: state.housesReducer.selected,
+  auth: state.authReducer
 });
 
-export default connect(mapStateToProps)(Save);
+const mapDispatchToProps = {
+  saveHouse: saveHouse,
+};
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Save);

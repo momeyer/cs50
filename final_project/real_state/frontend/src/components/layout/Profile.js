@@ -30,7 +30,6 @@ class Profile extends Component {
 
   render() {
     const userId = this.props.auth.user.id;
-  
     const likedHouses = this.select( this.props.liked, this.props.houses );
 
 
@@ -51,7 +50,7 @@ class Profile extends Component {
             </Link>
           </div>
         </div>
-        {likedHouses}
+        <div className="row">{likedHouses}</div>
       </div>
     );
   }

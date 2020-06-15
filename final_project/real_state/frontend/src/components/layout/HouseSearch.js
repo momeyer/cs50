@@ -6,15 +6,14 @@ import InformationModal from "../../components/houses/InformationModal.js";
 
 class HouseSearch extends Component {
  
-
   render() {
     return (
       <div className="container-fluid">
         <div className="row">
-          <div className="col-md-7">
+          <div className="col-md-8">
             <Houses />
           </div>
-          <div className="col-md-5 ml-n2 mt-3 mb-3">
+          <div className="col-md-4 ml-n2 mt-3 mb-3">
             <MapComponent />
             <InformationModal key="modal" />
             <RegistrationForm />

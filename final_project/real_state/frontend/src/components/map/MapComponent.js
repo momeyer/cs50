@@ -1,11 +1,9 @@
 import React, { Component, useState } from "react";
 import { Map, LeafletMap, TileLayer, Marker, Popup } from "react-leaflet";
 import { Icon } from "leaflet";
-import * as locations from "./data/locations.json";
 import Carousel from "../houses/Carousel.js";
 import { getHouses } from "../../actions/houses.js";
 import { connect } from "react-redux";
-import House from '../houses/House.js'
 import InformationButton from '../houses/InformationButton.js'
 
 class MapComponent extends Component {
@@ -27,7 +25,7 @@ class MapComponent extends Component {
     });
 
     return (
-      <Map center={[45.4, -75.7]} zoom={10}>
+      <Map center={[30.240086, -97.738906]} zoom={12}>
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

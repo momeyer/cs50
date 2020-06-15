@@ -4,7 +4,8 @@ import {
   UPDATE_SEARCH_FILTER,
   POST_REQUEST,
   UPDATE_SELECTED,
-  GET_LIKED_HOUSES
+  GET_LIKED_HOUSES,
+  SAVE_HOUSE
 } from "../actions/types.js";
 
 function checkFilters ( house, filter ) {
@@ -84,6 +85,7 @@ export default function (state = initialState, action) {
         selected: action.payload,
       };
     case POST_REQUEST:
+    case SAVE_HOUSE:
       return { ...state };
     default:
       return state;
