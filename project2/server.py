@@ -8,6 +8,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
+
 class User():
     def __init__(self, username, color):
         self.username = username
@@ -26,7 +27,7 @@ class ServerData():
     def add_new_user_if_available(username, color, status, socket_id):
         if username not in ServerData.users.keys():
             ServerData.users[username] = {
-                'username': username, 'color': color, 'status': status, 'socket_id': socket_id, 'messages' : {}}
+                'username': username, 'color': color, 'status': status, 'socket_id': socket_id, 'messages': {}}
             return True
         else:
             return False
@@ -37,7 +38,7 @@ class ServerData():
             ServerData.groups[group_name_key] = {'groupName': group_name,
                                                             "groupColor": group_color,
                                                             "groupIcon": group_icon,
-                                                            'messages': ''}
+                                                            'messages': []}
             return True
         else:
             return False
@@ -46,11 +47,16 @@ class ServerData():
     def store_message(chat_type, receiver, message):
         if chat_type == 'private':
             if receiver not in ServerData.privates.keys():
-                ServerData.privates[receiver] = {'messages' : message}
+                ServerData.privates[receiver] = {'messages': [message]}
             else:
-                ServerData.privates[receiver]['messages'] += message
+                ServerData.privates[receiver]['messages'].append(message)
+                if len(ServerData.privates[receiver]['messages']) >= 101:
+                    ServerData.privates[receiver]['messages'].pop(0)
         else:
-            ServerData.groups[receiver]['messages'] += message
+            ServerData.groups[receiver]['messages'].append(message)
+            if len(ServerData.groups[receiver]['messages']) >= 101:
+                ServerData.groups[receiver]['messages'].pop(0)
+
 
     @staticmethod
     def populateApp():
@@ -66,7 +72,7 @@ class ServerData():
             icon = random.randint(1, 25)
             color = random.choice(colors)
             ServerData.groups[f'{name}_div'] = {
-                'groupName': name, "groupColor": color, 'groupIcon': icon, 'messages': ''}
+                'groupName': name, "groupColor": color, 'groupIcon': icon, 'messages': []}
 
         for name in peopleName:
             userStatus = random.choice(status)
@@ -125,6 +131,7 @@ def on_request_updates():
 
 @socketio.on(SocketEvents.Message)
 def on_message(data):
+        print(data['message'])
         ServerData.store_message(data['type'], data['name'],  data['message'])
         if data['type'] == 'group':
             emit(SocketEvents.GroupMessage, data, broadcast=True)
