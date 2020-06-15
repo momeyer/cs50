@@ -234,9 +234,9 @@ def orderPasta(request):
 
     pasta = get_pasta(request)
     pasta.save()
-    num = request.POST["num"]
+    num = int(request.POST["num"])
 
-    item = OrderItem(quantity=num, order=order, content_object=pasta, object_id=pasta.id, price=pasta.price)
+    item = OrderItem(quantity=num, order=order, content_object=pasta, object_id=pasta.id, price=pasta.price * num)
     item.save()
 
 
@@ -256,9 +256,9 @@ def orderSalad(request):
 
     salad = if_salad(request)
     salad.save()
-    num = request.POST["num"]
+    num = int(request.POST["num"])
 
-    item = OrderItem(quantity=num, order=order, content_object=salad, object_id=salad.id, price=salad.price)
+    item = OrderItem(quantity=num, order=order, content_object=salad, object_id=salad.id, price=salad.price * num)
     item.save()
 
 
