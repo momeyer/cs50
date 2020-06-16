@@ -1,13 +1,23 @@
 import React, { Component, Fragment } from "react";
 
 export class Carousel extends Component {
-  generateDivPics(houseId, numberOfPics) {
-    const divElements = [''];
-    for (var i = 1; i < numberOfPics; i++) {
+  generateHouseNumber = () => {
+    return Math.floor(Math.random() * 4) + 1;
+  };
+
+  generateDivPics(houseId, numberOfPics, houseNumber) {
+    const divElements = [""];
+    for (var i = 2; i < numberOfPics; i++) {
       divElements.push(
         <div key={`house_${houseId}_pic_${i}`} className="carousel-item">
-          <img src={`../static/images/House${i}.jpg`} className="d-block w-100" style={{borderTopLeftRadius: "10px",
-                  borderTopRightRadius: "10px"}} />
+          <img
+            src={`../static/images/houses/house${houseNumber}/${i}.jpg`}
+            className="d-block w-100"
+            style={{
+              borderTopLeftRadius: "10px",
+              borderTopRightRadius: "10px",
+            }}
+          />
           <div className="carousel-caption d-none d-md-block">
             <h5>
               {i + 1} of {numberOfPics}
@@ -20,8 +30,12 @@ export class Carousel extends Component {
   }
 
   render() {
-    var numberOfPics = 5;
-    const picElements = this.generateDivPics(this.props.houseId, numberOfPics);
+    var numberOfPics = 7;
+    const picElements = this.generateDivPics(
+      this.props.houseId,
+      numberOfPics,
+      this.generateHouseNumber()
+    );
 
     return (
       <Fragment>
@@ -36,11 +50,11 @@ export class Carousel extends Component {
               className="carousel-item active"
             >
               <img
-                style={ {
+                style={{
                   borderTopLeftRadius: "10px",
                   borderTopRightRadius: "10px",
                 }}
-                src="../static/images/House.jpg"
+                src={`../static/images/houses/house${this.generateHouseNumber()}/1.jpg`}
                 className="d-block w-100"
               />
               <div className="carousel-caption d-none d-md-block">
