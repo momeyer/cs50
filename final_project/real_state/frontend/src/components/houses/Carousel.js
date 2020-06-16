@@ -7,11 +7,14 @@ export class Carousel extends Component {
 
   generateDivPics(houseId, numberOfPics, houseNumber) {
     const divElements = [""];
-    for (var i = 2; i < numberOfPics; i++) {
+    for (var i = 0; i < numberOfPics; i++) {
       divElements.push(
-        <div key={`house_${houseId}_pic_${i}`} className="carousel-item">
+        <div
+          key={`house_${houseId}_pic_${i}`}
+          className={i === 0 ? "carousel-item active" : "carousel-item"}
+        >
           <img
-            src={`../static/images/houses/house${houseNumber}/${i}.jpg`}
+            src={`../static/images/houses/house${houseNumber}/${i+1}.jpg`}
             className="d-block w-100"
             style={{
               borderTopLeftRadius: "10px",
@@ -30,7 +33,7 @@ export class Carousel extends Component {
   }
 
   render() {
-    var numberOfPics = 7;
+    var numberOfPics = 6;
     const picElements = this.generateDivPics(
       this.props.houseId,
       numberOfPics,
@@ -45,22 +48,6 @@ export class Carousel extends Component {
           data-ride="carousel"
         >
           <div className="carousel-inner">
-            <div
-              key={`house_${this.props.houseId}_pic_0`}
-              className="carousel-item active"
-            >
-              <img
-                style={{
-                  borderTopLeftRadius: "10px",
-                  borderTopRightRadius: "10px",
-                }}
-                src={`../static/images/houses/house${this.generateHouseNumber()}/1.jpg`}
-                className="d-block w-100"
-              />
-              <div className="carousel-caption d-none d-md-block">
-                <h5> 1 of {numberOfPics}</h5>
-              </div>
-            </div>
             {picElements}
           </div>
           <a
