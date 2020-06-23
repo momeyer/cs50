@@ -4,14 +4,15 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 import requests
 
-DATABASE_URL="postgresql://monique:monique@localhost:5432/monique"
+# DATABASE_URL = "postgresql://monique:monique@localhost:5432/monique"
+DATABASE_URL = "postgres://yjmkcdhbksdkhk:d055e655ce0b17c0c2699cc3dc146562d77aa01d1f0987ae6b3b757cc4b6ce52@ec2-54-75-231-215.eu-west-1.compute.amazonaws.com:5432/d6djej8hgj1pb8"
 
 engine = create_engine(DATABASE_URL)
 db = scoped_session(sessionmaker(bind=engine))
 
 
-
 def add_books():
+    db.execute(" CREATE TABLE books (id SERIAL PRIMARY KEY, isbn VARCHAR NOT NULL, title VARCHAR NOT NULL, author VARCHAR NOT NULL ,year INTEGER NOT NULL, goodreads_avg_review FLOAT, goodreads_num_of_reviews INTEGER) ")
     f = open("books.csv")
     reader = csv.reader(f)
     for isbn, title, author, year in reader:
@@ -34,8 +35,10 @@ def get_isbns_list(size_of_split=500):
 
 
 def add_reviews():
+    
     list_of_isbn_batches = get_isbns_list()
     for isbn_batch in list_of_isbn_batches:
+
         res = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key": "lFpB9zGJWlX67eLwpNAXLQ", "isbns":isbn_batch})
 
         json_res = res.json()
@@ -51,8 +54,10 @@ def add_reviews():
     db.commit()
 
 
+
+
 def main():
-    # add_books()
+    add_books()
     add_reviews()
 if __name__ == "__main__":
     main()
