@@ -4,7 +4,6 @@ import { updateSearchFilter } from "../../actions/houses.js";
 
 class CheckboxDropDown extends Component {
   filter = (value) => {
-    console.log("clicked" + value);
     var dict = this.props.filter.home_type;
     var index = dict.indexOf(`${value}`);
     index < 0 ? dict.push( value ) : dict.splice(index, 1);

@@ -36,9 +36,9 @@ class ServerData():
     def add_group_if_available(group_name_key, group_name, group_color, group_icon):
         if group_name_key not in ServerData.groups.keys():
             ServerData.groups[group_name_key] = {'groupName': group_name,
-                                                            "groupColor": group_color,
-                                                            "groupIcon": group_icon,
-                                                            'messages': []}
+                                                "groupColor": group_color,
+                                                "groupIcon": group_icon,
+                                                'messages': []}
             return True
         else:
             return False
@@ -62,8 +62,8 @@ class ServerData():
     def populateApp():
         colors = ['#a9dc76', '#ffd766', '#78dce8',
                   '#ab9df2', '#ff6087', '#fb9767']
-        groupNames = ['TalkingShit', 'onlyFriends', 'quarantiners',
-                      'AltijdThuis', 'talkTalkTalk', 'MigosandMigas']
+        groupNames = ['GroupExample', 'AnotherGroup', 'CS50',
+                      'CS50Projects', 'FlaskGroup', 'Group_1']
         peopleName = ['Maria', 'James', 'Kate', 'John',
                       'Peter', 'Samantha', 'Eduard', 'Cath']
         status = [True, False]

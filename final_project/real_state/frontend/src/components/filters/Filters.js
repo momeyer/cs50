@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import CheckboxDropDown from './CheckboxDropDown.js'
+import CheckboxDropDown from "./CheckboxDropDown.js";
 import SaveSearchButton from "./SaveSearchButton.js";
 import RadioDropDown from "./RadioDropDown.js";
+import { connect } from "react-redux";
 
 class Filters extends Component {
   render() {
@@ -44,8 +45,14 @@ class Filters extends Component {
                   "up to US$ ",
                   "up to US$ ",
                   "up to US$ ",
+                  "up to US$ ",
+                  "up to US$ ",
                 ]}
-                values={[500, 1000, 1500, 2000, 2500, 3000]}
+                values={
+                  this.props.offer === "Rent"
+                    ? [500, 1000, 1500, 2000, 2500, 3000, 10000]
+                    : [200000, 250000, 300000, 350000, 400000, 450000, 1000000]
+                }
                 title="Price"
               />
             </li>
@@ -80,7 +87,7 @@ class Filters extends Component {
             <li className="nav-item"></li>
             <li className="nav-item"></li>
             <li className="nav-item">
-              <CheckboxDropDown options={['House', 'Apartment',]} title="Type" />
+              <CheckboxDropDown options={["House", "Apartment"]} title="Type" />
             </li>
             <li className="nav-item">
               <RadioDropDown
@@ -116,4 +123,9 @@ class Filters extends Component {
   }
 }
 
-export default Filters;
+//  update prices for buy
+const mapStateToProps = (state) => ({
+  offer: state.housesReducer.filter.offer_type,
+});
+
+export default connect(mapStateToProps)(Filters);

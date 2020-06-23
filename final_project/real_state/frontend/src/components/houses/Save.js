@@ -13,7 +13,6 @@ class Save extends Component {
 
 
     this.props.saveHouse(ids)
-    console.log(ids)
   };
 
   render() {

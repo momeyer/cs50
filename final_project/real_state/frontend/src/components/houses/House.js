@@ -18,9 +18,10 @@ export class House extends Component {
               className="card-title"
               style={{ fontWeight: "bold", color: "#606060" }}
             >
-              US$ {this.props.house.offer_type === "Rent"
-                ? `${this.props.house.price}/mo`
-                : `${this.props.house.price}`}
+              US${" "}
+              {this.props.house.offer_type === "Rent"
+                ? `${this.props.house.price.toFixed(2)}/mo`
+                : `${this.props.house.price.toFixed(2)}`}
             </h5>
             <div className="card-text">
               <p>

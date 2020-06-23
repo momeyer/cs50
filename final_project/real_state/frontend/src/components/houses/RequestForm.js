@@ -34,6 +34,7 @@ class RequestForm extends Component {
                 type="email"
                 className="form-control"
                 id="email"
+                placeholder="Your email"
                 required
               />
             </div>

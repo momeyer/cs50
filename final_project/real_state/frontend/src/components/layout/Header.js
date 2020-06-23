@@ -9,6 +9,7 @@ import { logout } from "../../actions/auth.js";
 export class Header extends Component {
   filter = (value) => {
     this.props.filter.offer_type = value;
+    this.props.filter.price = 9999999999
     this.props.updateFilter(this.props.filter);
   };
 

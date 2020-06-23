@@ -13,7 +13,7 @@ DATABASE_URL="postgresql://monique:monique@localhost:5432/monique"
 engine = create_engine(DATABASE_URL)
 db = scoped_session(sessionmaker(bind=engine))
 
-        
+
 def registration_form_info_is_correct(name, lastname, username, password, password_confirmation, avatar):
     if name.isspace() or lastname.isspace() or username.isspace() or password.isspace():
         render_template("error.html", message="Please make sure to provide all the information and try again")
@@ -115,16 +115,16 @@ class Database():
 
     @staticmethod
     def select_book_by_id(book_id):
-        return db.execute("SELECT * FROM books WHERE id = :id", {"id": book_id}).fetchone()
+        return db.execute("SELECT * FROM books WHERE id= :id", {"id": book_id}).fetchone()
 
     @staticmethod
     def select_book_by_isbn(book_isbn):
-        return db.execute("SELECT * FROM books WHERE isbn=:isbn", {"isbn": book_isbn}).fetchone()
-
+        print("search by book_isbn", book_isbn)
+        return db.execute(f"SELECT * FROM books WHERE isbn= :isbn", {"isbn": book_isbn}).fetchone()
 
     @staticmethod
     def select_review_by_user_id_and_book_id(user_id, book_id):
-        return db.execute(f"select * from reviews where book_id={book_id} and user_id={user_id}").rowcount > 0
+        return db.execute(f"select * from reviews where book_id ={book_id} and user_id={user_id}").rowcount > 0
 
 
     @staticmethod
@@ -260,6 +260,7 @@ def submit_review(book_id):
 def book_api(book_isbn):
 
     book = Database.select_book_by_isbn(book_isbn)
+  
     if book is None:
         return jsonify({"error":"invalid isbn"}), 422
 

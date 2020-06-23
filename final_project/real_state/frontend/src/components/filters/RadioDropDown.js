@@ -25,20 +25,20 @@ class RadioDropDown extends Component {
         >
           <div className="form-check">
             <input
-              onClick={ this.filter }
-              name={ this.props.type }
+              onClick={this.filter}
+              name={this.props.type}
               type="radio"
               className="form-check-input"
-              id={ `filter_${ this.props.type }_${ i }` }
+              id={`filter_${this.props.type}_${i}`}
               value={this.props.values[i]}
-        />
+            />
             <label
               className="form-check-label"
               htmlFor={`filter_${this.props.type}_${i}`}
             >
               {this.props.type !== "price"
                 ? this.props.options[i]
-                : `up to US$ ${this.props.values[i]}.00`}
+                : `${this.props.options[i]} ${this.props.values[i]}.00`}
             </label>
           </div>
         </div>
