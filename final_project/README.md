@@ -1,6 +1,6 @@
 
 
-# # Final Project: Real State
+# Final Project: Real State
 
 This web application is a part of an online course by Harvard University.
 
@@ -16,7 +16,7 @@ Users are able to browse the properties list or via the map, save houses to chec
 -  See house location in the map
 
 ## Technologies
-- Python
+-  Python
 -  Django
 -  SQL
 -  JavaScript
