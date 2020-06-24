@@ -9,12 +9,13 @@ It is a virtual book store, where you can login/register, search for books, read
 
 ## Features
 
--   Register
--   Login
--   Search for books by name, author or ISBN
--   Write a review
--   Real-time Goodreads average rate and review count
+-  Register
+-  Login
+-  Search for books by name, author or ISBN
+-  Write a review
+-  Real-time Goodreads average rate and review count
 -  Json response if made a GET request to `/api/isbn` route
+-  API request to get book covers
 
 
 ## Technologies
@@ -23,7 +24,7 @@ It is a virtual book store, where you can login/register, search for books, read
 -  SQL
 -  HTML
 -  CSS
-- Bootstrap 4
+-  Bootstrap 4
 
 ### Youtube link:  https://youtu.be/Bhg436yW574
 

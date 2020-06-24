@@ -5,7 +5,7 @@ from sqlalchemy.orm import scoped_session, sessionmaker
 import requests
 
 # DATABASE_URL = "postgresql://monique:monique@localhost:5432/monique"
-DATABASE_URL = "postgres://yjmkcdhbksdkhk:d055e655ce0b17c0c2699cc3dc146562d77aa01d1f0987ae6b3b757cc4b6ce52@ec2-54-75-231-215.eu-west-1.compute.amazonaws.com:5432/d6djej8hgj1pb8"
+imDATABASE_URL = "postgres://yjmkcdhbksdkhk:d055e655ce0b17c0c2699cc3dc146562d77aa01d1f0987ae6b3b757cc4b6ce52@ec2-54-75-231-215.eu-west-1.compute.amazonaws.com:5432/d6djej8hgj1pb8"
 
 engine = create_engine(DATABASE_URL)
 db = scoped_session(sessionmaker(bind=engine))
