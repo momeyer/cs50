@@ -28,7 +28,7 @@ export const getLikedHouses = (userId) => (dispatch) => {
     .then( ( res ) => {
       dispatch({
         type: GET_LIKED_HOUSES,
-        payload: res.data.filter((data) => data.user_id === userId),
+        payload: res.data.filter((data) => data.user_id === parseInt(userId)),
       });
     })
     .catch((err) => console.log(err));

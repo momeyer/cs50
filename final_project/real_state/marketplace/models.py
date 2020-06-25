@@ -49,8 +49,10 @@ class Request(models.Model):
 
 
 class LikedHouses(models.Model):
+
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     house_id = models.ForeignKey(Property, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"user: {self.user_id} - house: {self.house_id}"
+

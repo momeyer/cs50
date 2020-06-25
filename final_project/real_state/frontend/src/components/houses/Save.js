@@ -5,14 +5,14 @@ import { saveHouse } from '../../actions/houses.js'
 
 class Save extends Component {
   saveHouse = () => {
-
     const ids = {
       user_id: this.props.auth.user.id,
-      house_id: this.props.selected.id
+      house_id: this.props.selected
     }
 
-
-    this.props.saveHouse(ids)
+    this.props.saveHouse( ids )
+    
+    document.location.reload()
   };
 
   render() {
@@ -22,6 +22,7 @@ class Save extends Component {
         type="button"
         className="btn btn-outline-danger"
         style={{ borderRadius: "5px" }}
+        data-dismiss="modal"
       >
         <svg
           className="bi bi-heart-fill mr-2"

@@ -1,9 +1,15 @@
 import React, { Component, Fragment } from "react";
 import Carousel from "./Carousel.js";
 import InformationButton from "./InformationButton";
+import { connect } from "react-redux";
 
 export class House extends Component {
-  render() {
+  
+  render () {
+     var match = this.props.liked.filter(
+       (house) => house.house_id === this.props.house.id
+     );
+    
     return (
       <Fragment>
         <div
@@ -22,6 +28,12 @@ export class House extends Component {
               {this.props.house.offer_type === "Rent"
                 ? `${this.props.house.price.toFixed(2)}/mo`
                 : `${this.props.house.price.toFixed(2)}`}
+              
+              { match.length != 0 ? <img
+                src="../static/images/tag.png"
+                height="40px"
+                style={{marginTop : "-21px", position :'absolute', right: "0%"}}
+              /> : console.log('') }
             </h5>
             <div className="card-text">
               <p>
@@ -60,6 +72,7 @@ export class House extends Component {
             </div>
           </div>
           <InformationButton
+            houseId={this.props.house.id}
             key={`info_button_house_${this.props.house.id}`}
             house={this.props.house}
           />
@@ -69,4 +82,8 @@ export class House extends Component {
   }
 }
 
-export default House;
+const mapStateToProps = (state) => ({
+  liked: state.housesReducer.likedHouses,
+});
+
+export default connect(mapStateToProps)(House);

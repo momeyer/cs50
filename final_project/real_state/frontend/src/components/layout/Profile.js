@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { getLikedHouses } from "../../actions/houses.js";
 import { getHouses } from "../../actions/houses.js";
 import House from "../houses/House.js";
-
+import InformationModal from "../../components/houses/InformationModal.js";
 import { connect } from "react-redux";
 
 class Profile extends Component {
@@ -25,17 +25,22 @@ class Profile extends Component {
       housesToReturn.push(houses.filter((house) => house.id === likedHouses[i].house_id))
     }
 
-    return housesToReturn.map( ( house ) => { return <House key={ `liked_${house[0].id} `} house={ house[0] } />; } );
+    return housesToReturn.map( ( house ) => { return (
+                                                <House
+                                                  key={`liked_${house[0].id} `}
+                                                  house={house[0]}
+                                                  houseId={house[0].id}
+                                                />
+                                              ); } );
   }
 
-  render() {
-    const userId = this.props.auth.user.id;
-    const likedHouses = this.select( this.props.liked, this.props.houses );
-
+  render () {
+    const likedHouses = this.select(this.props.liked, this.props.houses );
 
     return (
       <div className="container-fluid text-secondary mt-5">
         <div className="row">
+          <InformationModal house={this.props.houseId} />
           <div className="col-md-12">
             <h1 style={{ textTransform: "capitalize" }}>
               {" "}

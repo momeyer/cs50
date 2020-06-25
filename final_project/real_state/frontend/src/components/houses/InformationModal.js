@@ -2,12 +2,22 @@ import React, { Component, Fragment } from "react";
 import Carousel from "./Carousel.js";
 import RequestForm from "./RequestForm.js";
 import { connect } from "react-redux";
-import Save from './Save.js'
-
+import Save from "./Save.js";
 
 class InformationModal extends Component {
-  
-  render () {
+  checkIfLiked = () => {
+    var match = this.props.liked.filter(
+      (house) => house.house_id === this.props.selected
+    );
+    
+    if (localStorage.getItem('user') != null && match.length === 0)
+    {
+      return <Save />;
+    }
+  };
+
+  render() {
+    const saveButton = this.checkIfLiked();
     return (
       <Fragment>
         <div
@@ -129,7 +139,7 @@ class InformationModal extends Component {
                 >
                   Close
                 </button>
-                {this.props.auth.user != null ? <Save /> : console.log("")}
+                {saveButton}
               </div>
             </div>
           </div>
@@ -140,7 +150,9 @@ class InformationModal extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  auth: state.authReducer
-} );
+  auth: state.authReducer,
+  liked: state.housesReducer.likedHouses,
+  selected: state.housesReducer.selected,
+});
 
 export default connect(mapStateToProps)(InformationModal);

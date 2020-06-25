@@ -3,11 +3,9 @@ import { connect } from "react-redux";
 import {updateSelected} from '../../actions/houses.js'
 
 class InformationButton extends Component {
-  showModal = () => {
-    
-    this.props.select(this.props.house)
-    
-    var houseAddress = document.getElementsByClassName("house_address");
+  showModal = (id) => {
+    this.props.select(id)
+    var houseAddress = document.getElementsByClassName( "house_address" );
     var housePrice = document.getElementsByClassName("house_price");
     var numBed = document.getElementById("num_bed");
     var numBath = document.getElementById("num_bath");
@@ -48,7 +46,7 @@ class InformationButton extends Component {
       <Fragment>
         <button
           onClick={() => {
-            this.showModal();
+            this.showModal(this.props.houseId);
           }}
           style={{ borderRadius: "10px" }}
           type="button"
@@ -65,7 +63,7 @@ class InformationButton extends Component {
 
 const mapStateToProps = (state) => ({
   selected: state.housesReducer.selected
-} );
+});
 
 
 const mapDispatchToProps = {
