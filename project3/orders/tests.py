@@ -1,8 +1,6 @@
 from django.test import TestCase, Client
 from .models import Pizza, Order, OrderItem, OrderStatus, User, PizzaBaseType, PizzaTopping, Size, Sub, Salad, DinnerPlate, Pasta, Extra
 
-# Create your tests here.
-
 
 class OrderTestCase(TestCase):
 
@@ -16,8 +14,8 @@ class OrderTestCase(TestCase):
         self.user = User.objects.create_user(
             username="user1", email="user1@user", password="user123")
         self.order = Order.objects.create(user=self.user, order_status=pending)
-        BaseTypeRegular = PizzaBaseType.objects.create(base="regular")
-        BaseTypeSicilian = PizzaBaseType.objects.create(base="sicilian")
+        BaseTypeRegular = PizzaBaseType.objects.create(base="Regular")
+        BaseTypeSicilian = PizzaBaseType.objects.create(base="Sicilian")
 
         cheese = PizzaTopping.objects.create(topping="Cheese")
         one = PizzaTopping.objects.create(topping="One topping")
@@ -25,8 +23,8 @@ class OrderTestCase(TestCase):
         three = PizzaTopping.objects.create(topping="Three toppings")
         special = PizzaTopping.objects.create(topping="Special")
 
-        sicilianBase = PizzaBaseType.objects.get(base="sicilian")
-        regularBase = PizzaBaseType.objects.get(base="regular")
+        sicilianBase = PizzaBaseType.objects.get(base="Sicilian")
+        regularBase = PizzaBaseType.objects.get(base="Regular")
 
         pizzaSicilian = Pizza.objects.create(
             base=sicilianBase, toppings=special, small=30.0, large=40.0)
