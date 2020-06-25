@@ -191,314 +191,317 @@
 
 
 {% block body %}
-<div class="row" id="row_content">
-    <div class="col-xs-12 col-md-8">
-        <div class="row">
-            <div class="col-xs-12 col-md-6">
-                <div class="card mb-3">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{% static 'orders/images/regular_order_view.jpg' %}" class="card-img" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Regular Pizza</h5>
-                                <p class="card-text">
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" id="regular_toppings"
-                                                name="regular_toppings">
-                                                {% for topping in toppingOptions %}
-                                                <option value="{{ topping }}">{{topping}}</option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" name="size" id="regular_size">
-                                                {% for size in sizes %}
-                                                <option value="{{ size }}">{{size}}</option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="1"
-                                                id="regular_qnt" min="1" max="50">
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <button class="btn btn-secondary" id="add_regular_pizza_button">add
-                                                to cart</button>
-                                        </div>
-                                    </div>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <div class="card mb-3">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{% static 'orders/images/sicilian_order_view.jpg' %}" class="card-img" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Sicilian Pizza</h5>
-                                <p class="card-text">
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" id="sicilian_toppings"
-                                                name="sicilian_toppings">
-                                                {% for topping in toppingOptions %}
-                                                <option value="{{ topping }}">{{ topping }}</option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" name="size" id="sicilian_size">
-                                                {% for size in sizes %}
-                                                <option value="{{ size }}">{{size}}</option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" id="sicilian_num" name="num"
-                                                placeholder="1" min="1" max="50">
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <button class="btn btn-secondary" id="add_sicilian_pizza_button">add
-                                                to cart</button>
-                                        </div>
-                                    </div>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-12 col-md-6">
-                <div class="card mb-3">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{% static 'orders/images/sub_order_view.jpg' %}" class="card-img" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Subs</h5>
-                                <p class="card-text">
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" id="sub" name="sub">
-                                                {% for sub in subs %}
-                                                <option value="{{ sub.ingredients }}">
-                                                    {{ sub.ingredients }}
-                                                </option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" name="size" id="sub_size">
-                                                {% for size in sizes %}
-                                                <option value="{{ size }}">{{size}}</option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="1"
-                                                id="sub_qnt" min="1" max="50">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" name="extra">
-                                                <option value="none">no extra</option>
-                                                {% for extra in extras %}
-                                                <option value="{{ extra.extra }}">{{extra.extra}}
-                                                    {{extra.price}}</option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <button class="btn btn-secondary" id="add_sub" type="submit">add to
-                                                cart</button>
-                                        </div>
-                                    </div>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <div class="card mb-3">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{% static 'orders/images/pasta_order_view.jpg' %}" class="card-img" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Pasta</h5>
-                                <p class="card-text">
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-3">
-                                            <select class="custom-select mr-sm-2" id="pasta" name="pasta">
-                                                {% for pasta in pastas %}
-                                                <option value="{{ pasta.ingredients}}">{{pasta}}
-                                                    {{pasta.price}}
-                                                </option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="1"
-                                                id="pasta_qnt" min="1" max="50">
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <button class="btn btn-secondary" type="submit" id="add_pasta">add to
-                                                cart</button>
-                                        </div>
-                                    </div>
 
-                                </p>
+<div id="body_section">
+    <div class="row" id="row_content">
+        <div class="col-xs-12 col-md-8">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/regular_order_view.jpg' %}" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Regular Pizza</h5>
+                                    <p class="card-text">
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" id="regular_toppings"
+                                                    name="regular_toppings">
+                                                    {% for topping in toppingOptions %}
+                                                    <option value="{{ topping }}">{{topping}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" name="size" id="regular_size">
+                                                    {% for size in sizes %}
+                                                    <option value="{{ size }}">{{size}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <input class="form-control" type="number" name="num" placeholder="1"
+                                                    id="regular_qnt" min="1" max="50">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <button class="btn btn-secondary" id="add_regular_pizza_button">add
+                                                    to cart</button>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/sicilian_order_view.jpg' %}" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sicilian Pizza</h5>
+                                    <p class="card-text">
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" id="sicilian_toppings"
+                                                    name="sicilian_toppings">
+                                                    {% for topping in toppingOptions %}
+                                                    <option value="{{ topping }}">{{ topping }}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" name="size" id="sicilian_size">
+                                                    {% for size in sizes %}
+                                                    <option value="{{ size }}">{{size}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <input class="form-control" type="number" id="sicilian_num" name="num"
+                                                    placeholder="1" min="1" max="50">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <button class="btn btn-secondary" id="add_sicilian_pizza_button">add
+                                                    to cart</button>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/sub_order_view.jpg' %}" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Subs</h5>
+                                    <p class="card-text">
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" id="sub" name="sub">
+                                                    {% for sub in subs %}
+                                                    <option value="{{ sub.ingredients }}">
+                                                        {{ sub.ingredients }}
+                                                    </option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" name="size" id="sub_size">
+                                                    {% for size in sizes %}
+                                                    <option value="{{ size }}">{{size}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <input class="form-control" type="number" name="num" placeholder="1"
+                                                    id="sub_qnt" min="1" max="50">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" name="extra">
+                                                    <option value="none">no extra</option>
+                                                    {% for extra in extras %}
+                                                    <option value="{{ extra.extra }}">{{extra.extra}}
+                                                        {{extra.price}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <button class="btn btn-secondary" id="add_sub" type="submit">add to
+                                                    cart</button>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/pasta_order_view.jpg' %}" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Pasta</h5>
+                                    <p class="card-text">
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <select class="custom-select mr-sm-2" id="pasta" name="pasta">
+                                                    {% for pasta in pastas %}
+                                                    <option value="{{ pasta.ingredients}}">{{pasta}}
+                                                        {{pasta.price}}
+                                                    </option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <input class="form-control" type="number" name="num" placeholder="1"
+                                                    id="pasta_qnt" min="1" max="50">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <button class="btn btn-secondary" type="submit" id="add_pasta">add to
+                                                    cart</button>
+                                            </div>
+                                        </div>
+
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="dinner_salad">
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/dinner_order_view.jpg' %}" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Dinner Platters</h5>
+                                    <p class="card-text">
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" id="dinner" name="dinner">
+                                                    {% for dinner in dinnerPlates %}
+                                                    <option value="{{ dinner }}">{{ dinner}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <select class="custom-select mr-sm-2" name="size" id="dinner_size">
+                                                    {% for size in sizes %}
+                                                    <option value="{{ size }}">{{size}}</option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <input class="form-control" type="number" name="num" placeholder="1"
+                                                    id="dinner_qnt" min="1" max="50">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <button class="btn btn-secondary" type="submit" id="add_dinner">add to
+                                                    cart</button>
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div class="card mb-3">
+                        <div class="row no-gutters">
+                            <div class="col-md-4">
+                                <img src="{% static 'orders/images/salad_order_view.jpg' %}" class="card-img" alt="...">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title">Salad</h5>
+                                    <p class="card-text">
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <select class="custom-select mr-sm-2" id="salad" name="salad" id="salad">
+                                                    {% for salad in salads %}
+                                                    <option value="{{ salad }}">{{salad}} {{salad.price}}
+                                                    </option>
+                                                    {% endfor%}
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-12 mb-3">
+                                                <input class="form-control" type="number" name="num" placeholder="1"
+                                                    id="salad_qnt" min="1" max="50">
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="col-md-6 mb-3">
+                                                <button class="btn btn-secondary" type="submit" id="add_salad">add to
+                                                    cart</button>
+                                            </div>
+                                        </div>
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row" id="dinner_salad">
-            <div class="col-xs-12 col-md-6">
-                <div class="card mb-3">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{% static 'orders/images/dinner_order_view.jpg' %}" class="card-img" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Dinner Platters</h5>
-                                <p class="card-text">
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" id="dinner" name="dinner">
-                                                {% for dinner in dinnerPlates %}
-                                                <option value="{{ dinner }}">{{ dinner}}</option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <select class="custom-select mr-sm-2" name="size" id="dinner_size">
-                                                {% for size in sizes %}
-                                                <option value="{{ size }}">{{size}}</option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="1"
-                                                id="dinner_qnt" min="1" max="50">
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <button class="btn btn-secondary" type="submit" id="add_dinner">add to
-                                                cart</button>
-                                        </div>
-                                    </div>
-                                    </form>
-                                </p>
+        <div class="col-xs-12 col-md-4">
+            <div class="container" id="cart">
+                <h1 id="username_cart_div">Hello, {{ user.username }}</h1>
+                <div class="row" id="cart_row">
+                    <div class="col-xs-6 items_div" id="cart_items_div">
+                        {%for item in items%}
+                        <div class="{{item.id}}_item_div">
+                            <div style="margin-top: 5px;">{{item.quantity}}x {{item.content_object}} US$ {{item.price}}
+                                <button class="trash" id="{{item.id}}" onclick="deleteItem(this.id)">
+                                    <svg class="bi bi-trash" width="1.5em " height="1em" viewBox="0 0 16 16" fill="white"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z" />
+                                        <path fill-rule="evenodd"
+                                            d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </button>
                             </div>
+                            <div class="size_div">{% if item.extras != None %}{{item.extras}} {% endif %}</div>
+                            <div class="size_div">{% if item.size != None %}size: {{item.size}} {% endif %}</div>
                         </div>
+                        {% endfor %}
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-12 col-md-6">
-                <div class="card mb-3">
-                    <div class="row no-gutters">
-                        <div class="col-md-4">
-                            <img src="{% static 'orders/images/salad_order_view.jpg' %}" class="card-img" alt="...">
-                        </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Salad</h5>
-                                <p class="card-text">
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-3">
-                                            <select class="custom-select mr-sm-2" id="salad" name="salad" id="salad">
-                                                {% for salad in salads %}
-                                                <option value="{{ salad }}">{{salad}} {{salad.price}}
-                                                </option>
-                                                {% endfor%}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-12 mb-3">
-                                            <input class="form-control" type="number" name="num" placeholder="1"
-                                                id="salad_qnt" min="1" max="50">
-                                        </div>
-                                    </div>
-                                    <div class="form-row">
-                                        <div class="col-md-6 mb-3">
-                                            <button class="btn btn-secondary" type="submit" id="add_salad">add to
-                                                cart</button>
-                                        </div>
-                                    </div>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                <div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-md-4">
-        <div class="container" id="cart">
-            <h1 id="username_cart_div">Hello, {{ user.username }}</h1>
-            <div class="row" id="cart_row">
-                <div class="col-xs-6 items_div" id="cart_items_div">
-                    {%for item in items%}
-                    <div class="{{item.id}}_item_div">
-                        <div style="margin-top: 5px;">{{item.quantity}}x {{item.content_object}} US$ {{item.price}}
-                            <button class="trash" id="{{item.id}}" onclick="deleteItem(this.id)">
-                                <svg class="bi bi-trash" width="1.5em " height="1em" viewBox="0 0 16 16" fill="white"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path
-                                        d="M5.5 5.5A.5.5 0 016 6v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm2.5 0a.5.5 0 01.5.5v6a.5.5 0 01-1 0V6a.5.5 0 01.5-.5zm3 .5a.5.5 0 00-1 0v6a.5.5 0 001 0V6z" />
-                                    <path fill-rule="evenodd"
-                                        d="M14.5 3a1 1 0 01-1 1H13v9a2 2 0 01-2 2H5a2 2 0 01-2-2V4h-.5a1 1 0 01-1-1V2a1 1 0 011-1H6a1 1 0 011-1h2a1 1 0 011 1h3.5a1 1 0 011 1v1zM4.118 4L4 4.059V13a1 1 0 001 1h6a1 1 0 001-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </button>
-                        </div>
-                        <div class="size_div">{% if item.extras != None %}{{item.extras}} {% endif %}</div>
-                        <div class="size_div">{% if item.size != None %}size: {{item.size}} {% endif %}</div>
-                    </div>
-                    {% endfor %}
+                <div class="row" id="total_div">
+                    <h1 id="total">US$ <span class="totalPrice">{{totalPrice}}</span></h1>
+                    <input type="button" class="btn btn-dark" data-toggle="modal" data-target="#checkoutModal"
+                        value="checkout" id="checkout_button">
                 </div>
-            </div>
-            <div>
-            </div>
-            <div class="row" id="total_div">
-                <h1 id="total">US$ <span class="totalPrice">{{totalPrice}}</span></h1>
-                <input type="button" class="btn btn-dark" data-toggle="modal" data-target="#checkoutModal"
-                    value="checkout" id="checkout_button">
             </div>
         </div>
     </div>

@@ -135,7 +135,7 @@
                     </div>
                     <div class="col-xs-3 offset-1 pizza_toppings">
                         {% for sicilian in sicilians %}
-                        <div> {{sicilian.large}}  </div>
+                        <div> {{sicilian.large|floatformat:2}}  </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -168,12 +168,12 @@
                     </div>
                     <div class="col-xs-3 offset-1 pizza_toppings">
                         {% for regular in regulars %}
-                        <div> {{regular.small}} </div>
+                        <div> {{regular.small|floatformat:2}} </div>
                         {% endfor %}
                     </div>
                     <div class="col-xs-3 offset-1 pizza_toppings">
                         {% for regular in regulars %}
-                        <div> {{regular.large}}  </div>
+                        <div> {{regular.large|floatformat:2}}  </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -203,12 +203,12 @@
                     </div>
                     <div class="col-xs-3 sub_menu">
                         {% for sub in subs %}
-                        <div>{% if sub.small == 0.0 %}-{% else%}{{sub.small}}{% endif %}</div>
+                        <div>{% if sub.small == 0.0 %}-{% else%}{{sub.small|floatformat:2}}{% endif %}</div>
                         {% endfor %}
                     </div>
                     <div class="col-xs-3 sub_menu">
                         {% for sub in subs %}
-                        <div> {{sub.large}}  </div>
+                        <div> {% if sub.large == 0.0 %}-{% else%}{{sub.large|floatformat:2}}{% endif %} </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -221,7 +221,7 @@
                     </div>
                     <div class="col-xs-6 offset-3 extra_menu">
                         {%for extra in extras%}
-                        <div>{{extra.price }} </div>
+                        <div>{{extra.price|floatformat:2 }} </div>
                         {% endfor %}
                     </div>
                 </div>
@@ -242,7 +242,7 @@
                     </div>
                     <div class="col-xs-3 offset-1 pasta_menu">
                         {% for pasta in pastas %}
-                        <div>{{pasta.price}}</div>
+                        <div>{{pasta.price|floatformat:2}}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -266,7 +266,7 @@
                     </div>
                     <div class="col-xs-3 offset-3 salad_menu">
                         {% for salad in salads %}
-                        <div>{{salad.price}}</div>
+                        <div>{{ salad.price|floatformat:2 }}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -287,12 +287,12 @@
                     </div>
                     <div class="col-xs-3 offset-3 dinner_menu">
                         {% for dinner in dinnerPlates %}
-                        <div>{{ dinner.small }} </div>
+                        <div>{{ dinner.small|floatformat:2 }} </div>
                         {% endfor %}
                     </div>
                     <div class="col-xs-3 offset-1 dinner_menu">
                         {% for dinner in dinnerPlates %}
-                        <div>{{ dinner.large }} </div>
+                        <div>{{ dinner.large|floatformat:2 }} </div>
                         {% endfor %}
                     </div>
                 </div>

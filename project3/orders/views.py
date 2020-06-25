@@ -44,20 +44,19 @@ def generate_context(request, order, logged=False):
 
 
 def get_pizza(request):
-    try:    
+
+    try:
         topping = request.POST["sicilian_toppings"]
-        base = 2
+        base = PizzaBaseType.objects.get(base='Sicilian')
     except:
         topping = request.POST["regular_toppings"]
-        base = 1
+        base = PizzaBaseType.objects.get(base='Regular')
 
-    toppings = {
-    "Cheese": 1,
-    "One topping": 2,
-    "Two toppings": 3,
-    "Three toppings": 4,
-    "Special": 5,
-    }
+    toppings = {}
+
+    for top in PizzaTopping.objects.all():
+        toppings[top.topping] = top.id
+
     return Pizza.objects.get(base=base, toppings=toppings[topping])
 
 
