@@ -6,7 +6,6 @@ from .models import Pizza, Topping, Sub, Extra, Pasta, Salad, DinnerPlate, Pizza
 import random
 # Create your views here.
 
-
 def orderTotal(items):
     total = 0.0
     for item in items:
