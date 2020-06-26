@@ -11,8 +11,10 @@ class Save extends Component {
     }
 
     this.props.saveHouse( ids )
-    
-    document.location.reload()
+    setTimeout(function () {
+      document.location.reload();
+    }, 81000);
+   
   };
 
   render() {
@@ -51,6 +53,5 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   saveHouse: saveHouse,
 };
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Save);
