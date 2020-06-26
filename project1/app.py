@@ -3,17 +3,29 @@ import os
 from flask import Flask, render_template, jsonify, request, flash, session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from flask_session import Session
 
 
 app = Flask(__name__)
 
 app.secret_key = os.urandom(12)
 
-DATABASE_URL = "postgres://yjmkcdhbksdkhk:d055e655ce0b17c0c2699cc3dc146562d77aa01d1f0987ae6b3b757cc4b6ce52@ec2-54-75-231-215.eu-west-1.compute.amazonaws.com:5432/d6djej8hgj1pb8"
 
-engine = create_engine(DATABASE_URL)
+# DB example
+# export DATABASE_URL = "postgres://user:password@address:port/database"
+
+# Check for environment variable
+if not os.getenv("DATABASE_URL"):
+    raise RuntimeError("DATABASE_URL is not set")
+
+# Set up database
+engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+# Configure session to use filesystem
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
+Session(app)
 
 def registration_form_info_is_correct(name, lastname, username, password, password_confirmation, avatar):
     if name.isspace() or lastname.isspace() or username.isspace() or password.isspace():
