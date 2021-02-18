@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Webpage</title>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Start by loading first page.
+            load_page('first');
+
+            // Set links up to load new pages.
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.onclick = () => {
+                    load_page(link.dataset.page);
+                    return false;
+                };
+            });
+        });
+
+        // Renders contents of new page in main view.
+        function load_page(name) {
+            const request = new XMLHttpRequest();
+            request.open('GET', `/${name}`);
+            request.onload = () => {
+                const response = request.responseText;
+                document.querySelector('#body').innerHTML = response;
+            };
+            request.send();
+        }
+
+    </script>
+</head>
+
+<body>
+    <ul id="nav">
+        <li><a href="" class="nav-link" data-page="first">First Page</a></li>
+        <li><a href="" class="nav-link" data-page="second">Second Page</a></li>
+        <li><a href="" class="nav-link" data-page="third">Third Page</a></li>
+    </ul>
+    <hr>
+        <div id="all" class="container-fluid">
+            <div class="row">
+                <div id="side-menu" class="col-lg-2 col-xm-1">
+                    <button class="chats" id="new_group"> new group + </button>
+                    <button class="chats"> group chats </button>
+                    <div>
+                        <ul id="chats"></ul>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="col-lg-8 col-sm-2">
+                        <div id="m" class="row">
+                            <section id="chatroom">
+                                <!--create feedback section only when group is selected-->
+                                <section id="body"></section>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <section id="input_zone">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span id="info"></span>
+                            </div>
+                            <textarea id="message" class="form-control" type="text" /></textarea>
+                            <div class="input-group-append">
+                                <button id="send_message" class="input-group-text" type="button">send</button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    </div>
+</body>
+
+</html>

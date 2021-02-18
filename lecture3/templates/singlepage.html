@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Single Page App</title>
+    <meta charset="utf-8">
+    
+    <style>
+        .appUI{display:none}
+    </style>
+ </head>
+
+<body onload="showUI1">
+    <h1>Single Page App Heading</h1>
+    <div id="ui1">
+        <h2>This is UI 1: Main UI</h2>
+        <button type="button" onclick="showUI2()">Show UI 2</button> 
+        <button type="button" onclick="showUI3()">Show UI 3</button> 
+        <button type="button" onclick="showUI4()">Show UI 4</button> 
+    </div>
+
+    <div id="ui2" class="appUI">
+        <h2>This is UI 2</h2>
+        <p>Nothing to see here...move it along....go on..git</p>
+        <button type="button" onclick="showUI1()">Back to Main UI</button>
+    </div>
+
+    <div id="ui3" class="appUI">
+        <h2>This is UI 3: Wikipedia Article</h2>
+        <button type="button" onclick="showUI1()">Back to Main UI</button><br>
+        <iframe id="UI3Frame" width="715" height="420" src = "http://en.wikipedia.org/wiki/Single-page_application">
+        </iframe> 
+    </div>
+    
+    <div id="ui4" class="appUI">
+        <h2>This is UI 4: Two Pics</h2>
+        <button type="button" onclick="showUI1()">Back to Main UI</button><br>
+        <button type="button" onclick="showPic1()">Show Pic 1</button>
+        <button type="button" onclick="showPic2()">Show Pic 2</button><br>
+        <iframe id="vidFrame" width="715" height="420">        </iframe>
+    </div>
+    
+    <script>
+        function showUI1(){
+            document.getElementById("ui1").style.display="block";
+            document.getElementById("ui2").style.display="none";
+            document.getElementById("ui3").style.display="none";
+            document.getElementById("ui4").style.display="none";
+        }
+        function showUI2(){
+            document.getElementById("ui1").style.display="none";
+            document.getElementById("ui2").style.display="block";
+            document.getElementById("ui3").style.display="none";
+            document.getElementById("ui4").style.display="none";
+        }
+        function showUI3(){
+            document.getElementById("ui1").style.display="none";
+            document.getElementById("ui2").style.display="none";
+            document.getElementById("ui3").style.display="block";
+            document.getElementById("ui4").style.display="none";
+        }
+        function showUI4(){
+            document.getElementById("ui1").style.display="none";
+            document.getElementById("ui2").style.display="none";
+            document.getElementById("ui3").style.display="none";
+            document.getElementById("ui4").style.display="block";
+        }
+        function showPic1(){
+            document.getElementById("vidFrame").src = "http://dwightreid.com/blog/wp-content/uploads/2013/04/Arduino_XML_Sensor_Connection.png";
+        }
+        function showPic2(){
+            document.getElementById("vidFrame").src = "http://dwightreid.com/blog/wp-content/uploads/2015/03/Pan-tilt.jpg";
+        }
+    </script>
+</body>
